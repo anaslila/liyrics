@@ -2,25 +2,25 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>LiLyrics</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LiLyrics</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
     @font-face {
       font-family: 'Monotype Corsiva';
-      src: local('Monotype Corsiva'), url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
+      src: url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
     }
     body {
       margin: 0;
+      font-family: 'Roboto', sans-serif;
       background: #fff;
       color: #222;
-      font-family: 'Roboto', sans-serif;
     }
     header {
       text-align: center;
       padding: 20px;
-      border-bottom: 1px solid #ddd;
       background: #f9f9f9;
+      border-bottom: 1px solid #ddd;
     }
     .logo-line {
       font-family: 'Monotype Corsiva', cursive;
@@ -28,13 +28,13 @@
       font-weight: bold;
       color: #4285f4;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
     }
     .logo-line img {
-      height: 30px;
       width: 30px;
-      margin-right: 8px;
+      height: 30px;
+      margin-right: 10px;
     }
     .tagline {
       font-size: 14px;
@@ -53,22 +53,16 @@
       align-items: center;
       padding: 10px 12px;
       cursor: pointer;
-      position: relative;
       border-right: 1px solid #ccc;
-      font-weight: bold;
-      color: #074B8E;
     }
     .tab.active {
       background: #fff;
       border-bottom: 2px solid #4285f4;
+      font-weight: bold;
     }
     .tab .tab-icon {
       margin-right: 6px;
-    }
-    .tab .tab-icon svg {
-      width: 18px;
-      height: 18px;
-      fill: #074B8E;
+      color: #4285f4;
     }
     .tab .close-btn {
       margin-left: 8px;
@@ -78,11 +72,11 @@
     }
     #controls {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
       padding: 10px;
       background: #f9f9f9;
       border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
     }
     button {
       padding: 6px 12px;
@@ -94,32 +88,29 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      color: #074B8E;
-      font-weight: bold;
     }
     button svg {
-      width: 18px;
-      height: 18px;
-      fill: #074B8E;
+      width: 16px;
+      height: 16px;
     }
     #pad {
       width: 100%;
       height: 60vh;
       padding: 20px;
-      box-sizing: border-box;
       font-family: monospace;
       font-size: 16px;
       line-height: 1.6;
       border: none;
       outline: none;
       resize: none;
+      box-sizing: border-box;
     }
     #rhymes {
       padding: 15px 20px;
       font-size: 14px;
       background: #f2f2f2;
-      color: #333;
       border-top: 1px solid #ccc;
+      color: #333;
     }
     @media (max-width: 600px) {
       #pad {
@@ -132,7 +123,7 @@
 <body>
   <header>
     <div class="logo-line">
-      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon" />
       LiLyrics
     </div>
     <div class="tagline">most powerful lyric pad...</div>
@@ -142,22 +133,18 @@
 
   <div id="controls">
     <button onclick="newProject()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 11h8v2h-8v8h-2v-8H3v-2h8V3h2z"/></svg>
-      New
+      🆕 New
     </button>
     <button onclick="saveToFile()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zM12 19a2.5 2.5 0 110-5 2.5 2.5 0 010 5zm-4-8V5h8v6H8z"/></svg>
-      Save
+      💾 Save
     </button>
     <button onclick="document.getElementById('fileInput').click()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 9h-4V3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V9h-2zM5 5h9v4h5v2H5V5zm7 14a2.5 2.5 0 110-5 2.5 2.5 0 010 5z"/></svg>
-      Open
+      📂 Open
     </button>
     <button onclick="shareLyrics()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 5.828V15h-2V5.828L7.757 9.07 6.343 7.656 12 2l5.657 5.656-1.414 1.414L13 5.828zM5 18v2h14v-2H5z"/></svg>
-      Share
+      📤 Share
     </button>
-    <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)">
+    <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
   </div>
 
   <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
@@ -185,12 +172,7 @@
           loadProject(name);
           saveProjects();
         };
-        div.innerHTML = `
-          <span class="tab-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3v10.55A4 4 0 1014 17V7h4V3h-6z"/></svg>
-          </span>
-          <span>${name}</span>
-          <span class="close-btn">×</span>`;
+        div.innerHTML = `<span class="tab-icon">🎵</span><span>${name}</span><span class="close-btn">×</span>`;
         div.querySelector('.close-btn').onclick = (e) => {
           e.stopPropagation();
           deleteProject(name);
@@ -247,11 +229,16 @@
       reader.readAsText(file);
     }
 
-    pad.oninput = (e) => {
-      projects[current] = e.target.value;
-      saveProjects();
-      suggestRhymes(e.target.value);
-    };
+    function shareLyrics() {
+      const text = pad.value.trim();
+      if (!text) {
+        alert('Lyrics are empty.');
+        return;
+      }
+      navigator.clipboard.writeText(text)
+        .then(() => alert('Lyrics copied to clipboard. You can now paste and share anywhere!'))
+        .catch(() => alert('Failed to copy lyrics.'));
+    }
 
     function suggestRhymes(text) {
       const last = text.trim().split(/\s+/).pop().toLowerCase();
@@ -264,23 +251,17 @@
         hindi: ['dil', 'kal', 'pal', 'mal', 'sal'],
         urdu: ['ishq', 'mashq', 'rasq', 'naam', 'gham']
       };
-      const m = [...db.english, ...db.hindi, ...db.urdu].filter(
+      const matches = [...db.english, ...db.hindi, ...db.urdu].filter(
         w => w.endsWith(last.slice(-2)) && w !== last
       );
-      rhymes.textContent = m.length ? 'Rhymes: ' + m.join(', ') : '';
+      rhymes.textContent = matches.length ? 'Rhymes: ' + matches.join(', ') : '';
     }
 
-    function shareLyrics() {
-      const text = pad.value;
-      if (navigator.share) {
-        navigator.share({
-          title: current,
-          text: text,
-        }).catch(err => console.error('Share failed:', err));
-      } else {
-        alert('Sharing not supported on this device.');
-      }
-    }
+    pad.oninput = (e) => {
+      projects[current] = e.target.value;
+      saveProjects();
+      suggestRhymes(e.target.value);
+    };
 
     if (!projects[current]) projects[current] = '';
     loadProject(current);
