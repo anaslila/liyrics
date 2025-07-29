@@ -160,26 +160,69 @@
       localStorage.setItem('lyricProjects', JSON.stringify(projects));
     }
 
-    function updateTabs() {
-      const tabs = document.getElementById('tabs');
-      tabs.innerHTML = '';
-      Object.keys(projects).forEach(name => {
-        const div = document.createElement('div');
-        div.className = 'tab' + (name === current ? ' active' : '');
-        div.onclick = () => {
-          projects[current] = pad.value;
-          current = name;
-          loadProject(name);
-          saveProjects();
-        };
-        div.innerHTML = `<span class="tab-icon">🎵</span><span>${name}</span><span class="close-btn">×</span>`;
-        div.querySelector('.close-btn').onclick = (e) => {
-          e.stopPropagation();
-          deleteProject(name);
-        };
-        tabs.appendChild(div);
-      });
-    }
+   function updateTabs() {
+  const tabs = document.getElementById('tabs');
+  tabs.innerHTML = '';
+  Object.keys(projects).forEach(name => {
+    const div = document.createElement('div');
+    div.className = 'tab' + (name === current ? ' active' : '');
+    
+    const icon = document.createElement('span');
+    icon.className = 'tab-icon';
+    icon.textContent = '🎵';
+
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = name;
+    nameSpan.style.cursor = 'text';
+
+    nameSpan.onclick = (e) => {
+      e.stopPropagation();
+      const input = document.createElement('input');
+      input.value = name;
+      input.style.fontSize = '14px';
+      input.style.width = '100px';
+      input.onblur = () => renameProject(name, input.value);
+      input.onkeydown = (e) => {
+        if (e.key === 'Enter') input.blur();
+      };
+      nameSpan.replaceWith(input);
+      input.focus();
+    };
+
+    const close = document.createElement('span');
+    close.className = 'close-btn';
+    close.textContent = '×';
+    close.onclick = (e) => {
+      e.stopPropagation();
+      deleteProject(name);
+    };
+
+    div.onclick = () => {
+      projects[current] = pad.value;
+      current = name;
+      loadProject(name);
+      saveProjects();
+    };
+
+    div.appendChild(icon);
+    div.appendChild(nameSpan);
+    div.appendChild(close);
+    tabs.appendChild(div);
+  });
+}
+
+function renameProject(oldName, newName) {
+  if (!newName || newName === oldName || projects[newName]) {
+    updateTabs(); // Reset name if no change or duplicate
+    return;
+  }
+  projects[newName] = projects[oldName];
+  delete projects[oldName];
+  if (current === oldName) current = newName;
+  saveProjects();
+  loadProject(newName);
+}
+
 
     function deleteProject(name) {
       if (!confirm(`Delete "${name}"?`)) return;
