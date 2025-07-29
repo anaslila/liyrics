@@ -1,112 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>LiLyrics</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Monospace&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f8f9fa;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+      margin: 0; padding: 0;
+      background: #f5f5f5;
+      color: #333;
     }
-
     header {
-      background: #fff;
-      border-bottom: 1px solid #ddd;
+      background: #ffffff;
       padding: 10px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
-
     .logo {
       font-family: 'Monotype Corsiva', cursive;
       font-size: 28px;
       font-weight: bold;
-      color: #202124;
+      color: #4285F4;
     }
-
     .tagline {
-      font-size: 14px;
-      color: #5f6368;
-      margin-top: -4px;
+      font-size: 12px;
+      color: #777;
+      margin-top: -6px;
     }
-
     nav {
       display: flex;
-      padding: 5px 20px;
-      background: #e9ecef;
-      border-bottom: 1px solid #ccc;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    nav button {
+      background: #4285F4;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
       font-size: 14px;
     }
-
-    nav div {
-      margin-right: 20px;
-      cursor: pointer;
+    nav button:hover {
+      background: #3367d6;
     }
-
-    main {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-    }
-
-    textarea {
-      flex: 1;
+    #editor {
       width: 100%;
+      min-height: 80vh;
+      border: none;
+      padding: 20px;
+      resize: none;
+      box-sizing: border-box;
       font-family: monospace;
       font-size: 16px;
-      padding: 15px;
-      border: none;
-      resize: none;
-      background: #fff;
-      box-shadow: inset 0 0 3px rgba(0,0,0,0.1);
-      outline: none;
-      overflow-y: auto;
+      line-height: 1.6;
+      background: white;
     }
-
-    @media (max-width: 600px) {
-      .logo {
-        font-size: 22px;
-      }
-
-      nav {
-        font-size: 12px;
-        flex-wrap: wrap;
-      }
-
-      nav div {
-        margin-bottom: 5px;
-      }
+    input[type="file"] {
+      display: none;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="logo">LiLyrics</div>
-    <div class="tagline">most powerful lyric pad...</div>
+    <div>
+      <div class="logo">LiLyrics</div>
+      <div class="tagline">most powerful lyric pad...</div>
+    </div>
+    <nav>
+      <button onclick="saveFile()">Save</button>
+      <label for="fileInput"><button>Open</button></label>
+      <input type="file" id="fileInput" accept=".txt" onchange="loadFile(event)">
+      <button onclick="shareLink()">Share</button>
+    </nav>
   </header>
 
-  <nav>
-    <div>File</div>
-    <div>Edit</div>
-    <div>Lyrics</div>
-    <div>Tools</div>
-    <div>Help</div>
-  </nav>
+  <textarea id="editor" placeholder="Start writing lyrics line by line..."></textarea>
 
-  <main>
-    <textarea placeholder="Start writing your lyrics here..."></textarea>
-  </main>
+  <script>
+    // Save as TXT file
+    function saveFile() {
+      const text = document.getElementById('editor').value;
+      const blob = new Blob([text], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'lyrics.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Load a .txt file
+    function loadFile(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        document.getElementById('editor').value = reader.result;
+      };
+      reader.readAsText(event.target.files[0]);
+    }
+
+    // Share lyrics via link
+    function shareLink() {
+      const text = document.getElementById('editor').value;
+      const encoded = encodeURIComponent(text);
+      const url = `${window.location.origin}${window.location.pathname}?lyrics=${encoded}`;
+      navigator.clipboard.writeText(url).then(() => {
+        alert("Link copied to clipboard!");
+      });
+    }
+
+    // Load from shared URL
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const lyrics = params.get('lyrics');
+      if (lyrics) {
+        document.getElementById('editor').value = decodeURIComponent(lyrics);
+      }
+    };
+  </script>
 
 </body>
 </html>
