@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LiLyrics</title>
-  <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Product+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Google-style Product Sans alternative -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="header">
-    <img id="logo" src="https://static.canva.com/web/images/8f5e5b0c9a38fd45e9890a3f23d6f90a.png" alt="LiLyrics Logo">
-    <h1>LiLyrics</h1>
-  </div>
-
-  <div id="app">
-    <div id="topbar">
-      <select id="projectSelector"></select>
-      <button onclick="newProject()">New Project</button>
+  <header class="navbar">
+    <h1 class="logo">LiLyrics</h1>
+    <div class="project-controls">
+      <select id="project-select">
+        <option value="default">My Project</option>
+      </select>
+      <button id="new-project">+ New Project</button>
     </div>
-    <textarea id="lyricPad" placeholder="Start writing your lyrics here..."></textarea>
-  </div>
+  </header>
+
+  <main class="container">
+    <textarea id="lyrics" placeholder="Start writing in Hindi (using English letters)..."></textarea>
+    <p class="status">Auto saved</p>
+  </main>
 
   <script src="script.js"></script>
 </body>
