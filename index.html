@@ -1,24 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>LiLyrics</title>
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Product+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div id="header">
+    <img id="logo" src="https://static.canva.com/web/images/8f5e5b0c9a38fd45e9890a3f23d6f90a.png" alt="LiLyrics Logo">
+    <h1>LiLyrics</h1>
+  </div>
+
   <div id="app">
-    <div style="display: flex; gap: 10px; margin-bottom: 10px; flex-wrap: wrap;">
+    <div id="topbar">
       <select id="projectSelector"></select>
-      <button onclick="newProject()">New</button>
-      <button onclick="renameProject()">Rename</button>
-      <button onclick="deleteProject()">Delete</button>
-      <button onclick="toggleDarkMode()">🌙</button>
-      <button onclick="suggestUrduRhymes()">Suggest Rhymes</button>
+      <button onclick="newProject()">New Project</button>
     </div>
     <textarea id="lyricPad" placeholder="Start writing your lyrics here..."></textarea>
-    <div id="urduRhymes" style="margin-top: 15px; font-style: italic; color: #444;"></div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
