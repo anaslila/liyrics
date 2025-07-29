@@ -1,38 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF‑8">
-  <meta name="viewport" content="width=device‑width, initial‑scale=1">
-  <title>LiLyrics</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <div class="logo">LiLyrics</div>
-    <div class="header-controls">
-      <!-- placeholder for future controls -->
-      <button id="dark-toggle">🌙</button>
-    </div>
-  </header>
+const select = document.getElementById('project-select');
+const textarea = document.getElementById('lyrics');
+const status = document.querySelector('.status');
+const newBtn = document.getElementById('new-project');
+const suggestBtn = document.getElementById('suggest-rhymes');
+const darkBtn = document.getElementById('dark-toggle');
 
-  <section class="filter-pills">
-    <button class="pill">Mood</button>
-    <button class="pill">Genre</button>
-  </section>
+let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
+let current = Object.keys(projects)[0] || 'Default';
+if (!projects[current]) projects[current] = '';
 
-  <main>
-    <div class="project-bar">
-      <select id="project-select"></select>
-      <button id="new-project">+ New Project</button>
-    </div>
-    <textarea id="lyrics" placeholder="Write lyrics using English letters…"></textarea>
-    <div class="footer">
-      <button id="suggest-rhymes">Suggest Rhymes</button>
-      <span class="status">Auto saved</span>
-    </div>
-  </main>
+function save() {
+  localStorage.setItem('lyricProjects', JSON.stringify(projects));
+}
+function load(name) {
+  current = name;
+  textarea.value = projects[name] || '';
+  select.value = name;
+}
+function updateProjects() {
+  select.innerHTML = '';
+  Object.keys(projects).forEach(p => {
+    const o = document.createElement('option');
+    o.value = p; o.textContent = p;
+    select.append(o);
+  });
+}
+newBtn.onclick = () => {
+  const name = prompt('New project name:');
+  if (!name) return;
+  projects[name] = '';
+  updateProjects(); load(name); save();
+};
+select.onchange = () => {
+  projects[current] = textarea.value;
+  load(select.value); save();
+};
+textarea.oninput = () => {
+  projects[current] = textarea.value; save();
+  status.textContent = 'Saving...';
+  setTimeout(() => status.textContent = 'Auto saved', 500);
+};
+suggestBtn.onclick = () => {
+  const lastWord = textarea.value.trim().split(/\s+/).pop();
+  if (!lastWord) return;
+  alert(`Paste this into ChatGPT:\n\nGive me 5 Roman Urdu rhymes for '${lastWord}'`);
+};
+darkBtn.onclick = () => {
+  document.body.classList.toggle('dark');
+  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+};
+if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
 
-  <script src="script.js"></script>
-</body>
-</html>
+updateProjects(); load(current);
