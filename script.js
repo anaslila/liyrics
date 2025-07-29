@@ -52,3 +52,32 @@ darkBtn.onclick = () => {
 if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
 
 updateProjects(); load(current);
+function shareLyrics() {
+  const text = pad.value.trim();
+  if (!text) {
+    alert("Write some lyrics before sharing.");
+    return;
+  }
+
+  const title = current || 'LiLyrics';
+  
+  if (navigator.share) {
+    navigator.share({
+      title: title,
+      text: text,
+    })
+    .then(() => console.log('Shared successfully!'))
+    .catch((err) => console.error('Error sharing:', err));
+  } else {
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const tempInput = document.createElement('input');
+    tempInput.value = url;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('Link copied. Paste it into any chat or message.');
+  }
+}
+
