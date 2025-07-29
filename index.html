@@ -28,12 +28,12 @@
       font-weight: bold;
       color: #4285f4;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
     }
-    .logo-line img.icon {
-      width: 32px;
-      height: 32px;
+    .logo-line img {
+      height: 30px;
+      width: 30px;
       margin-right: 8px;
     }
     .tagline {
@@ -85,9 +85,6 @@
       border: 1px solid #ccc;
       background: #fff;
       border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     #pad {
       width: 100%;
@@ -119,7 +116,7 @@
 <body>
   <header>
     <div class="logo-line">
-      <img class="icon" src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="logo">
+      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon">
       LiLyrics
     </div>
     <div class="tagline">most powerful lyric pad...</div>
@@ -128,9 +125,9 @@
   <div id="tabs"></div>
 
   <div id="controls">
-    <button onclick="newProject()"><span>➕</span>New</button>
-    <button onclick="saveToFile()"><span>💾</span>Save</button>
-    <button onclick="document.getElementById('fileInput').click()"><span>📂</span>Open</button>
+    <button onclick="newProject()">New</button>
+    <button onclick="saveToFile()">Save</button>
+    <button onclick="document.getElementById('fileInput').click()">Open</button>
     <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)">
   </div>
 
@@ -138,6 +135,8 @@
   <div id="rhymes"></div>
 
   <script>
+    const pad = document.getElementById('pad');
+    const rhymes = document.getElementById('rhymes');
     let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
     let current = Object.keys(projects)[0] || 'Untitled';
 
@@ -231,14 +230,12 @@
         hindi: ['dil', 'kal', 'pal', 'mal', 'sal'],
         urdu: ['ishq', 'mashq', 'rasq', 'naam', 'gham']
       };
-      const m = [...db.english, ...db.hindi, ...db.urdu].filter(w =>
-        w.endsWith(last.slice(-2)) && w !== last
+      const m = [...db.english, ...db.hindi, ...db.urdu].filter(
+        w => w.endsWith(last.slice(-2)) && w !== last
       );
       rhymes.textContent = m.length ? 'Rhymes: ' + m.join(', ') : '';
     }
 
-    const pad = document.getElementById('pad'),
-          rhymes = document.getElementById('rhymes');
     if (!projects[current]) projects[current] = '';
     loadProject(current);
     updateTabs();
