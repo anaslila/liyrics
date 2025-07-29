@@ -1,21 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>LiLyrics</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-    body { font-family: 'Roboto', sans-serif; margin:0; padding:0; background:#f5f5f5; }
-    header { background:#fff; padding:15px 20px; box-shadow:0 1px 4px rgba(0,0,0,0.1); }
-    .logo { font-family:'Monotype Corsiva', cursive; font-size:28px; color:#4285f4; }
-    .tagline { font-size:13px; color:#555; margin-top:3px; }
-    nav { display:flex; gap:10px; margin-top:10px; flex-wrap:wrap; }
-    nav button { background:#4285f4; color:#fff; border:none; padding:8px 12px; border-radius:4px; cursor:pointer; }
-    nav button:hover { background:#3367d6; }
-    textarea { width:100%; height:60vh; padding:20px; box-sizing:border-box; font-family:monospace; font-size:16px; line-height:1.6; border:none; resize:none; margin:20px 0; }
-    #rhymes { background:#fff; padding:15px 20px; margin:0 20px 20px; font-size:14px; color:#333; border-radius:4px; box-shadow:0 1px 3px rgba(0,0,0,0.08); }
-    @media(max-width:600px){ textarea{height:50vh;} }
+    @font-face {
+      font-family: 'Monotype Corsiva';
+      src: local('Monotype Corsiva'), url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background: #fff;
+      color: #222;
+    }
+    header {
+      padding: 20px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+    .logo {
+      font-family: 'Monotype Corsiva', cursive;
+      font-size: 32px;
+      margin-bottom: 5px;
+    }
+    .tagline {
+      font-size: 14px;
+      color: #555;
+    }
+    #tabs {
+      display: flex;
+      flex-wrap: wrap;
+      border-bottom: 1px solid #ccc;
+      background: #f7f7f7;
+      padding: 0 10px;
+    }
+    .tab {
+      padding: 10px 15px;
+      cursor: pointer;
+      border-right: 1px solid #ccc;
+    }
+    .tab.active {
+      background: white;
+      border-bottom: 2px solid #4285f4;
+      font-weight: bold;
+    }
+    #controls {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background: #f9f9f9;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 4px;
+    }
+    #pad {
+      width: 100%;
+      height: 60vh;
+      font-family: monospace;
+      font-size: 16px;
+      padding: 20px;
+      box-sizing: border-box;
+      border: none;
+      outline: none;
+      resize: none;
+    }
+    #rhymes {
+      padding: 10px 20px;
+      font-size: 14px;
+      color: #333;
+      background: #f2f2f2;
+      border-top: 1px solid #ccc;
+    }
+    @media (max-width: 600px) {
+      #pad {
+        height: 50vh;
+        font-size: 15px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -23,63 +91,119 @@
   <header>
     <div class="logo">LiLyrics</div>
     <div class="tagline">most powerful lyric pad...</div>
-    <nav>
-      <button onclick="saveFile()">Save</button>
-      <label><button>Open</button><input type="file" id="fileInput" accept=".txt" style="display:none" onchange="loadFile(event)"></label>
-      <button onclick="shareLink()">Share</button>
-    </nav>
   </header>
 
-  <textarea id="editor" placeholder="Write lyrics using English letters..."></textarea>
-  <div id="rhymes"><strong>Rhymes:</strong> start typing...</div>
+  <div id="tabs"></div>
+
+  <div id="controls">
+    <button onclick="newProject()">New</button>
+    <button onclick="saveToFile()">Save</button>
+    <button onclick="document.getElementById('fileInput').click()">Open</button>
+    <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)">
+  </div>
+
+  <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
+
+  <div id="rhymes"></div>
 
   <script>
-    // Built-in sample Hindi & Urdu rhyme lists (Roman)
-    const hindiRhymes = { "dil": ["mil","khil","sil","til","dil"], "jaan": ["maan","shaan","kaam","gyaan","ahaan"] };
-    const urduRhymes = { "dil": ["mil","khil","sil","til","saahil"], "bewafa": ["wafa","zafa","rafaa","nawfaa","tafaa"] };
+    let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
+    let current = Object.keys(projects)[0] || 'Untitled';
 
-    const editor = document.getElementById('editor');
-    const rhymesDiv = document.getElementById('rhymes');
-
-    editor.addEventListener('input', () => {
-      const words = editor.value.trim().split(/\s+/);
-      const last = words[words.length-1] || "";
-      if (!last) { rhymesDiv.innerHTML = "<strong>Rhymes:</strong>"; return; }
-
-      // English suggestions using Datamuse API
-      fetch(`https://api.datamuse.com/words?rel_rhy=${last}&max=5`)
-        .then(r => r.json())
-        .then(data => {
-          const eng = data.map(o => o.word).join(', ') || "(none)";
-          // Roman Hindi suggestions
-          const hin = hindiRhymes[last.toLowerCase()]?.join(', ') || "(none)";
-          // Roman Urdu suggestions
-          const ur = urduRhymes[last.toLowerCase()]?.join(', ') || "(none)";
-          rhymesDiv.innerHTML = `<strong>Rhymes for "${last}":</strong><br>
-            English: ${eng}<br>Hindi (Roman): ${hin}<br>Urdu (Roman): ${ur}`;
-        })
-        .catch(_ => rhymesDiv.innerHTML = `<strong>Rhymes:</strong> error fetching English`);
-    });
-
-    // Save, load, share features as before
-    function saveFile(){
-      const blob = new Blob([editor.value], {type:'text/plain'});
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-      a.download = 'lyrics.txt'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    function saveProjects() {
+      localStorage.setItem('lyricProjects', JSON.stringify(projects));
     }
-    function loadFile(e){
-      const reader=new FileReader();
-      reader.onload = () => editor.value = reader.result;
-      reader.readAsText(e.target.files[0]);
+
+    function updateTabs() {
+      const tabs = document.getElementById('tabs');
+      tabs.innerHTML = '';
+      Object.keys(projects).forEach(name => {
+        const tab = document.createElement('div');
+        tab.textContent = name;
+        tab.className = 'tab' + (name === current ? ' active' : '');
+        tab.onclick = () => {
+          projects[current] = document.getElementById('pad').value;
+          current = name;
+          loadProject(name);
+          saveProjects();
+        };
+        tabs.appendChild(tab);
+      });
     }
-    function shareLink(){
-      const u = window.location.origin + window.location.pathname + '?lyrics=' + encodeURIComponent(editor.value);
-      navigator.clipboard.writeText(u).then(_=>alert('Link copied'));
+
+    function loadProject(name) {
+      document.getElementById('pad').value = projects[name] || '';
+      updateTabs();
     }
-    window.onload = ()=>{
-      const p = new URLSearchParams(window.location.search).get('lyrics');
-      if(p) editor.value = decodeURIComponent(p);
+
+    function newProject() {
+      const name = prompt("New project name:");
+      if (name && !projects[name]) {
+        projects[name] = '';
+        current = name;
+        loadProject(name);
+        saveProjects();
+      }
+    }
+
+    function saveToFile() {
+      const text = document.getElementById('pad').value;
+      const blob = new Blob([text], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = current + ".txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function loadFromFile(e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function() {
+        const name = file.name.replace('.txt', '');
+        projects[name] = reader.result;
+        current = name;
+        loadProject(name);
+        saveProjects();
+      };
+      reader.readAsText(file);
+    }
+
+    document.getElementById('pad').oninput = (e) => {
+      const text = e.target.value;
+      projects[current] = text;
+      saveProjects();
+      suggestRhymes(text);
     };
+
+    function suggestRhymes(text) {
+      const lastWord = text.trim().split(/\s+/).pop().toLowerCase();
+      if (!lastWord) {
+        document.getElementById('rhymes').textContent = '';
+        return;
+      }
+
+      const rhymesDB = {
+        english: ['day', 'way', 'stay', 'play', 'say', 'gray', 'bay'],
+        hindi: ['dil', 'mil', 'chal', 'pal', 'kal', 'bal', 'sal'],
+        urdu: ['ishq', 'mashq', 'rasq', 'fasq', 'gham', 'sham', 'naam']
+      };
+
+      let matches = [];
+
+      Object.values(rhymesDB).forEach(list => {
+        matches.push(...list.filter(w => w.endsWith(lastWord.slice(-2)) && w !== lastWord));
+      });
+
+      document.getElementById('rhymes').textContent = matches.length
+        ? 'Rhymes: ' + matches.join(', ')
+        : '';
+    }
+
+    if (!projects[current]) projects[current] = '';
+    loadProject(current);
+    updateTabs();
   </script>
 
 </body>
