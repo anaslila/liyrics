@@ -11,149 +11,237 @@
       src: local('Monotype Corsiva'), url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
     }
     body {
-      margin: 0; background: #fff; color: #222;
+      margin: 0;
+      background: #fff;
+      color: #222;
       font-family: 'Roboto', sans-serif;
     }
     header {
-      text-align: center; padding: 20px;
+      text-align: center;
+      padding: 20px;
       border-bottom: 1px solid #ddd;
       background: #f9f9f9;
     }
     .logo-line {
       font-family: 'Monotype Corsiva', cursive;
-      font-size: 32px; font-weight: bold;
+      font-size: 32px;
+      font-weight: bold;
       color: #4285f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .logo-line .icon { margin-right: 8px; }
+    .logo-line img.icon {
+      width: 32px;
+      height: 32px;
+      margin-right: 8px;
+    }
     .tagline {
-      font-size: 14px; color: #555; margin-top: 4px;
+      font-size: 14px;
+      color: #555;
+      margin-top: 4px;
     }
     #tabs {
-      display: flex; flex-wrap: wrap;
-      background: #f7f7f7; border-bottom: 1px solid #ccc;
+      display: flex;
+      flex-wrap: wrap;
+      background: #f7f7f7;
+      border-bottom: 1px solid #ccc;
       padding: 0 10px;
     }
     .tab {
-      display: flex; align-items: center;
-      padding: 10px 12px; cursor: pointer;
-      position: relative; border-right: 1px solid #ccc;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      cursor: pointer;
+      position: relative;
+      border-right: 1px solid #ccc;
     }
     .tab.active {
-      background: #fff; border-bottom: 2px solid #4285f4;
+      background: #fff;
+      border-bottom: 2px solid #4285f4;
       font-weight: bold;
     }
     .tab .tab-icon {
-      margin-right: 6px; color: #4285f4;
+      margin-right: 6px;
+      color: #4285f4;
     }
     .tab .close-btn {
-      margin-left: 8px; color: red; font-weight: bold;
+      margin-left: 8px;
+      color: red;
+      font-weight: bold;
       cursor: pointer;
     }
     #controls {
-      display: flex; gap: 10px;
-      padding: 10px; background: #f9f9f9;
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #f9f9f9;
       border-bottom: 1px solid #eee;
     }
     button {
-      padding: 6px 12px; font-size: 14px;
-      cursor: pointer; border: 1px solid #ccc;
-      background: #fff; border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     #pad {
-      width: 100%; height: 60vh;
-      padding: 20px; box-sizing: border-box;
-      font-family: monospace; font-size: 16px;
-      line-height: 1.6; border: none; outline: none;
+      width: 100%;
+      height: 60vh;
+      padding: 20px;
+      box-sizing: border-box;
+      font-family: monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      border: none;
+      outline: none;
       resize: none;
     }
     #rhymes {
-      padding: 15px 20px; font-size: 14px;
-      background: #f2f2f2; color: #333;
+      padding: 15px 20px;
+      font-size: 14px;
+      background: #f2f2f2;
+      color: #333;
       border-top: 1px solid #ccc;
     }
     @media (max-width: 600px) {
-      #pad { height: 50vh; font-size: 15px; }
+      #pad {
+        height: 50vh;
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo-line"><span class="icon">🎵</span>LiLyrics</div>
+    <div class="logo-line">
+      <img class="icon" src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="logo">
+      LiLyrics
+    </div>
     <div class="tagline">most powerful lyric pad...</div>
   </header>
+
   <div id="tabs"></div>
+
   <div id="controls">
-    <button onclick="newProject()">New</button>
-    <button onclick="saveToFile()">Save</button>
-    <button onclick="document.getElementById('fileInput').click()">Open</button>
+    <button onclick="newProject()"><span>➕</span>New</button>
+    <button onclick="saveToFile()"><span>💾</span>Save</button>
+    <button onclick="document.getElementById('fileInput').click()"><span>📂</span>Open</button>
     <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)">
   </div>
+
   <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
   <div id="rhymes"></div>
+
   <script>
     let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
     let current = Object.keys(projects)[0] || 'Untitled';
-    function saveProjects(){ localStorage.setItem('lyricProjects', JSON.stringify(projects)); }
-    function updateTabs(){
-      const tabs=document.getElementById('tabs'); tabs.innerHTML='';
-      Object.keys(projects).forEach(name=>{
-        const div=document.createElement('div');
-        div.className='tab'+(name===current?' active':'');
-        div.onclick=()=>{
-          projects[current]=pad.value; current=name; loadProject(name); saveProjects();
+
+    function saveProjects() {
+      localStorage.setItem('lyricProjects', JSON.stringify(projects));
+    }
+
+    function updateTabs() {
+      const tabs = document.getElementById('tabs');
+      tabs.innerHTML = '';
+      Object.keys(projects).forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'tab' + (name === current ? ' active' : '');
+        div.onclick = () => {
+          projects[current] = pad.value;
+          current = name;
+          loadProject(name);
+          saveProjects();
         };
-        div.innerHTML=`<span class="tab-icon">🎵</span><span>${name}</span><span class="close-btn">×</span>`;
-        div.querySelector('.close-btn').onclick=(e)=>{
-          e.stopPropagation(); deleteProject(name);
+        div.innerHTML = `<span class="tab-icon">🎵</span><span>${name}</span><span class="close-btn">×</span>`;
+        div.querySelector('.close-btn').onclick = (e) => {
+          e.stopPropagation();
+          deleteProject(name);
         };
         tabs.appendChild(div);
       });
     }
-    function deleteProject(name){
-      if(!confirm(`Delete "${name}"?`))return;
+
+    function deleteProject(name) {
+      if (!confirm(`Delete "${name}"?`)) return;
       delete projects[name];
-      current=name===current? Object.keys(projects)[0]||'Untitled':current;
-      if(!projects[current])projects[current]='';
-      loadProject(current); saveProjects(); updateTabs();
-    }
-    function loadProject(name){
-      pad.value=projects[name]||'';
+      current = name === current ? Object.keys(projects)[0] || 'Untitled' : current;
+      if (!projects[current]) projects[current] = '';
+      loadProject(current);
+      saveProjects();
       updateTabs();
     }
-    function newProject(){
-      const name=prompt('New project name:'); if(name&&!projects[name]){
-        projects[name]=''; current=name; loadProject(name); saveProjects();
+
+    function loadProject(name) {
+      pad.value = projects[name] || '';
+      updateTabs();
+    }
+
+    function newProject() {
+      const name = prompt('New project name:');
+      if (name && !projects[name]) {
+        projects[name] = '';
+        current = name;
+        loadProject(name);
+        saveProjects();
       }
     }
-    function saveToFile(){
-      const blob=new Blob([pad.value],{type:'text/plain'});
-      const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-      a.download=current+'.txt'; a.click(); URL.revokeObjectURL(a.href);
+
+    function saveToFile() {
+      const blob = new Blob([pad.value], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = current + '.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
     }
-    function loadFromFile(e){
-      const file=e.target.files[0]; if(!file)return;
-      const reader=new FileReader();
-      reader.onload=()=> {
-        const name=file.name.replace('.txt','');
-        projects[name]=reader.result;
-        current=name; loadProject(name); saveProjects();
+
+    function loadFromFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const name = file.name.replace('.txt', '');
+        projects[name] = reader.result;
+        current = name;
+        loadProject(name);
+        saveProjects();
       };
       reader.readAsText(file);
     }
-    pad.oninput=(e)=>{
-      projects[current]=e.target.value; saveProjects();
+
+    pad.oninput = (e) => {
+      projects[current] = e.target.value;
+      saveProjects();
       suggestRhymes(e.target.value);
     };
-    function suggestRhymes(text){
-      const last=text.trim().split(/\s+/).pop().toLowerCase();
-      if(!last){ rhymes.textContent=''; return; }
-      const db={english:['day','way','play','stay','say'],hindi:['dil','kal','pal','mal','sal'],urdu:['ishq','mashq','rasq','naam','gham']};
-      const m=[...db.english, ...db.hindi, ...db.urdu].filter(w=>w.endsWith(last.slice(-2))&&w!==last);
-      rhymes.textContent=m.length? 'Rhymes: '+m.join(', '): '';
+
+    function suggestRhymes(text) {
+      const last = text.trim().split(/\s+/).pop().toLowerCase();
+      if (!last) {
+        rhymes.textContent = '';
+        return;
+      }
+      const db = {
+        english: ['day', 'way', 'play', 'stay', 'say'],
+        hindi: ['dil', 'kal', 'pal', 'mal', 'sal'],
+        urdu: ['ishq', 'mashq', 'rasq', 'naam', 'gham']
+      };
+      const m = [...db.english, ...db.hindi, ...db.urdu].filter(w =>
+        w.endsWith(last.slice(-2)) && w !== last
+      );
+      rhymes.textContent = m.length ? 'Rhymes: ' + m.join(', ') : '';
     }
-    const pad=document.getElementById('pad'), rhymes=document.getElementById('rhymes');
-    if(!projects[current])projects[current]='';
-    loadProject(current); updateTabs();
+
+    const pad = document.getElementById('pad'),
+          rhymes = document.getElementById('rhymes');
+    if (!projects[current]) projects[current] = '';
+    loadProject(current);
+    updateTabs();
   </script>
 </body>
 </html>
