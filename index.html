@@ -73,14 +73,12 @@
     }
     #controls {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       padding: 10px;
       background: #f9f9f9;
       border-bottom: 1px solid #eee;
     }
-    <button onclick="shareLyrics()">
-  <img src="https://cdn-icons-png.flaticon.com/512/786/786927.png" style="width:16px;height:16px;margin-right:5px;vertical-align:middle;"> Share
-</button>
     button {
       padding: 6px 12px;
       font-size: 14px;
@@ -88,6 +86,13 @@
       border: 1px solid #ccc;
       background: #fff;
       border-radius: 4px;
+      display: flex;
+      align-items: center;
+    }
+    button img {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
     }
     #pad {
       width: 100%;
@@ -131,6 +136,9 @@
     <button onclick="newProject()">New</button>
     <button onclick="saveToFile()">Save</button>
     <button onclick="document.getElementById('fileInput').click()">Open</button>
+    <button onclick="shareLyrics()">
+      <img src="https://cdn-icons-png.flaticon.com/512/786/786927.png" alt="Share"> Share
+    </button>
     <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)">
   </div>
 
@@ -239,10 +247,21 @@
       rhymes.textContent = m.length ? 'Rhymes: ' + m.join(', ') : '';
     }
 
+    function shareLyrics() {
+      const text = pad.value;
+      if (navigator.share) {
+        navigator.share({
+          title: current,
+          text: text,
+        }).catch(err => console.error('Share failed:', err));
+      } else {
+        alert('Sharing is not supported on this device.');
+      }
+    }
+
     if (!projects[current]) projects[current] = '';
     loadProject(current);
     updateTabs();
   </script>
 </body>
 </html>
-
