@@ -40,11 +40,21 @@
       padding: 10px 15px;
       cursor: pointer;
       border-right: 1px solid #ccc;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
     .tab.active {
       background: white;
       border-bottom: 2px solid #4285f4;
       font-weight: bold;
+    }
+    .close-btn {
+      font-weight: bold;
+      cursor: pointer;
+      color: red;
+      font-size: 16px;
     }
     #controls {
       display: flex;
@@ -119,7 +129,6 @@
       tabs.innerHTML = '';
       Object.keys(projects).forEach(name => {
         const tab = document.createElement('div');
-        tab.textContent = name;
         tab.className = 'tab' + (name === current ? ' active' : '');
         tab.onclick = () => {
           projects[current] = document.getElementById('pad').value;
@@ -127,8 +136,35 @@
           loadProject(name);
           saveProjects();
         };
+
+        const title = document.createElement('span');
+        title.textContent = name;
+
+        const close = document.createElement('span');
+        close.className = 'close-btn';
+        close.textContent = '×';
+        close.onclick = (e) => {
+          e.stopPropagation();
+          deleteProject(name);
+        };
+
+        tab.appendChild(title);
+        tab.appendChild(close);
         tabs.appendChild(tab);
       });
+    }
+
+    function deleteProject(name) {
+      if (!confirm(`Delete "${name}"?`)) return;
+      delete projects[name];
+      if (name === current) {
+        const remaining = Object.keys(projects);
+        current = remaining[0] || 'Untitled';
+      }
+      if (!projects[current]) projects[current] = '';
+      loadProject(current);
+      saveProjects();
+      updateTabs();
     }
 
     function loadProject(name) {
