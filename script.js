@@ -1,74 +1,56 @@
-let projects = JSON.parse(localStorage.getItem("lyricProjects")) || {};
-let currentProject = Object.keys(projects)[0] || "Untitled";
-if (!projects[currentProject]) projects[currentProject] = "";
+body {
+  font-family: 'Product Sans', sans-serif;
+  background: #fff;
+  margin: 0;
+  padding: 40px 20px;
+  color: #202124;
+}
 
-function saveProjects() {
-  localStorage.setItem("lyricProjects", JSON.stringify(projects));
+#header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 30px;
 }
-function loadProject(name) {
-  currentProject = name;
-  document.getElementById("lyricPad").value = projects[name] || "";
-  document.getElementById("projectSelector").value = name;
+
+#logo {
+  height: 40px;
 }
-function newProject() {
-  const name = prompt("New project name:");
-  if (!name || projects[name]) return;
-  projects[name] = "";
-  updateProjectSelector();
-  loadProject(name);
-  saveProjects();
+
+#app {
+  max-width: 720px;
+  margin: auto;
 }
-function renameProject() {
-  const newName = prompt("Rename project to:");
-  if (!newName || projects[newName]) return;
-  projects[newName] = projects[currentProject];
-  delete projects[currentProject];
-  updateProjectSelector();
-  loadProject(newName);
-  saveProjects();
+
+#topbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
 }
-function deleteProject() {
-  if (!confirm(`Delete project "${currentProject}"?`)) return;
-  delete projects[currentProject];
-  const remaining = Object.keys(projects);
-  currentProject = remaining[0] || "Untitled";
-  if (!projects[currentProject]) projects[currentProject] = "";
-  updateProjectSelector();
-  loadProject(currentProject);
-  saveProjects();
+
+#projectSelector, button {
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1px solid #dadce0;
+  border-radius: 6px;
+  background: #f8f9fa;
+  cursor: pointer;
 }
-function updateProjectSelector() {
-  const sel = document.getElementById("projectSelector");
-  sel.innerHTML = "";
-  Object.keys(projects).forEach(name => {
-    const opt = document.createElement("option");
-    opt.value = name;
-    opt.textContent = name;
-    sel.appendChild(opt);
-  });
-  sel.onchange = () => {
-    projects[currentProject] = document.getElementById("lyricPad").value;
-    loadProject(sel.value);
-    saveProjects();
-  };
+
+#projectSelector:focus, button:focus {
+  outline: none;
+  border-color: #4285f4;
 }
-document.getElementById("lyricPad").oninput = () => {
-  projects[currentProject] = document.getElementById("lyricPad").value;
-  saveProjects();
-};
-function toggleDarkMode() {
-  document.body.classList.toggle("dark");
-  localStorage.setItem("lyricPadDarkMode", document.body.classList.contains("dark"));
+
+textarea {
+  width: 100%;
+  height: 420px;
+  font-size: 18px;
+  line-height: 1.5;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+  outline: none;
 }
-if (localStorage.getItem("lyricPadDarkMode") === "true") {
-  document.body.classList.add("dark");
-}
-function suggestUrduRhymes() {
-  const text = document.getElementById("lyricPad").value.trim();
-  const lastWord = text.split(/\s+/).pop().toLowerCase();
-  if (!lastWord) return;
-  const msg = `✍️ Copy this and paste it in ChatGPT:\n\n"Give me 5 Roman Urdu rhymes for '${lastWord}'"`;
-  document.getElementById("urduRhymes").textContent = msg;
-}
-updateProjectSelector();
-loadProject(currentProject);
