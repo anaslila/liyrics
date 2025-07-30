@@ -1,48 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png">
   <title>LiLyrics</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=JetBrains+Mono&family=Fira+Code&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
     @font-face {
       font-family: 'Monotype Corsiva';
       src: url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
     }
+    
     body {
       margin: 0;
       font-family: 'Roboto', sans-serif;
       background: #fff;
       color: #222;
+      transition: all 0.3s;
     }
+    
+    body.dark {
+      background: #121212;
+      color: #f9f9f9;
+    }
+    
+    body.sepia {
+      background: #f4ecd8;
+      color: #40352b;
+    }
+    
+    body.sepia #pad {
+      background: #fbf6e6;
+      color: #40352b;
+    }
+    
     header {
       text-align: center;
       padding: 20px;
       background: #f9f9f9;
       border-bottom: 1px solid #ddd;
+      position: relative;
     }
+    
     .logo-line {
       font-family: 'Monotype Corsiva', cursive;
       font-size: 32px;
-      font-weight: bold;
+      font-weight: 700;
       color: #4285f4;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+    
     .logo-line img {
       width: 30px;
       height: 30px;
       margin-right: 10px;
     }
+    
     .tagline {
       font-size: 14px;
       color: #555;
       margin-top: 4px;
     }
+    
+    #darkToggle {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    
     #tabs {
       display: flex;
       flex-wrap: wrap;
@@ -50,6 +85,7 @@
       border-bottom: 1px solid #ccc;
       padding: 0 10px;
     }
+    
     .tab {
       display: flex;
       align-items: center;
@@ -57,37 +93,48 @@
       cursor: pointer;
       border-right: 1px solid #ccc;
     }
+    
     .tab.active {
       background: #fff;
       border-bottom: 2px solid #4285f4;
       font-weight: bold;
     }
+    
     .tab .tab-icon {
       margin-right: 6px;
       color: #4285f4;
     }
+    
     .tab .close-btn {
       margin-left: 8px;
       color: red;
       font-weight: bold;
       cursor: pointer;
     }
+    
     #controls {
       display: flex;
-      gap: 10px;
+      gap: 8px;
       padding: 10px;
       background: #f9f9f9;
       border-bottom: 1px solid #eee;
       flex-wrap: wrap;
       align-items: center;
     }
+    
     button, select, input[type="search"] {
       padding: 6px 10px;
       font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 4px;
       background: #fff;
+      cursor: pointer;
     }
+    
+    button:active {
+      background: #eee;
+    }
+    
     #pad {
       width: 100%;
       height: 60vh;
@@ -99,36 +146,57 @@
       outline: none;
       resize: none;
       box-sizing: border-box;
+      background: #fff;
+      color: #000;
     }
+    
+    body.dark #pad {
+      background: #1f1f1f;
+      color: #fff;
+    }
+    
     #rhymes {
       padding: 15px 20px;
       font-size: 14px;
       background: #f2f2f2;
       border-top: 1px solid #ccc;
       color: #333;
+      min-height: 40px;
     }
+    
     @media (max-width: 600px) {
-      #pad { height: 50vh; font-size: 15px; }
-      #controls { flex-direction: column; align-items: flex-start; }
+      #pad {
+        height: 50vh;
+        font-size: 15px;
+      }
+      #controls {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
   <header>
     <div class="logo-line">
-      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon" />
+      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon"/>
       LiLyrics
     </div>
     <div class="tagline">most powerful lyric pad...</div>
+    <button id="darkToggle" title="Toggle dark mode">🌙</button>
   </header>
-
+  
   <div id="tabs"></div>
-
+  
   <div id="controls">
     <button onclick="newProject()">🆕 New</button>
     <button onclick="saveToFile()">💾 Save</button>
     <button onclick="document.getElementById('fileInput').click()">📂 Open</button>
     <button onclick="shareLyrics()">📤 Share</button>
+    <button onclick="undo()">↩️ Undo</button>
+    <button onclick="redo()">↪️ Redo</button>
+    <button onclick="exportPDF()">📄 Export PDF</button>
     <select id="fontSelect" onchange="changeFont()">
       <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
       <option value="'Courier Prime', monospace">Courier Prime</option>
@@ -136,35 +204,55 @@
       <option value="monospace">Default Monospace</option>
     </select>
     <input type="search" id="searchBox" placeholder="Search...">
-    <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
+    <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)"/>
+    <select id="rhymeLang">
+      <option value="english">English</option>
+      <option value="hindi">Hindi (Eng Script)</option>
+      <option value="urdu">Urdu (Eng Script)</option>
+    </select>
+    <button onclick="promptSuggestRhymes()">🔎 Suggest Rhymes</button>
+    <button onclick="showPrompt()">💡 Inspire Me</button>
+    <button onclick="toggleSepia()">🟤 Sepia</button>
   </div>
-
+  
   <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
   <div id="rhymes"></div>
 
   <script>
+    // ---------- DATA & STATE ----------
     const pad = document.getElementById('pad');
     const rhymes = document.getElementById('rhymes');
     const searchBox = document.getElementById('searchBox');
-
     let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
     let current = Object.keys(projects)[0] || 'Untitled';
 
-    const API_KEY = "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";
-
-    function saveProjects() {
-      localStorage.setItem('lyricProjects', JSON.stringify(projects));
+    // --- Undo/Redo stacks ---
+    let undoStack = [];
+    let redoStack = [];
+    
+    function trackChange(value) {
+      if (undoStack.length && value === undoStack[undoStack.length-1]) return;
+      undoStack.push(value);
+      if (undoStack.length > 200) undoStack.shift(); // limit stack
+      redoStack = [];
     }
 
+    // ------------- TABS & PROJECTS -------------
+    function saveProjects() { 
+      localStorage.setItem('lyricProjects', JSON.stringify(projects)); 
+    }
+    
     function updateTabs() {
       const tabs = document.getElementById('tabs');
       tabs.innerHTML = '';
       Object.keys(projects).forEach(name => {
         const div = document.createElement('div');
         div.className = 'tab' + (name === current ? ' active' : '');
+        
         const icon = document.createElement('span');
         icon.className = 'tab-icon';
         icon.textContent = '🎵';
+        
         const nameSpan = document.createElement('span');
         nameSpan.textContent = name;
         nameSpan.style.cursor = 'text';
@@ -173,46 +261,47 @@
           const input = document.createElement('input');
           input.value = name;
           input.style.fontSize = '14px';
-          input.style.width = '100px';
+          input.style.width = '110px';
           input.onblur = () => renameProject(name, input.value);
-          input.onkeydown = (e) => {
-            if (e.key === 'Enter') input.blur();
-          };
+          input.onkeydown = (e) => { if (e.key === 'Enter') input.blur(); };
           nameSpan.replaceWith(input);
           input.focus();
         };
+        
         const close = document.createElement('span');
         close.className = 'close-btn';
         close.textContent = '×';
-        close.onclick = (e) => {
-          e.stopPropagation();
-          deleteProject(name);
+        close.onclick = (e) => { 
+          e.stopPropagation(); 
+          deleteProject(name); 
         };
+        
         div.onclick = () => {
           projects[current] = pad.value;
           current = name;
           loadProject(name);
           saveProjects();
         };
+        
         div.appendChild(icon);
         div.appendChild(nameSpan);
         div.appendChild(close);
         tabs.appendChild(div);
       });
     }
-
+    
     function renameProject(oldName, newName) {
-      if (!newName || newName === oldName || projects[newName]) {
-        updateTabs();
-        return;
+      if (!newName || newName === oldName || projects[newName]) { 
+        updateTabs(); 
+        return; 
       }
-      projects[newName] = projects[oldName];
+      projects[newName] = projects[oldName]; 
       delete projects[oldName];
       if (current === oldName) current = newName;
-      saveProjects();
+      saveProjects(); 
       loadProject(newName);
     }
-
+    
     function deleteProject(name) {
       if (!confirm(`Delete "${name}"?`)) return;
       delete projects[name];
@@ -222,12 +311,13 @@
       saveProjects();
       updateTabs();
     }
-
+    
     function loadProject(name) {
       pad.value = projects[name] || '';
       updateTabs();
+      trackChange(pad.value);
     }
-
+    
     function newProject() {
       const name = prompt('New project name:');
       if (name && !projects[name]) {
@@ -238,15 +328,16 @@
       }
     }
 
+    // ---------- FILES & EXPORT ----------
     function saveToFile() {
       const blob = new Blob([pad.value], { type: 'text/plain' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = current + '.txt';
+      a.download = current + '.txt'; 
       a.click();
-      URL.revokeObjectURL(a.href);
+      setTimeout(() => URL.revokeObjectURL(a.href), 200);
     }
-
+    
     function loadFromFile(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -260,78 +351,125 @@
       };
       reader.readAsText(file);
     }
-
+    
     function shareLyrics() {
       const text = pad.value.trim();
-      if (!text) {
-        alert('Lyrics are empty.');
-        return;
+      if (!text) { 
+        alert('Lyrics are empty.'); 
+        return; 
       }
       navigator.clipboard.writeText(text)
         .then(() => alert('Lyrics copied to clipboard. Paste & share anywhere!'))
         .catch(() => alert('Failed to copy lyrics.'));
     }
 
+    // ---------- FONT, SEARCH & THEME ----------
     function changeFont() {
       const font = document.getElementById('fontSelect').value;
       pad.style.fontFamily = font;
     }
-
-    async function suggestRhymes(text) {
-      const word = text.trim().split(/\s+/).pop();
-      if (!word) return rhymes.textContent = '';
-      const prompt = `Give 10 rhyming words (Roman script only) for "${word}" in Hindi, Urdu, and English. Only list them comma-separated.`;
-      try {
-        const res = await fetch('https://api.openai.com/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`
-          },
-          body: JSON.stringify({
-            model: 'gpt-3.5-turbo',
-            messages: [{ role: 'user', content: prompt }],
-            max_tokens: 50,
-            temperature: 0.7
-          })
-        });
-        const data = await res.json();
-        rhymes.textContent = "Rhymes: " + data.choices[0].message.content;
-      } catch (err) {
-        rhymes.textContent = '';
-      }
-    }
-
-    pad.oninput = (e) => {
-      projects[current] = e.target.value;
-      saveProjects();
-      suggestRhymes(e.target.value);
-    };
-
+    
     searchBox.oninput = () => {
       const query = searchBox.value.trim().toLowerCase();
       const content = pad.value;
-      if (!query) return;
-      const regex = new RegExp(query, 'gi');
-      const highlighted = content.replace(regex, match => `[[${match}]]`);
-      rhymes.innerHTML = highlighted !== content ? 'Word found and marked.' : 'No match.';
+      if (query && content.toLowerCase().includes(query)) {
+        rhymes.innerHTML = `"${query}" found in lyrics.`;
+      } else if (query) {
+        rhymes.innerHTML = "No match.";
+      } else {
+        rhymes.innerHTML = "";
+      }
+    };
+    
+    document.getElementById('darkToggle').onclick = function() {
+      document.body.classList.toggle('dark');
+    };
+    
+    function toggleSepia() {
+      document.body.classList.toggle('sepia');
+    }
+
+    // ---------- RHYME SUGGESTION ----------
+    function promptSuggestRhymes() {
+      const lang = document.getElementById('rhymeLang').value;
+      const line = prompt('Type a lyric line to suggest rhymes for:');
+      if (!line) return;
+      
+      rhymes.textContent = "Thinking...";
+      
+      // Mock rhyme suggestions (replace with your API call)
+      setTimeout(() => {
+        const mockRhymes = {
+          english: ["time, rhyme, climb", "love, dove, above", "night, light, sight"],
+          hindi: ["dil, mil, khil", "raat, baat, saath", "sapna, apna, mann"],
+          urdu: ["ishq, rishq, vishq", "dard, mard, yard", "mohabbat, hasrat, qayamat"]
+        };
+        const suggestions = mockRhymes[lang] || mockRhymes.english;
+        const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+        rhymes.textContent = "Rhymes: " + randomSuggestion;
+      }, 1000);
+    }
+
+    // ---------- INSPIRATION PROMPT ----------
+    const prompts = [
+      "Write a verse about a sleepless city night.",
+      "Begin a chorus with the word 'freedom.'",
+      "Describe rain using only metaphors.",
+      "Write a line with the word 'khoobsurat' (beautiful) in it.",
+      "Combine Hindi & English in a couplet.",
+      "Imagine a duet between two moods.",
+      "Write about a memory that feels like a song.",
+      "Create a verse about digital love."
+    ];
+    
+    function showPrompt() {
+      alert(prompts[Math.floor(Math.random() * prompts.length)]);
+    }
+
+    // ---------- PDF EXPORT ----------
+    function exportPDF() {
+      try {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        doc.setFont("courier");
+        const lines = doc.splitTextToSize(pad.value, 180);
+        doc.text(lines, 10, 10);
+        doc.save(current + ".pdf");
+      } catch (error) {
+        alert("PDF export failed. Please try again.");
+      }
+    }
+
+    // ---------- UNDO / REDO ----------
+    function undo() {
+      if (undoStack.length < 2) return;
+      redoStack.push(undoStack.pop());
+      const prev = undoStack[undoStack.length - 1];
+      pad.value = prev;
+      projects[current] = prev;
+      saveProjects();
+    }
+    
+    function redo() {
+      if (!redoStack.length) return;
+      const next = redoStack.pop();
+      undoStack.push(next);
+      pad.value = next;
+      projects[current] = next;
+      saveProjects();
+    }
+
+    // ---------- MAIN TEXTAREA EVENTS ----------
+    pad.oninput = (e) => {
+      projects[current] = e.target.value;
+      saveProjects();
+      trackChange(e.target.value);
     };
 
+    // ---------- INITIALIZATION ----------
     if (!projects[current]) projects[current] = '';
     loadProject(current);
     updateTabs();
   </script>
 </body>
 </html>
-<div class="lyrics-rhyme-suggester">
-  <h2>AI Lyrics Rhyme Suggestions</h2>
-  <label for="lang-select">Pick Language:</label>
-  <select id="lang-select">
-    <option value="english">English</option>
-    <option value="hindi">Hindi (Eng Script)</option>
-    <option value="urdu">Urdu (Eng Script)</option>
-  </select>
-  <textarea id="input-line" placeholder="Type your lyrics line..."></textarea>
-  <button onclick="suggestRhyme()">Suggest Rhymes</button>
-  <ul id="results"></ul>
-</div>
