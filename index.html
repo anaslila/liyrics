@@ -84,142 +84,6 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
     
-    /* LOGIN/SIGNUP MODAL */
-    .auth-modal {
-      display: flex;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      z-index: 3000;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    .auth-container {
-      background: var(--surface-color);
-      padding: 40px;
-      border-radius: 16px;
-      width: 90%;
-      max-width: 450px;
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      animation: fadeIn 0.5s ease;
-    }
-    
-    .auth-title {
-      color: var(--primary-color);
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    
-    .auth-subtitle {
-      color: var(--text-secondary);
-      font-size: 14px;
-      margin-bottom: 32px;
-    }
-    
-    .auth-tabs {
-      display: flex;
-      margin-bottom: 24px;
-      background: #f8f9fa;
-      border-radius: 8px;
-      padding: 4px;
-    }
-    
-    .auth-tab {
-      flex: 1;
-      padding: 12px 20px;
-      cursor: pointer;
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      font-weight: 500;
-    }
-    
-    .auth-tab.active {
-      background: var(--primary-color);
-      color: white;
-    }
-    
-    .auth-form {
-      display: none;
-    }
-    
-    .auth-form.active {
-      display: block;
-    }
-    
-    .auth-input {
-      width: 100%;
-      padding: 14px 16px;
-      margin: 12px 0;
-      border: 2px solid #e1e5e9;
-      border-radius: 8px;
-      font-size: 14px;
-      font-family: 'Montserrat', sans-serif;
-      outline: none;
-      transition: border-color 0.2s ease;
-      box-sizing: border-box;
-    }
-    
-    .auth-input:focus {
-      border-color: var(--primary-color);
-    }
-    
-    .auth-btn {
-      width: 100%;
-      padding: 14px;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      margin: 16px 0;
-      transition: background 0.2s ease;
-    }
-    
-    .auth-btn:hover {
-      background: #3367d6;
-    }
-    
-    .social-login {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 20px 0;
-    }
-    
-    .social-btn {
-      padding: 12px;
-      border: 2px solid #e1e5e9;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      font-weight: 500;
-    }
-    
-    .social-btn:hover {
-      border-color: var(--primary-color);
-      background: rgba(66, 133, 244, 0.04);
-    }
-    
-    .google-btn {
-      color: #4285f4;
-    }
-    
-    .github-btn {
-      color: #333;
-    }
-    
     /* Payment Modal */
     .payment-modal {
       display: none;
@@ -290,7 +154,7 @@
       animation: pulse 2s infinite;
     }
     
-    /* FIXED: Enhanced Header Layout */
+    /* SIMPLIFIED: Enhanced Header Layout (no user info) */
     header {
       text-align: center;
       padding: 24px;
@@ -300,7 +164,7 @@
       box-shadow: var(--shadow);
     }
     
-    /* FIXED: Logo with proper spacing */
+    /* Logo with proper spacing */
     .logo-line {
       font-family: 'Monotype Corsiva', cursive !important;
       font-size: 36px;
@@ -321,7 +185,7 @@
       filter: hue-rotate(0deg) brightness(1) contrast(1);
     }
     
-    /* FIXED: Version badge positioning to avoid collision */
+    /* Version badge positioning to avoid collision */
     .version-pro {
       position: absolute;
       right: -70px;
@@ -343,50 +207,7 @@
       font-weight: 400;
     }
     
-    .user-info {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 13px;
-      color: var(--text-secondary);
-    }
-    
-    .user-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--primary-color);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: 600;
-    }
-    
-    /* FIXED: Logout button styling and functionality */
-    .logout-btn {
-      color: var(--error-color);
-      padding: 6px 12px;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      transition: all 0.3s ease;
-      cursor: pointer;
-      background: none;
-      font-weight: 600;
-      font-size: 12px;
-    }
-    
-    .logout-btn:hover {
-      background-color: var(--error-color);
-      color: white;
-      border-color: var(--error-color);
-      transform: translateY(-1px);
-    }
-    
-    /* FIXED: Dark toggle positioning to avoid collision */
+    /* Dark toggle positioning */
     #darkToggle {
       position: absolute;
       top: 15px;
@@ -406,7 +227,7 @@
       transform: scale(1.1);
     }
     
-    /* FIXED: Chrome-style Tab System */
+    /* Chrome-style Tab System */
     #tabs-container {
       display: flex;
       align-items: stretch;
@@ -506,7 +327,7 @@
       transform: scale(1.2);
     }
     
-    /* FIXED: Chrome-style Add New Tab Button */
+    /* Chrome-style Add New Tab Button */
     #addNewTab {
       display: flex;
       align-items: center;
@@ -523,7 +344,6 @@
       color: var(--text-secondary);
     }
     
-    /* FIXED: Subtle hover effect instead of full white */
     #addNewTab:hover {
       background: rgba(66, 133, 244, 0.1);
       color: var(--primary-color);
@@ -612,7 +432,7 @@
       display: block;
     }
     
-    /* FIXED: Default Arial font for textarea */
+    /* Default Arial font for textarea */
     #pad {
       width: 100%;
       height: 60vh;
@@ -728,7 +548,7 @@
       animation: fadeIn 0.3s ease;
     }
     
-    /* FIXED: Enhanced Modals with Animation */
+    /* Enhanced Modals with Animation */
     .modal {
       display: none;
       position: fixed;
@@ -884,15 +704,6 @@
         display: none;
       }
       
-      .auth-container {
-        padding: 20px;
-        width: 95%;
-      }
-      
-      .social-login {
-        grid-template-columns: 1fr;
-      }
-      
       #controls {
         flex-direction: column;
         align-items: stretch;
@@ -911,64 +722,12 @@
       .logo-line {
         font-size: 28px;
       }
-      
-      .user-info {
-        flex-direction: column;
-        gap: 4px;
-        font-size: 11px;
-      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-  <!-- LOGIN/SIGNUP MODAL -->
-  <div id="authModal" class="auth-modal">
-    <div class="auth-container">
-      <div class="auth-title">Welcome to LiLyrics</div>
-      <div class="auth-subtitle">Professional Songwriting Studio</div>
-      
-      <div class="auth-tabs">
-        <div class="auth-tab active" onclick="showAuthTab('login')">Login</div>
-        <div class="auth-tab" onclick="showAuthTab('signup')">Sign Up</div>
-      </div>
-      
-      <div id="loginForm" class="auth-form active">
-        <input type="email" id="loginEmail" class="auth-input" placeholder="Email address" required>
-        <input type="password" id="loginPassword" class="auth-input" placeholder="Password" required>
-        <button class="auth-btn" onclick="handleLogin()">
-          <i class="fas fa-sign-in-alt"></i> Login to LiLyrics
-        </button>
-      </div>
-      
-      <div id="signupForm" class="auth-form">
-        <input type="text" id="signupName" class="auth-input" placeholder="Full Name" required>
-        <input type="email" id="signupEmail" class="auth-input" placeholder="Email address" required>
-        <input type="password" id="signupPassword" class="auth-input" placeholder="Create Password" required>
-        <input type="password" id="signupConfirm" class="auth-input" placeholder="Confirm Password" required>
-        <button class="auth-btn" onclick="handleSignup()">
-          <i class="fas fa-user-plus"></i> Create Account
-        </button>
-      </div>
-      
-      <div style="margin: 20px 0; color: var(--text-secondary); font-size: 13px;">or continue with</div>
-      
-      <div class="social-login">
-        <div class="social-btn google-btn" onclick="loginWithGoogle()">
-          <i class="fab fa-google"></i> Google
-        </div>
-        <div class="social-btn github-btn" onclick="loginWithGitHub()">
-          <i class="fab fa-github"></i> GitHub
-        </div>
-      </div>
-      
-      <div style="margin-top: 24px; font-size: 12px; color: var(--text-secondary);">
-        <i class="fas fa-cloud"></i> Your lyrics will be safely stored in the cloud and synced across all devices
-      </div>
-    </div>
-  </div>
-
   <!-- PROMO BANNER -->
   <div id="promoBanner" class="promo-banner">
     <div class="promo-text">
@@ -1015,26 +774,16 @@
   </div>
 
   <header>
-    <div class="user-info">
-      <div class="user-avatar" id="userAvatar">U</div>
-      <div>
-        <div id="userName">User Name</div>
-        <button class="logout-btn" onclick="logout()">
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-      </div>
-    </div>
-    
     <div class="logo-line">
       <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon"/>
       <span>LiLyrics</span>
       <div class="version-pro">v2.3 Pro</div>
     </div>
-    <div class="tagline">Professional Songwriting Studio</div>
+    <div class="tagline">Professional Songwriting Studio - No Login Required!</div>
     <button id="darkToggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
   </header>
   
-  <!-- FIXED: Chrome-style Tab Container -->
+  <!-- Chrome-style Tab Container -->
   <div id="tabs-container">
     <div id="tabs"></div>
     <div id="addNewTab" title="New Untitled Lyrics">
@@ -1254,7 +1003,7 @@
         </button>
       </div>
       
-      <!-- UPDATED: About Section with Developer Info -->
+      <!-- UPDATED: About Section with Simplified Info -->
       <div id="about-panel" class="settings-panel">
         <h3><i class="fas fa-info-circle"></i> About LiLyrics v2.3 Pro</h3>
         <div style="text-align: center; margin: 20px 0;">
@@ -1286,7 +1035,7 @@
             </div>
             <div>
               <strong>🎯 Version:</strong><br>
-              v2.3 Pro - Bug Fixed
+              v2.3 Pro - Simplified
             </div>
             <div>
               <strong>🔧 Framework:</strong><br>
@@ -1296,12 +1045,12 @@
         </div>
         
         <ul style="text-align: left; margin: 20px 0;">
+          <li><i class="fas fa-check"></i> <strong>No Login Required:</strong> Instant access, no complicated sign-ups</li>
           <li><i class="fas fa-check"></i> <strong>Chrome-style Tab System:</strong> Professional tab management</li>
-          <li><i class="fas fa-check"></i> <strong>Cloud Authentication:</strong> Secure login with Google/GitHub</li>
           <li><i class="fas fa-check"></i> <strong>AI Mega Rhymes:</strong> 30 Lakh+ words (10L each: Urdu/Hindi/English)</li>
+          <li><i class="fas fa-check"></i> <strong>Local Storage:</strong> Your work saves automatically in browser</li>
           <li><i class="fas fa-check"></i> <strong>Fixed Font System:</strong> Default Arial with changeable options</li>
           <li><i class="fas fa-check"></i> <strong>Animated Settings:</strong> Smooth modal animations</li>
-          <li><i class="fas fa-check"></i> <strong>Bug-Free UI:</strong> Fixed all layout and interaction issues</li>
           <li><i class="fas fa-check"></i> 1000+ Creative Inspiration Prompts</li>
           <li><i class="fas fa-check"></i> Professional Export Options</li>
           <li><i class="fas fa-check"></i> Voice Recording & Playback</li>
@@ -1312,7 +1061,7 @@
           After that, one-time payment of ₹199 for lifetime access.
         </div>
         <div style="background: #fff3e0; padding: 12px; border-radius: 6px; margin: 16px 0; font-size: 13px;">
-          <i class="fas fa-bug"></i> <strong>v2.3 Pro Bug Fixes:</strong> Fixed version collision, Chrome-style tabs, logout button, hover effects, settings animation, and default Arial font.
+          <i class="fas fa-rocket"></i> <strong>v2.3 Pro Simplified:</strong> Removed login process for instant access. All features work locally without authentication. Developed by Anas Lila @ AL Softwares.
         </div>
       </div>
       
@@ -1339,14 +1088,13 @@
   </div>
 
   <script>
-    // ===== CORE FUNCTIONALITY =====
+    // ===== SIMPLIFIED CORE FUNCTIONALITY =====
     
     let pad = null;
     const rhymes = document.getElementById('rhyme-suggestions');
     const searchBox = document.getElementById('searchBox');
-    let projects = {};
+    let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
     let current = null;
-    let currentUser = null;
     let untitledCounter = 1;
     
     let sessionStartTime = Date.now();
@@ -1355,7 +1103,7 @@
     let recordedChunks = [];
     let rhymeSchemeEnabled = false;
     let focusModeEnabled = false;
-    let stats = {
+    let stats = JSON.parse(localStorage.getItem('lyricsStats')) || {
       totalWords: 0,
       dailyWords: {},
       streak: 0,
@@ -1364,169 +1112,18 @@
     
     let undoStack = [];
     let redoStack = [];
-    
-    // ===== AUTHENTICATION SYSTEM =====
-    
-    function showAuthTab(tabName) {
-      document.querySelectorAll('.auth-tab').forEach(tab => tab.classList.remove('active'));
-      document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
-      
-      event.target.classList.add('active');
-      document.getElementById(tabName + 'Form').classList.add('active');
-    }
-    
-    function handleLogin() {
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      if (!email || !password) {
-        alert('Please fill in all fields');
-        return;
-      }
-      
-      simulateAuth(email, 'login');
-    }
-    
-    function handleSignup() {
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirm = document.getElementById('signupConfirm').value;
-      
-      if (!name || !email || !password || !confirm) {
-        alert('Please fill in all fields');
-        return;
-      }
-      
-      if (password !== confirm) {
-        alert('Passwords do not match');
-        return;
-      }
-      
-      simulateAuth(email, 'signup', name);
-    }
-    
-    function loginWithGoogle() {
-      simulateAuth('user@gmail.com', 'google', 'Google User');
-    }
-    
-    function loginWithGitHub() {
-      simulateAuth('user@github.com', 'github', 'GitHub User');
-    }
-    
-    function simulateAuth(email, method, name = null) {
-      document.querySelector('.auth-btn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
-      
-      setTimeout(() => {
-        currentUser = {
-          email: email,
-          name: name || email.split('@')[0],
-          avatar: (name || email.split('@')[0]).charAt(0).toUpperCase(),
-          method: method,
-          loginTime: new Date().toISOString()
-        };
-        
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        loadCloudData();
-        document.getElementById('authModal').style.display = 'none';
-        updateUserInfo();
-        initializeApp();
-        
-        setTimeout(() => {
-          alert(`🎉 Welcome to LiLyrics v2.3 Pro - Bug Fixed Edition!\n\nLogged in as: ${currentUser.name}\n\n✅ All UI bugs fixed!\n✅ Chrome-style tabs working perfectly\n✅ Smooth animations enabled\n✅ Default Arial font set\n\nYour lyrics are safely stored in the cloud!`);
-        }, 500);
-      }, 2000);
-    }
-    
-    function loadCloudData() {
-      const cloudData = localStorage.getItem(`cloudData_${currentUser.email}`);
-      if (cloudData) {
-        const data = JSON.parse(cloudData);
-        projects = data.projects || {};
-        stats = data.stats || stats;
-        untitledCounter = data.untitledCounter || 1;
-      } else {
-        projects = {
-          'Welcome to LiLyrics': `Welcome to LiLyrics v2.3 Pro - Bug Fixed Edition! 🎵
 
-🎯 FIXED BUGS:
-✅ Chrome-style tab system with + button
-✅ Version badge positioning fixed  
-✅ Logout button working perfectly
-✅ Smooth settings animation
-✅ Default Arial font in text area
-✅ Proper hover effects (no more white backgrounds)
-
-🚀 HOW TO USE:
-• Click the + tab to add "Untitled Lyrics" instantly
-• Rename tabs by clicking on tab names
-• Change fonts from the dropdown
-• Use AI Mega Rhymes for perfect suggestions
-• Record voice memos for inspiration
-
-Start writing your amazing lyrics below!
-
-[Verse 1]
-Your creativity starts here...
-Let the words flow like music...
-`
-        };
-        untitledCounter = 1;
-      }
-    }
-    
-    function saveToCloud() {
-      const cloudData = {
-        projects: projects,
-        stats: stats,
-        untitledCounter: untitledCounter,
-        lastSync: new Date().toISOString()
-      };
-      localStorage.setItem(`cloudData_${currentUser.email}`, JSON.stringify(cloudData));
-    }
-    
-    function updateUserInfo() {
-      document.getElementById('userName').textContent = currentUser.name;
-      document.getElementById('userAvatar').textContent = currentUser.avatar;
-    }
-    
-    function logout() {
-      if (confirm('Are you sure you want to logout? Your work is safely saved in the cloud.')) {
-        localStorage.removeItem('currentUser');
-        currentUser = null;
-        projects = {};
-        current = null;
-        
-        document.getElementById('authModal').style.display = 'flex';
-        document.querySelectorAll('.auth-input').forEach(input => input.value = '');
-        document.querySelector('.auth-btn').innerHTML = '<i class="fas fa-sign-in-alt"></i> Login to LiLyrics';
-        
-        showEmptyState();
-        updateTabs();
-      }
-    }
-    
-    function checkAuthStatus() {
-      const savedUser = localStorage.getItem('currentUser');
-      if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        document.getElementById('authModal').style.display = 'none';
-        updateUserInfo();
-        loadCloudData();
-        initializeApp();
-      } else {
-        document.getElementById('authModal').style.display = 'flex';
-      }
-    }
-
-    // ===== FIXED: CHROME-STYLE TAB SYSTEM =====
+    // ===== SIMPLIFIED TAB SYSTEM =====
     
     function showEmptyState() {
       document.getElementById('mainContent').innerHTML = `
         <div class="empty-state">
           <i class="fas fa-music"></i>
-          <h3>No Projects Open</h3>
-          <p>Click the <strong>+</strong> tab above to create a new "Untitled Lyrics" project instantly, or open an existing file to continue working.</p>
+          <h3>Welcome to LiLyrics v2.3 Pro!</h3>
+          <p>Click the <strong>+</strong> tab above to create a new "Untitled Lyrics" project instantly. No login required - start writing immediately!</p>
+          <div style="margin-top: 20px; padding: 16px; background: #e8f5e8; border-radius: 8px; max-width: 400px;">
+            <i class="fas fa-rocket"></i> <strong>Simplified Access:</strong> All features work instantly without any authentication!
+          </div>
         </div>
       `;
       current = null;
@@ -1540,13 +1137,12 @@ Let the words flow like music...
         `;
         pad = document.getElementById('pad');
         
-        // Apply default Arial font
         applyCurrentFont();
         
         pad.oninput = (e) => {
           if (current) {
             projects[current] = e.target.value;
-            saveToCloud();
+            saveProjects();
             trackChange(e.target.value);
             updateStats();
           }
@@ -1554,11 +1150,9 @@ Let the words flow like music...
       }
     }
     
-    // FIXED: Chrome-style Add New Tab Function
     function addNewUntitledProject() {
       let name = `Untitled Lyrics ${untitledCounter}`;
       
-      // Find next available untitled name
       while (projects[name]) {
         untitledCounter++;
         name = `Untitled Lyrics ${untitledCounter}`;
@@ -1571,15 +1165,13 @@ Let the words flow like music...
       showTextEditor();
       loadProject(name);
       updateTabs();
-      saveToCloud();
+      saveProjects();
       
-      // Focus on the textarea
       setTimeout(() => {
         if (pad) pad.focus();
       }, 100);
     }
     
-    // FIXED: Update Tabs with Chrome-style behavior
     function updateTabs() {
       const tabs = document.getElementById('tabs');
       const addBtn = document.getElementById('addNewTab');
@@ -1618,12 +1210,10 @@ Let the words flow like music...
         tabs.appendChild(tab);
       });
       
-      // Make sure add button has click handler
       if (addBtn && !addBtn.onclick) {
         addBtn.onclick = addNewUntitledProject;
       }
       
-      // Show empty state if no projects
       if (Object.keys(projects).length === 0) {
         showEmptyState();
       }
@@ -1637,7 +1227,7 @@ Let the words flow like music...
       if (!pad) showTextEditor();
       loadProject(name);
       updateTabs();
-      saveToCloud();
+      saveProjects();
     }
     
     function closeTab(name) {
@@ -1661,7 +1251,7 @@ Let the words flow like music...
       }
       
       updateTabs();
-      saveToCloud();
+      saveProjects();
     }
     
     function editTabName(oldName, nameElement) {
@@ -1698,7 +1288,7 @@ Let the words flow like music...
       projects[newName] = projects[oldName]; 
       delete projects[oldName];
       if (current === oldName) current = newName;
-      saveToCloud(); 
+      saveProjects(); 
       loadProject(newName);
     }
     
@@ -1711,7 +1301,14 @@ Let the words flow like music...
       updateStats();
     }
 
-    // ===== FIXED FONT SYSTEM =====
+    // ===== SIMPLIFIED STORAGE =====
+    
+    function saveProjects() {
+      localStorage.setItem('lyricProjects', JSON.stringify(projects));
+      localStorage.setItem('lyricsStats', JSON.stringify(stats));
+    }
+
+    // ===== FONT SYSTEM =====
     
     const fontMappings = {
       'Arial': "'Arial', sans-serif",
@@ -1735,7 +1332,6 @@ Let the words flow like music...
         const fontFamily = fontMappings[fontName] || fontMappings['Arial'];
         pad.style.fontFamily = fontFamily;
         
-        // Adjust font size and line height based on font
         if (fontName === 'V-Hand' || fontName === 'Reenie Beanie') {
           pad.style.fontSize = '22px';
           pad.style.lineHeight = '1.8';
@@ -1899,8 +1495,11 @@ Let the words flow like music...
     const fullInspirePrompts = generateInspirePrompts();
     
     function showInspireModal() {
-      document.getElementById('inspireModal').style.display = 'block';
-      document.getElementById('inspireModal').classList.add('show');
+      const modal = document.getElementById('inspireModal');
+      modal.style.display = 'block';
+      setTimeout(() => {
+        modal.classList.add('show');
+      }, 10);
       getNewInspiration();
     }
     
@@ -1991,9 +1590,7 @@ Let the words flow like music...
       document.getElementById('session-time').textContent = sessionMinutes + 'm';
       
       stats.totalWords = words;
-      if (currentUser) {
-        saveToCloud();
-      }
+      saveProjects();
     }
 
     function saveToFile() {
@@ -2039,7 +1636,7 @@ Let the words flow like music...
           showTextEditor();
           loadProject(current);
         }
-        saveToCloud();
+        saveProjects();
         updateTabs();
       };
       reader.readAsText(file);
@@ -2066,7 +1663,6 @@ Let the words flow like music...
       const allData = { 
         projects, 
         stats, 
-        user: currentUser,
         settings: {
           theme: document.body.classList.contains('dark') ? 'dark' : 'light',
           buttonPreferences: JSON.parse(localStorage.getItem('buttonPreferences')) || {}
@@ -2097,7 +1693,6 @@ Let the words flow like music...
       localStorage.setItem('sepiaMode', document.body.classList.contains('sepia'));
     }
 
-    // FIXED: Enhanced Settings Modal with Animation
     function showSettings() {
       const modal = document.getElementById('settingsModal');
       modal.style.display = 'block';
@@ -2213,7 +1808,7 @@ Let the words flow like music...
       pad.setSelectionRange(pos + text.length, pos + text.length);
       if (current) {
         projects[current] = pad.value;
-        saveToCloud();
+        saveProjects();
         trackChange(pad.value);
         updateStats();
       }
@@ -2328,7 +1923,7 @@ Leave them moved`,
         pad.value = templates[type] || '';
         if (current) {
           projects[current] = pad.value;
-          saveToCloud();
+          saveProjects();
           trackChange(pad.value);
           updateStats();
         }
@@ -2366,7 +1961,7 @@ Leave them moved`,
       pad.value = prev;
       if (current) {
         projects[current] = prev;
-        saveToCloud();
+        saveProjects();
       }
       updateStats();
     }
@@ -2382,7 +1977,7 @@ Leave them moved`,
       pad.value = next;
       if (current) {
         projects[current] = next;
-        saveToCloud();
+        saveProjects();
       }
       updateStats();
     }
@@ -2492,11 +2087,11 @@ Leave them moved`,
       if (e.target === this) hideInspireModal();
     };
 
-    // Auto-save
+    // Auto-save functionality
     setInterval(() => {
       if (document.getElementById('auto-save')?.checked && current && pad) {
         projects[current] = pad.value;
-        saveToCloud();
+        saveProjects();
       }
     }, 30000);
 
@@ -2510,16 +2105,49 @@ Leave them moved`,
             pad.style.lineHeight = '2';
           } else {
             pad.style.background = '';
-            applyCurrentFont(); // Reapply current font settings
+            applyCurrentFont();
           }
         }
       });
     });
 
-    // ===== INITIALIZATION =====
+    // ===== SIMPLIFIED INITIALIZATION =====
     
     function initializeApp() {
-      // Load projects and current tab
+      // Initialize with welcome project if no projects exist
+      if (Object.keys(projects).length === 0) {
+        projects['Welcome to LiLyrics'] = `Welcome to LiLyrics v2.3 Pro - Simplified Edition! 🎵
+
+✨ NO LOGIN REQUIRED - Start writing instantly!
+
+🎯 SIMPLIFIED FEATURES:
+✅ Chrome-style tab system with + button
+✅ Instant "Untitled Lyrics" creation
+✅ Local storage (saves in your browser)
+✅ AI Mega Rhymes (30 lakh+ words)
+✅ 1000+ Creative prompts
+✅ Professional export options
+✅ Voice recording capability
+
+🚀 HOW TO USE:
+• Click the + tab to add new projects instantly
+• Rename tabs by clicking on tab names
+• Change fonts from the dropdown
+• Use AI Mega Rhymes for perfect suggestions
+• Record voice memos for inspiration
+
+Start writing your amazing lyrics below!
+
+[Verse 1]
+Your creativity starts here...
+Let the words flow like music...
+No barriers, just pure expression...
+`;
+        current = 'Welcome to LiLyrics';
+        untitledCounter = 1;
+      }
+      
+      // Load current project
       const projectKeys = Object.keys(projects);
       if (projectKeys.length > 0) {
         current = current || projectKeys[0];
@@ -2531,7 +2159,7 @@ Leave them moved`,
       
       updateTabs();
       
-      // Load preferences
+      // Load user preferences
       if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark');
         document.getElementById('darkToggle').innerHTML = '<i class="fas fa-sun"></i>';
@@ -2545,12 +2173,19 @@ Leave them moved`,
       
       // Check premium expiry
       checkPremiumExpiry();
+      
+      // Show welcome message
+      setTimeout(() => {
+        if (current === 'Welcome to LiLyrics') {
+          alert('🎉 Welcome to LiLyrics v2.3 Pro - Simplified Edition!\n\n✨ NO LOGIN REQUIRED!\n✅ All features work instantly\n✅ Your work saves automatically in browser\n✅ Chrome-style tabs for better organization\n\nStart writing your amazing lyrics right away!');
+        }
+      }, 1000);
     }
 
-    // ===== START THE APP =====
+    // ===== START THE SIMPLIFIED APP =====
     
-    // Check authentication status on page load
-    checkAuthStatus();
+    // Initialize app immediately (no authentication needed)
+    initializeApp();
     
   </script>
 </body>
