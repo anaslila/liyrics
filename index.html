@@ -1,113 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png">
   <title>LiLyrics</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    @font-face {
+      font-family: 'Monotype Corsiva';
+      src: url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
     }
-
     body {
+      margin: 0;
       font-family: 'Roboto', sans-serif;
       background: #fff;
-      color: #111;
-      padding: 20px;
+      color: #222;
     }
-
     header {
       text-align: center;
-      margin-bottom: 10px;
+      padding: 20px;
+      background: #f9f9f9;
+      border-bottom: 1px solid #ddd;
     }
-
-    .logo {
+    .logo-line {
       font-family: 'Monotype Corsiva', cursive;
-      font-size: 28px;
+      font-size: 32px;
+      font-weight: bold;
       color: #4285f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-
+    .logo-line img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
     .tagline {
-      font-size: 13px;
-      color: #777;
+      font-size: 14px;
+      color: #555;
       margin-top: 4px;
     }
-
-    .tab-bar {
+    #tabs {
       display: flex;
-      gap: 10px;
-      margin-top: 20px;
-      margin-bottom: 10px;
+      flex-wrap: wrap;
+      background: #f7f7f7;
       border-bottom: 1px solid #ccc;
-      padding-bottom: 5px;
+      padding: 0 10px;
     }
-
     .tab {
-      padding: 5px 12px;
-      background: #f1f1f1;
-      border-radius: 4px 4px 0 0;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
       cursor: pointer;
-      font-size: 14px;
+      border-right: 1px solid #ccc;
     }
-
     .tab.active {
       background: #fff;
-      border: 1px solid #ccc;
-      border-bottom: none;
+      border-bottom: 2px solid #4285f4;
       font-weight: bold;
     }
-
-    .controls {
-      margin-top: 10px;
-      margin-bottom: 10px;
+    .tab .tab-icon {
+      margin-right: 6px;
+      color: #4285f4;
     }
-
-    .controls button {
-      padding: 6px 12px;
-      font-size: 14px;
-      margin-right: 8px;
+    .tab .close-btn {
+      margin-left: 8px;
+      color: red;
+      font-weight: bold;
       cursor: pointer;
     }
-
-    textarea {
-      width: 100%;
-      min-height: 60vh;
-      font-size: 15px;
-      font-family: 'Fira Code', monospace;
-      padding: 15px;
-      border: 1px solid #ccc;
-      resize: none;
-      line-height: 1.6;
-      outline: none;
-      background: #fafafa;
+    #controls {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
     }
-
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #pad {
+      width: 100%;
+      height: 60vh;
+      padding: 20px;
+      font-family: monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      border: none;
+      outline: none;
+      resize: none;
+      box-sizing: border-box;
+    }
     #rhymes {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #444;
+      padding: 15px 20px;
+      font-size: 14px;
+      background: #f2f2f2;
+      border-top: 1px solid #ccc;
+      color: #333;
+    }
+    @media (max-width: 600px) {
+      #pad {
+        height: 50vh;
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
-
   <header>
-    <div class="logo">LiLyrics</div>
+    <div class="logo-line">
+      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon" />
+      LiLyrics
+    </div>
     <div class="tagline">most powerful lyric pad...</div>
   </header>
 
-  <div class="tab-bar" id="tabs"></div>
+  <div id="tabs"></div>
 
-  <div class="controls">
-    <button onclick="newProject()">New</button>
-    <button onclick="saveToFile()">Save</button>
-    <button onclick="document.getElementById('fileInput').click()">Open</button>
-    <input type="file" id="fileInput" accept=".txt" style="display: none;" onchange="loadFromFile(event)">
+  <div id="controls">
+    <button onclick="newProject()">🆕 New</button>
+    <button onclick="saveToFile()">💾 Save</button>
+    <button onclick="document.getElementById('fileInput').click()">📂 Open</button>
+    <button onclick="shareLyrics()">📤 Share</button>
+    <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
   </div>
 
   <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
@@ -129,15 +155,70 @@
       Object.keys(projects).forEach(name => {
         const div = document.createElement('div');
         div.className = 'tab' + (name === current ? ' active' : '');
-        div.textContent = name;
+
+        const icon = document.createElement('span');
+        icon.className = 'tab-icon';
+        icon.textContent = '🎵';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = name;
+        nameSpan.style.cursor = 'text';
+        nameSpan.onclick = (e) => {
+          e.stopPropagation();
+          const input = document.createElement('input');
+          input.value = name;
+          input.style.fontSize = '14px';
+          input.style.width = '100px';
+          input.onblur = () => renameProject(name, input.value);
+          input.onkeydown = (e) => {
+            if (e.key === 'Enter') input.blur();
+          };
+          nameSpan.replaceWith(input);
+          input.focus();
+        };
+
+        const close = document.createElement('span');
+        close.className = 'close-btn';
+        close.textContent = '×';
+        close.onclick = (e) => {
+          e.stopPropagation();
+          deleteProject(name);
+        };
+
         div.onclick = () => {
           projects[current] = pad.value;
           current = name;
           loadProject(name);
           saveProjects();
         };
+
+        div.appendChild(icon);
+        div.appendChild(nameSpan);
+        div.appendChild(close);
         tabs.appendChild(div);
       });
+    }
+
+    function renameProject(oldName, newName) {
+      if (!newName || newName === oldName || projects[newName]) {
+        updateTabs();
+        return;
+      }
+      projects[newName] = projects[oldName];
+      delete projects[oldName];
+      if (current === oldName) current = newName;
+      saveProjects();
+      loadProject(newName);
+    }
+
+    function deleteProject(name) {
+      if (!confirm(`Delete "${name}"?`)) return;
+      delete projects[name];
+      current = name === current ? Object.keys(projects)[0] || 'Untitled' : current;
+      if (!projects[current]) projects[current] = '';
+      loadProject(current);
+      saveProjects();
+      updateTabs();
     }
 
     function loadProject(name) {
@@ -164,8 +245,8 @@
       URL.revokeObjectURL(a.href);
     }
 
-    function loadFromFile(event) {
-      const file = event.target.files[0];
+    function loadFromFile(e) {
+      const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
       reader.onload = () => {
@@ -176,6 +257,17 @@
         saveProjects();
       };
       reader.readAsText(file);
+    }
+
+    function shareLyrics() {
+      const text = pad.value.trim();
+      if (!text) {
+        alert('Lyrics are empty.');
+        return;
+      }
+      navigator.clipboard.writeText(text)
+        .then(() => alert('Lyrics copied to clipboard. You can now paste and share anywhere!'))
+        .catch(() => alert('Failed to copy lyrics.'));
     }
 
     function suggestRhymes(text) {
@@ -190,12 +282,12 @@
         urdu: ['ishq', 'mashq', 'rasq', 'naam', 'gham']
       };
       const matches = [...db.english, ...db.hindi, ...db.urdu].filter(
-        word => word.endsWith(last.slice(-2)) && word !== last
+        w => w.endsWith(last.slice(-2)) && w !== last
       );
       rhymes.textContent = matches.length ? 'Rhymes: ' + matches.join(', ') : '';
     }
 
-    pad.oninput = e => {
+    pad.oninput = (e) => {
       projects[current] = e.target.value;
       saveProjects();
       suggestRhymes(e.target.value);
@@ -205,6 +297,5 @@
     loadProject(current);
     updateTabs();
   </script>
-
 </body>
 </html>
