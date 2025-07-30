@@ -92,6 +92,20 @@
       color: #f9f9f9;
     }
     
+    body.dark .dropdown-content {
+      background: #2d2d2d;
+      border: 1px solid #555;
+    }
+    
+    body.dark .dropdown-content button {
+      background: #2d2d2d;
+      color: #f9f9f9;
+    }
+    
+    body.dark .dropdown-content button:hover {
+      background: #3d3d3d;
+    }
+    
     /* SEPIA MODE */
     body.sepia {
       background: #f4ecd8;
@@ -149,6 +163,11 @@
       background: #f0e6d2;
       border-top: 1px solid #d4c4a8;
       color: #40352b;
+    }
+    
+    body.sepia .dropdown-content {
+      background: #f8f2e4;
+      border: 1px solid #d4c4a8;
     }
     
     /* REGULAR STYLES */
@@ -280,6 +299,55 @@
     
     button:active {
       background: #eee;
+    }
+    
+    /* FILE DROPDOWN */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+      z-index: 1;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      top: 100%;
+      left: 0;
+    }
+    
+    .dropdown-content button {
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: none;
+      border-radius: 0;
+      margin: 0;
+      padding: 8px 12px;
+      background: #fff;
+      cursor: pointer;
+    }
+    
+    .dropdown-content button:hover {
+      background-color: #f1f1f1;
+    }
+    
+    .dropdown-content button:first-child {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+    }
+    
+    .dropdown-content button:last-child {
+      border-bottom-left-radius: 4px;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
     
     #pad {
@@ -544,6 +612,10 @@
         width: 95vw;
         padding: 20px;
       }
+      
+      .dropdown-content {
+        min-width: 140px;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -561,13 +633,19 @@
   <div id="tabs"></div>
   
   <div id="controls">
-    <button onclick="newProject()">🆕 New</button>
-    <button onclick="saveToFile()">💾 Save</button>
-    <button onclick="document.getElementById('fileInput').click()">📂 Open</button>
-    <button onclick="copyText()">📋 Copy Text</button>
+    <!-- FILE DROPDOWN -->
+    <div class="dropdown">
+      <button>📁 File</button>
+      <div class="dropdown-content">
+        <button onclick="newProject()">🆕 New Project</button>
+        <button onclick="saveToFile()">💾 Save as TXT</button>
+        <button onclick="document.getElementById('fileInput').click()">📂 Open File</button>
+        <button onclick="exportPDF()">📄 Export PDF</button>
+      </div>
+    </div>
+    
     <button onclick="undo()">↩️ Undo</button>
     <button onclick="redo()">↪️ Redo</button>
-    <button onclick="exportPDF()">📄 Export PDF</button>
     <select id="fontSelect" onchange="changeFont()">
       <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
       <option value="'Courier Prime', monospace">Courier Prime</option>
@@ -1184,18 +1262,6 @@ Climactic ending...`,
         saveProjects();
       };
       reader.readAsText(file);
-    }
-    
-    // CHANGED: Share button renamed to Copy Text
-    function copyText() {
-      const text = pad.value.trim();
-      if (!text) { 
-        alert('Lyrics are empty.'); 
-        return; 
-      }
-      navigator.clipboard.writeText(text)
-        .then(() => alert('Lyrics copied to clipboard successfully! 📋'))
-        .catch(() => alert('Failed to copy lyrics.'));
     }
 
     function changeFont() {
