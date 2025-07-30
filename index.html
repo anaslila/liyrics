@@ -323,3 +323,15 @@
   </script>
 </body>
 </html>
+<div class="lyrics-rhyme-suggester">
+  <h2>AI Lyrics Rhyme Suggestions</h2>
+  <label for="lang-select">Pick Language:</label>
+  <select id="lang-select">
+    <option value="english">English</option>
+    <option value="hindi">Hindi (Eng Script)</option>
+    <option value="urdu">Urdu (Eng Script)</option>
+  </select>
+  <textarea id="input-line" placeholder="Type your lyrics line..."></textarea>
+  <button onclick="suggestRhyme()">Suggest Rhymes</button>
+  <ul id="results"></ul>
+</div>
