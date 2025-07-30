@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png">
-  <title>LiLyrics</title>
+  <title>LiLyrics - Free Until 2025!</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
@@ -30,10 +30,60 @@
       transition: all 0.3s;
     }
     
+    /* FREE PROMO BANNER */
+    .promo-banner {
+      background: linear-gradient(135deg, #4285f4, #34a853);
+      color: white;
+      text-align: center;
+      padding: 12px;
+      font-weight: bold;
+      animation: glow 2s ease-in-out infinite alternate;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .promo-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: shine 3s infinite;
+    }
+    
+    @keyframes glow {
+      from { box-shadow: 0 0 20px rgba(66, 133, 244, 0.3); }
+      to { box-shadow: 0 0 30px rgba(66, 133, 244, 0.6); }
+    }
+    
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    
+    .promo-text {
+      position: relative;
+      z-index: 1;
+      font-size: 16px;
+    }
+    
+    .promo-highlight {
+      background: rgba(255,255,255,0.2);
+      padding: 2px 8px;
+      border-radius: 15px;
+      margin: 0 4px;
+    }
+    
     /* FULL PAGE DARK MODE */
     body.dark {
       background: #121212;
       color: #f9f9f9;
+    }
+    
+    body.dark .promo-banner {
+      background: linear-gradient(135deg, #1565c0, #2e7d32);
     }
     
     body.dark header {
@@ -95,7 +145,6 @@
       color: #ccc;
     }
     
-    /* FIXED: Dark mode for stats section */
     body.dark #stats-mini {
       color: #ccc;
     }
@@ -128,6 +177,10 @@
       color: #40352b;
     }
     
+    body.sepia .promo-banner {
+      background: linear-gradient(135deg, #8B4513, #A0522D);
+    }
+    
     body.sepia header {
       background: #f0e6d2;
       border-bottom: 1px solid #d4c4a8;
@@ -147,7 +200,6 @@
       background: #f8f2e4;
     }
     
-    /* FIX: Sepia + Dark mode text visibility */
     body.sepia.dark .tab {
       color: #d4c4a8;
     }
@@ -181,7 +233,6 @@
       color: #40352b;
     }
     
-    /* FIXED: Sepia mode for stats section */
     body.sepia #stats-mini {
       color: #40352b;
     }
@@ -191,7 +242,6 @@
       font-weight: bold;
     }
     
-    /* FIXED: Sepia + Dark combination for stats */
     body.sepia.dark #stats-mini {
       color: #d4c4a8;
     }
@@ -431,7 +481,6 @@
       flex-wrap: wrap;
     }
     
-    /* ENHANCED STATS SECTION WITH PROPER THEME SUPPORT */
     #stats-mini {
       font-size: 12px;
       color: #666;
@@ -513,12 +562,14 @@
       display: flex;
       margin-bottom: 20px;
       border-bottom: 1px solid #ddd;
+      flex-wrap: wrap;
     }
     
     .settings-tab {
       padding: 10px 20px;
       cursor: pointer;
       border-bottom: 2px solid transparent;
+      flex-shrink: 0;
     }
     
     .settings-tab.active {
@@ -625,7 +676,8 @@
     body.focus-mode #controls,
     body.focus-mode #tabs,
     body.focus-mode header,
-    body.focus-mode #rhymes {
+    body.focus-mode #rhymes,
+    body.focus-mode .promo-banner {
       display: none;
     }
     
@@ -666,6 +718,14 @@
     }
     
     @media (max-width: 600px) {
+      .promo-text {
+        font-size: 14px;
+      }
+      
+      .promo-banner {
+        padding: 8px;
+      }
+      
       #pad {
         height: 50vh;
         font-size: 15px;
@@ -702,11 +762,26 @@
         padding: 10px 14px;
         font-size: 12px;
       }
+      
+      .settings-tabs {
+        flex-wrap: wrap;
+      }
+      
+      .settings-tab {
+        padding: 8px 12px;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
+  <!-- FREE PROMO BANNER -->
+  <div class="promo-banner">
+    <div class="promo-text">
+      🎉 <span class="promo-highlight">FREE ACCESS</span> to ALL Premium Features until <span class="promo-highlight">December 31, 2025!</span> 🎵
+    </div>
+  </div>
+
   <header>
     <div class="logo-line">
       <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon"/>
@@ -779,6 +854,7 @@
         <div class="settings-tab" onclick="showSettingsTab('stats')">📊 Statistics</div>
         <div class="settings-tab" onclick="showSettingsTab('templates')">📝 Templates</div>
         <div class="settings-tab" onclick="showSettingsTab('advanced')">🔧 Advanced</div>
+        <div class="settings-tab" onclick="showSettingsTab('about')">🎉 About</div>
       </div>
       
       <!-- SHORTCUTS PANEL -->
@@ -846,7 +922,7 @@
           <p>Most Productive Day: <strong id="best-day">N/A</strong></p>
           <div class="chart-container">
             <h4>Daily Word Count (Last 7 Days)</h4>
-            <div id="word-chart"></div>
+            <div id="word-chart">📊 Chart visualization would appear here</div>
           </div>
         </div>
       </div>
@@ -854,10 +930,10 @@
       <!-- TEMPLATES PANEL -->
       <div id="templates-panel" class="settings-panel">
         <h3>📝 Song Templates</h3>
-        <button onclick="insertTemplate('verse-chorus')" style="margin: 5px; background: #4285f4; color: white;">Verse-Chorus</button>
-        <button onclick="insertTemplate('rap')" style="margin: 5px; background: #4285f4; color: white;">Rap Structure</button>
-        <button onclick="insertTemplate('ballad')" style="margin: 5px; background: #4285f4; color: white;">Ballad</button>
-        <button onclick="insertTemplate('hindi')" style="margin: 5px; background: #4285f4; color: white;">Hindi Song</button>
+        <button onclick="insertTemplate('verse-chorus')" style="margin: 5px; background: #4285f4; color: white; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">Verse-Chorus</button>
+        <button onclick="insertTemplate('rap')" style="margin: 5px; background: #4285f4; color: white; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">Rap Structure</button>
+        <button onclick="insertTemplate('ballad')" style="margin: 5px; background: #4285f4; color: white; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">Ballad</button>
+        <button onclick="insertTemplate('hindi')" style="margin: 5px; background: #4285f4; color: white; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">Hindi Song</button>
       </div>
       
       <!-- ADVANCED PANEL -->
@@ -867,12 +943,35 @@
         <label><input type="checkbox" id="syllable-count"> Show syllable count</label><br><br>
         <label><input type="checkbox" id="typewriter-mode"> Typewriter mode</label><br><br>
         <label><input type="checkbox" id="word-suggestions"> Smart word suggestions</label><br><br>
-        <button onclick="speakLyrics()" style="background: #4285f4; color: white; margin: 10px 0;">🔊 Read Lyrics Aloud</button><br>
-        <button onclick="exportAllProjects()" style="background: #4285f4; color: white; margin: 10px 0;">📦 Export All Projects</button>
+        <button onclick="speakLyrics()" style="background: #4285f4; color: white; margin: 10px 0; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">🔊 Read Lyrics Aloud</button><br>
+        <button onclick="exportAllProjects()" style="background: #4285f4; color: white; margin: 10px 0; padding: 8px 16px; border-radius: 4px; border: none; cursor: pointer;">📦 Export All Projects</button>
+      </div>
+      
+      <!-- ABOUT PANEL -->
+      <div id="about-panel" class="settings-panel">
+        <h3>🎉 Free Until 2025!</h3>
+        <p><strong>Enjoy ALL premium features completely FREE until December 31, 2025!</strong></p>
+        <ul style="text-align: left; margin: 20px 0;">
+          <li>✅ Unlimited projects & tabs</li>
+          <li>✅ Voice recording & playback</li>
+          <li>✅ Advanced export options (PDF, TXT, JSON)</li>
+          <li>✅ Professional themes & fonts</li>
+          <li>✅ Rhyme suggestions & templates</li>
+          <li>✅ Focus mode & advanced writing tools</li>
+          <li>✅ Real-time statistics & analytics</li>
+          <li>✅ All keyboard shortcuts</li>
+        </ul>
+        <p style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 20px 0;">
+          💡 <strong>No payments, no trials, no limitations!</strong><br>
+          This is our gift to the songwriting community. Create amazing lyrics with complete freedom!
+        </p>
+        <p style="text-align: center; color: #4285f4; font-weight: bold;">
+          🎵 Happy songwriting! 🎵
+        </p>
       </div>
       
       <br>
-      <button onclick="hideSettings()" style="background: #4285f4; color: white; padding: 10px 20px;">Close Settings</button>
+      <button onclick="hideSettings()" style="background: #4285f4; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Close Settings</button>
     </div>
   </div>
 
@@ -883,7 +982,7 @@
       <p id="recording-status">Click to start recording</p>
       <button id="record-btn" class="record-btn" onclick="toggleRecording()">🎤</button>
       <div id="recordings-list"></div>
-      <button onclick="hideVoiceModal()" style="background: #4285f4; color: white; padding: 10px 20px; margin: 10px;">Close</button>
+      <button onclick="hideVoiceModal()" style="background: #4285f4; color: white; padding: 10px 20px; margin: 10px; border: none; border-radius: 4px; cursor: pointer;">Close</button>
     </div>
   </div>
 
@@ -918,6 +1017,16 @@
       undoStack.push(value);
       if (undoStack.length > 200) undoStack.shift();
       redoStack = [];
+    }
+
+    // ---------- FREE PROMOTIONAL MESSAGE ----------
+    function showWelcomeMessage() {
+      setTimeout(() => {
+        if (!localStorage.getItem('welcomeShown2025')) {
+          alert('🎉 Welcome to LiLyrics!\n\nEnjoy ALL premium features completely FREE until December 31, 2025!\n\n✅ No payments required\n✅ No limitations\n✅ Full access to everything\n\nHappy songwriting! 🎵');
+          localStorage.setItem('welcomeShown2025', 'true');
+        }
+      }, 2000);
     }
 
     // ---------- ENHANCED KEYBOARD SHORTCUTS ----------
@@ -977,7 +1086,7 @@
       }
     });
 
-    // ---------- NEW ADVANCED FEATURES ----------
+    // ---------- ADVANCED FEATURES ----------
 
     // SYLLABLE COUNTER
     function countSyllables(word) {
@@ -993,7 +1102,6 @@
     function updateSyllableCount() {
       if (!document.getElementById('syllable-count')?.checked) return;
       const lines = pad.value.split('\n');
-      // Add syllable indicators (simplified implementation)
       updateStats();
     }
 
@@ -1030,7 +1138,6 @@
       const text = pad.value;
       const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
       const characters = text.length;
-      const charactersNoSpaces = text.replace(/\s/g, '').length;
       const lines = text.split('\n').length;
       const sessionMinutes = Math.floor((Date.now() - sessionStartTime) / 60000);
       
@@ -1053,9 +1160,7 @@
       document.getElementById('total-projects').textContent = Object.keys(projects).length;
       document.getElementById('total-words').textContent = stats.totalWords;
       document.getElementById('writing-streak').textContent = stats.streak + ' days';
-      // Simplified chart implementation
-      const chartDiv = document.getElementById('word-chart');
-      chartDiv.innerHTML = '📊 Chart visualization would appear here';
+      document.getElementById('best-day').textContent = 'N/A';
     }
 
     // VOICE RECORDING
@@ -1230,12 +1335,12 @@ Climactic ending...`,
         projects[current] = pad.value;
         saveProjects();
         trackChange(pad.value);
+        updateStats();
       }
     }
 
     // SETTINGS TABS
     function showSettingsTab(tabName) {
-      // Hide all panels
       document.querySelectorAll('.settings-panel').forEach(panel => {
         panel.classList.remove('active');
       });
@@ -1243,7 +1348,6 @@ Climactic ending...`,
         tab.classList.remove('active');
       });
       
-      // Show selected panel
       document.getElementById(tabName + '-panel').classList.add('active');
       event.target.classList.add('active');
       
@@ -1252,7 +1356,7 @@ Climactic ending...`,
       }
     }
 
-    // ------------- ORIGINAL FUNCTIONS (PRESERVED) -------------
+    // ------------- CORE FUNCTIONS -------------
     function saveProjects() { 
       localStorage.setItem('lyricProjects', JSON.stringify(projects)); 
     }
@@ -1489,7 +1593,6 @@ Climactic ending...`,
       trackChange(e.target.value);
       updateStats();
       
-      // Advanced features
       if (document.getElementById('syllable-count')?.checked) {
         updateSyllableCount();
       }
@@ -1507,7 +1610,6 @@ Climactic ending...`,
 
     // ADVANCED FEATURES INITIALIZATION
     document.addEventListener('DOMContentLoaded', function() {
-      // Setup advanced feature toggles
       document.getElementById('typewriter-mode').onchange = function() {
         document.body.classList.toggle('typewriter-mode', this.checked);
       };
@@ -1518,7 +1620,6 @@ Climactic ending...`,
     loadProject(current);
     updateTabs();
     
-    // Load saved preferences
     if (localStorage.getItem('darkMode') === 'true') {
       document.body.classList.add('dark');
     }
@@ -1526,12 +1627,13 @@ Climactic ending...`,
       document.body.classList.add('sepia');
     }
     
-    // Load saved font preference
     const savedFont = localStorage.getItem('selectedFont');
     if (savedFont) {
       document.getElementById('fontSelect').value = savedFont;
       pad.style.fontFamily = savedFont;
     }
+
+    showWelcomeMessage();
   </script>
 </body>
 </html>
