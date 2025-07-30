@@ -1,83 +1,80 @@
-const select = document.getElementById('project-select');
-const textarea = document.getElementById('lyrics');
-const status = document.querySelector('.status');
-const newBtn = document.getElementById('new-project');
-const suggestBtn = document.getElementById('suggest-rhymes');
-const darkBtn = document.getElementById('dark-toggle');
+const textarea = document.getElementById("lyricsPad");
+const rhymesBox = document.getElementById("rhymesBox");
+const fileList = document.getElementById("fileList");
+const darkToggle = document.getElementById("darkToggle");
 
-let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
-let current = Object.keys(projects)[0] || 'Default';
-if (!projects[current]) projects[current] = '';
+let files = JSON.parse(localStorage.getItem("lyricsFiles") || "{}");
 
-function save() {
-  localStorage.setItem('lyricProjects', JSON.stringify(projects));
-}
-function load(name) {
-  current = name;
-  textarea.value = projects[name] || '';
-  select.value = name;
-}
-function updateProjects() {
-  select.innerHTML = '';
-  Object.keys(projects).forEach(p => {
-    const o = document.createElement('option');
-    o.value = p; o.textContent = p;
-    select.append(o);
+function updateFileList() {
+  fileList.innerHTML = "";
+  Object.keys(files).forEach(name => {
+    let div = document.createElement("div");
+    div.innerHTML = `<strong>${name}</strong>`;
+    div.onclick = () => textarea.value = files[name];
+    fileList.appendChild(div);
   });
 }
-newBtn.onclick = () => {
-  const name = prompt('New project name:');
-  if (!name) return;
-  projects[name] = '';
-  updateProjects(); load(name); save();
-};
-select.onchange = () => {
-  projects[current] = textarea.value;
-  load(select.value); save();
-};
-textarea.oninput = () => {
-  projects[current] = textarea.value; save();
-  status.textContent = 'Saving...';
-  setTimeout(() => status.textContent = 'Auto saved', 500);
-};
-suggestBtn.onclick = () => {
-  const lastWord = textarea.value.trim().split(/\s+/).pop();
-  if (!lastWord) return;
-  alert(`Paste this into ChatGPT:\n\nGive me 5 Roman Urdu rhymes for '${lastWord}'`);
-};
-darkBtn.onclick = () => {
-  document.body.classList.toggle('dark');
-  localStorage.setItem('darkMode', document.body.classList.contains('dark'));
-};
-if (localStorage.getItem('darkMode') === 'true') document.body.classList.add('dark');
 
-updateProjects(); load(current);
-function shareLyrics() {
-  const text = pad.value.trim();
-  if (!text) {
-    alert("Write some lyrics before sharing.");
-    return;
-  }
+function newFile() {
+  textarea.value = "";
+}
 
-  const title = current || 'LiLyrics';
-  
-  if (navigator.share) {
-    navigator.share({
-      title: title,
-      text: text,
-    })
-    .then(() => console.log('Shared successfully!'))
-    .catch((err) => console.error('Error sharing:', err));
-  } else {
-    const blob = new Blob([text], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const tempInput = document.createElement('input');
-    tempInput.value = url;
-    document.body.appendChild(tempInput);
-    tempInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(tempInput);
-    alert('Link copied. Paste it into any chat or message.');
+function saveFile() {
+  const name = prompt("Enter file name:");
+  if (name) {
+    files[name] = textarea.value;
+    localStorage.setItem("lyricsFiles", JSON.stringify(files));
+    updateFileList();
   }
 }
 
+function openFile() {
+  const name = prompt("Enter file name to open:");
+  if (files[name]) textarea.value = files[name];
+  else alert("File not found!");
+}
+
+function deleteFile() {
+  const name = prompt("Enter file name to delete:");
+  if (files[name]) {
+    delete files[name];
+    localStorage.setItem("lyricsFiles", JSON.stringify(files));
+    updateFileList();
+  } else alert("File not found!");
+}
+
+function shareLyrics() {
+  const blob = new Blob([textarea.value], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  prompt("Copy this link to share:", url);
+}
+
+function getLastWord(text) {
+  const words = text.trim().split(/\s+/);
+  return words[words.length - 1];
+}
+
+textarea.addEventListener("input", () => {
+  const word = getLastWord(textarea.value);
+  if (/[a-zA-Z]{2,}/.test(word)) {
+    rhymesBox.innerText = "Rhymes: " + getEnglishRhymes(word).join(", ");
+  } else {
+    rhymesBox.innerText = "";
+  }
+});
+
+function getEnglishRhymes(word) {
+  const dummy = {
+    "day": ["play", "stay", "way"],
+    "light": ["fight", "night", "sight"],
+    "love": ["dove", "above", "shove"]
+  };
+  return dummy[word.toLowerCase()] || ["No rhymes found"];
+}
+
+// Dark Mode Toggle
+darkToggle.onclick = () => {
+  document.body.classList.toggle("dark");
+};
+
+updateFileList();
