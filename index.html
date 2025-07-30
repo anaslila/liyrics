@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png">
   <title>LiLyrics</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" type="image/png" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Roboto&family=Fira+Code&family=Courier+Prime&family=Inconsolata&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&family=JetBrains+Mono&family=Fira+Code&display=swap');
     @font-face {
       font-family: 'Monotype Corsiva';
       src: url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
@@ -73,42 +74,25 @@
     }
     #controls {
       display: flex;
-      flex-wrap: wrap;
       gap: 10px;
       padding: 10px;
       background: #f9f9f9;
       border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
       align-items: center;
     }
-    button {
-      padding: 6px 12px;
-      font-size: 14px;
-      cursor: pointer;
-      border: 1px solid #ccc;
-      background: #fff;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    #searchBox {
+    button, select, input[type="search"] {
       padding: 6px 10px;
       font-size: 14px;
       border: 1px solid #ccc;
       border-radius: 4px;
-      flex-grow: 1;
-    }
-    #fontSelect {
-      padding: 6px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      background: #fff;
     }
     #pad {
       width: 100%;
       height: 60vh;
       padding: 20px;
-      font-family: 'Fira Code', monospace;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 16px;
       line-height: 1.6;
       border: none;
@@ -122,6 +106,10 @@
       background: #f2f2f2;
       border-top: 1px solid #ccc;
       color: #333;
+    }
+    @media (max-width: 600px) {
+      #pad { height: 50vh; font-size: 15px; }
+      #controls { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -141,24 +129,26 @@
     <button onclick="saveToFile()">💾 Save</button>
     <button onclick="document.getElementById('fileInput').click()">📂 Open</button>
     <button onclick="shareLyrics()">📤 Share</button>
-    <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
-    <input type="text" id="searchBox" placeholder="Search lyrics..." oninput="searchText()">
-    <select id="fontSelect" onchange="changeFont(this.value)">
-      <option value="'Fira Code', monospace" selected>Fira Code</option>
+    <select id="fontSelect" onchange="changeFont()">
+      <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
       <option value="'Courier Prime', monospace">Courier Prime</option>
-      <option value="'Inconsolata', monospace">Inconsolata</option>
-      <option value="'Roboto', sans-serif">Roboto</option>
+      <option value="'Fira Code', monospace">Fira Code</option>
+      <option value="monospace">Default Monospace</option>
     </select>
+    <input type="search" placeholder="Search..." />
+    <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
   </div>
 
   <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
-  <div id="rhymes">Rhymes: </div>
+  <div id="rhymes"></div>
 
   <script>
     const pad = document.getElementById('pad');
     const rhymes = document.getElementById('rhymes');
     let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
     let current = Object.keys(projects)[0] || 'Untitled';
+
+    const API_KEY = "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";
 
     function saveProjects() {
       localStorage.setItem('lyricProjects', JSON.stringify(projects));
@@ -170,28 +160,69 @@
       Object.keys(projects).forEach(name => {
         const div = document.createElement('div');
         div.className = 'tab' + (name === current ? ' active' : '');
-        div.innerHTML = `<span class="tab-icon">🎵</span><span>${name}</span><span class="close-btn">×</span>`;
+        const icon = document.createElement('span');
+        icon.className = 'tab-icon';
+        icon.textContent = '🎵';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = name;
+        nameSpan.style.cursor = 'text';
+        nameSpan.onclick = (e) => {
+          e.stopPropagation();
+          const input = document.createElement('input');
+          input.value = name;
+          input.style.fontSize = '14px';
+          input.style.width = '100px';
+          input.onblur = () => renameProject(name, input.value);
+          input.onkeydown = (e) => {
+            if (e.key === 'Enter') input.blur();
+          };
+          nameSpan.replaceWith(input);
+          input.focus();
+        };
+
+        const close = document.createElement('span');
+        close.className = 'close-btn';
+        close.textContent = '×';
+        close.onclick = (e) => {
+          e.stopPropagation();
+          deleteProject(name);
+        };
+
         div.onclick = () => {
           projects[current] = pad.value;
           current = name;
           loadProject(name);
           saveProjects();
         };
-        div.querySelector('.close-btn').onclick = (e) => {
-          e.stopPropagation();
-          deleteProject(name);
-        };
+
+        div.appendChild(icon);
+        div.appendChild(nameSpan);
+        div.appendChild(close);
         tabs.appendChild(div);
       });
+    }
+
+    function renameProject(oldName, newName) {
+      if (!newName || newName === oldName || projects[newName]) {
+        updateTabs();
+        return;
+      }
+      projects[newName] = projects[oldName];
+      delete projects[oldName];
+      if (current === oldName) current = newName;
+      saveProjects();
+      loadProject(newName);
     }
 
     function deleteProject(name) {
       if (!confirm(`Delete "${name}"?`)) return;
       delete projects[name];
-      current = Object.keys(projects)[0] || 'Untitled';
+      current = name === current ? Object.keys(projects)[0] || 'Untitled' : current;
       if (!projects[current]) projects[current] = '';
       loadProject(current);
       saveProjects();
+      updateTabs();
     }
 
     function loadProject(name) {
@@ -239,49 +270,45 @@
         return;
       }
       navigator.clipboard.writeText(text)
-        .then(() => alert('Lyrics copied to clipboard. You can now paste and share anywhere!'))
+        .then(() => alert('Lyrics copied to clipboard. Paste & share anywhere!'))
         .catch(() => alert('Failed to copy lyrics.'));
     }
 
-    function searchText() {
-      const q = document.getElementById('searchBox').value.toLowerCase();
-      if (!q) return pad.scrollTop = 0;
-      const pos = pad.value.toLowerCase().indexOf(q);
-      if (pos !== -1) {
-        pad.setSelectionRange(pos, pos + q.length);
-        pad.focus();
-      }
-    }
-
-    function changeFont(font) {
+    function changeFont() {
+      const font = document.getElementById('fontSelect').value;
       pad.style.fontFamily = font;
     }
 
-    async function getRhymesGPT(word) {
-      const prompt = `Give 5 rhyming words in English, Hindi, and Urdu (in English script) for the word "${word}". Reply in CSV format like: lang,word`;
-      const res = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer YOUR_API_KEY_HERE'
-        },
-        body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
-          messages: [{ role: 'user', content: prompt }],
-          max_tokens: 100
-        })
-      });
-      const data = await res.json();
-      const output = data.choices[0].message.content;
-      const list = output.split('\n').map(l => l.split(',')[1]?.trim()).filter(Boolean);
-      rhymes.textContent = 'Rhymes: ' + list.join(', ');
+    async function suggestRhymes(text) {
+      const word = text.trim().split(/\s+/).pop();
+      if (!word) return rhymes.textContent = '';
+
+      const prompt = `Give 10 rhyming words (in Roman script) for the word "${word}" in Hindi, Urdu, and English. Only list them comma-separated. No intro.`;
+      try {
+        const res = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${API_KEY}`
+          },
+          body: JSON.stringify({
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: prompt }],
+            max_tokens: 50,
+            temperature: 0.7
+          })
+        });
+        const data = await res.json();
+        rhymes.textContent = "Rhymes: " + data.choices[0].message.content;
+      } catch (err) {
+        rhymes.textContent = '';
+      }
     }
 
     pad.oninput = (e) => {
       projects[current] = e.target.value;
       saveProjects();
-      const last = e.target.value.trim().split(/\s+/).pop();
-      if (last) getRhymesGPT(last);
+      suggestRhymes(e.target.value);
     };
 
     if (!projects[current]) projects[current] = '';
