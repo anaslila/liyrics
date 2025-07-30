@@ -135,7 +135,7 @@
       <option value="'Fira Code', monospace">Fira Code</option>
       <option value="monospace">Default Monospace</option>
     </select>
-    <input type="search" placeholder="Search..." />
+    <input type="search" id="searchBox" placeholder="Search...">
     <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
   </div>
 
@@ -145,6 +145,8 @@
   <script>
     const pad = document.getElementById('pad');
     const rhymes = document.getElementById('rhymes');
+    const searchBox = document.getElementById('searchBox');
+
     let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
     let current = Object.keys(projects)[0] || 'Untitled';
 
@@ -163,7 +165,6 @@
         const icon = document.createElement('span');
         icon.className = 'tab-icon';
         icon.textContent = '🎵';
-
         const nameSpan = document.createElement('span');
         nameSpan.textContent = name;
         nameSpan.style.cursor = 'text';
@@ -180,7 +181,6 @@
           nameSpan.replaceWith(input);
           input.focus();
         };
-
         const close = document.createElement('span');
         close.className = 'close-btn';
         close.textContent = '×';
@@ -188,14 +188,12 @@
           e.stopPropagation();
           deleteProject(name);
         };
-
         div.onclick = () => {
           projects[current] = pad.value;
           current = name;
           loadProject(name);
           saveProjects();
         };
-
         div.appendChild(icon);
         div.appendChild(nameSpan);
         div.appendChild(close);
@@ -282,8 +280,7 @@
     async function suggestRhymes(text) {
       const word = text.trim().split(/\s+/).pop();
       if (!word) return rhymes.textContent = '';
-
-      const prompt = `Give 10 rhyming words (in Roman script) for the word "${word}" in Hindi, Urdu, and English. Only list them comma-separated. No intro.`;
+      const prompt = `Give 10 rhyming words (Roman script only) for "${word}" in Hindi, Urdu, and English. Only list them comma-separated.`;
       try {
         const res = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
@@ -309,6 +306,15 @@
       projects[current] = e.target.value;
       saveProjects();
       suggestRhymes(e.target.value);
+    };
+
+    searchBox.oninput = () => {
+      const query = searchBox.value.trim().toLowerCase();
+      const content = pad.value;
+      if (!query) return;
+      const regex = new RegExp(query, 'gi');
+      const highlighted = content.replace(regex, match => `[[${match}]]`);
+      rhymes.innerHTML = highlighted !== content ? 'Word found and marked.' : 'No match.';
     };
 
     if (!projects[current]) projects[current] = '';
