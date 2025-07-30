@@ -10,6 +10,13 @@
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Verdana&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Arial&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Georgia&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Sans+MS&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Impact&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Trebuchet+MS&display=swap');
     @font-face {
       font-family: 'Monotype Corsiva';
       src: url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
@@ -354,7 +361,7 @@
       width: 100%;
       height: 60vh;
       padding: 20px;
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'Verdana', sans-serif;
       font-size: 16px;
       line-height: 1.6;
       border: none;
@@ -400,6 +407,33 @@
       font-size: 12px;
       color: #666;
       text-align: right;
+    }
+    
+    /* FOCUS MODE TOGGLE BUTTON */
+    #focusModeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 999;
+      background: #4285f4;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 12px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+      display: none;
+    }
+    
+    body.focus-mode #focusModeToggle {
+      display: block;
+    }
+    
+    #focusModeToggle:hover {
+      background: #3367d6;
+      transform: scale(1.05);
     }
     
     /* SETTINGS MODAL - ENHANCED */
@@ -564,6 +598,14 @@
       border: none;
     }
     
+    body.focus-mode.dark #pad {
+      background: #1a1a1a;
+    }
+    
+    body.focus-mode.sepia #pad {
+      background: #f4ecd8;
+    }
+    
     /* TYPEWRITER MODE */
     body.typewriter-mode #pad {
       background: linear-gradient(transparent 49%, rgba(0,0,0,0.1) 50%, transparent 51%);
@@ -616,6 +658,13 @@
       .dropdown-content {
         min-width: 140px;
       }
+      
+      #focusModeToggle {
+        top: 10px;
+        right: 10px;
+        padding: 10px 14px;
+        font-size: 12px;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -632,6 +681,9 @@
   
   <div id="tabs"></div>
   
+  <!-- FOCUS MODE TOGGLE BUTTON -->
+  <button id="focusModeToggle" onclick="toggleFocusMode()" title="Exit Focus Mode">✏️ Writing Mode</button>
+  
   <div id="controls">
     <!-- FILE DROPDOWN -->
     <div class="dropdown">
@@ -647,6 +699,13 @@
     <button onclick="undo()">↩️ Undo</button>
     <button onclick="redo()">↪️ Redo</button>
     <select id="fontSelect" onchange="changeFont()">
+      <option value="'Verdana', sans-serif" selected>Verdana</option>
+      <option value="'Arial', sans-serif">Arial</option>
+      <option value="'Times New Roman', serif">Times New Roman</option>
+      <option value="'Georgia', serif">Georgia</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+      <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+      <option value="'Impact', sans-serif">Impact</option>
       <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
       <option value="'Courier Prime', monospace">Courier Prime</option>
       <option value="'Fira Code', monospace">Fira Code</option>
@@ -667,7 +726,9 @@
   <div id="rhymes">
     <div id="rhyme-suggestions"></div>
     <div id="stats-mini">
+      <div><strong id="current-file-name">Untitled</strong></div>
       <div>Words: <span id="word-count">0</span></div>
+      <div>Characters: <span id="char-count">0</span></div>
       <div>Lines: <span id="line-count">0</span></div>
       <div>Session: <span id="session-time">0m</span></div>
     </div>
@@ -893,7 +954,7 @@
     }
 
     function updateSyllableCount() {
-      if (!document.getElementById('syllable-count').checked) return;
+      if (!document.getElementById('syllable-count')?.checked) return;
       const lines = pad.value.split('\n');
       // Add syllable indicators (simplified implementation)
       updateStats();
@@ -915,8 +976,6 @@
           }
         }
       });
-      
-      // Visual highlighting would be implemented here
     }
 
     function toggleRhymeScheme() {
@@ -929,14 +988,19 @@
       }
     }
 
-    // STATISTICS TRACKING
+    // ENHANCED STATISTICS TRACKING
     function updateStats() {
       const text = pad.value;
       const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+      const characters = text.length;
+      const charactersNoSpaces = text.replace(/\s/g, '').length;
       const lines = text.split('\n').length;
       const sessionMinutes = Math.floor((Date.now() - sessionStartTime) / 60000);
       
+      // Update current file display
+      document.getElementById('current-file-name').textContent = current;
       document.getElementById('word-count').textContent = words;
+      document.getElementById('char-count').textContent = characters;
       document.getElementById('line-count').textContent = lines;
       document.getElementById('session-time').textContent = sessionMinutes + 'm';
       
@@ -1021,12 +1085,15 @@
       listDiv.appendChild(audioElement);
     }
 
-    // FOCUS MODE
+    // ENHANCED FOCUS MODE
     function toggleFocusMode() {
       focusModeEnabled = !focusModeEnabled;
       document.body.classList.toggle('focus-mode', focusModeEnabled);
       if (focusModeEnabled) {
         pad.focus();
+        document.getElementById('focusModeToggle').style.display = 'block';
+      } else {
+        document.getElementById('focusModeToggle').style.display = 'none';
       }
     }
 
@@ -1267,6 +1334,7 @@ Climactic ending...`,
     function changeFont() {
       const font = document.getElementById('fontSelect').value;
       pad.style.fontFamily = font;
+      localStorage.setItem('selectedFont', font);
     }
     
     searchBox.oninput = () => {
@@ -1413,11 +1481,19 @@ Climactic ending...`,
     loadProject(current);
     updateTabs();
     
+    // Load saved preferences
     if (localStorage.getItem('darkMode') === 'true') {
       document.body.classList.add('dark');
     }
     if (localStorage.getItem('sepiaMode') === 'true') {
       document.body.classList.add('sepia');
+    }
+    
+    // Load saved font preference
+    const savedFont = localStorage.getItem('selectedFont');
+    if (savedFont) {
+      document.getElementById('fontSelect').value = savedFont;
+      pad.style.fontFamily = savedFont;
     }
   </script>
 </body>
