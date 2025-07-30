@@ -210,7 +210,8 @@
     
     .tab .tab-icon {
       margin-right: 6px;
-      color: #4285f4;
+      width: 16px;
+      height: 16px;
     }
     
     .tab .close-btn {
@@ -369,9 +370,10 @@
         const div = document.createElement('div');
         div.className = 'tab' + (name === current ? ' active' : '');
         
-        const icon = document.createElement('span');
+        const icon = document.createElement('img');
         icon.className = 'tab-icon';
-        icon.textContent = '🎵';
+        icon.src = 'https://cdn-icons-png.flaticon.com/512/727/727299.png';
+        icon.alt = 'Music Note';
         
         const nameSpan = document.createElement('span');
         nameSpan.textContent = name;
