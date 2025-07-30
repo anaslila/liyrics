@@ -188,6 +188,8 @@
       background: #f7f7f7;
       border-bottom: 1px solid #ccc;
       padding: 0 10px;
+      overflow-x: auto;
+      white-space: nowrap;
     }
     
     .tab {
@@ -196,6 +198,8 @@
       padding: 10px 12px;
       cursor: pointer;
       border-right: 1px solid #ccc;
+      flex-shrink: 0;
+      min-width: fit-content;
     }
     
     .tab.active {
@@ -277,6 +281,23 @@
         flex-direction: column;
         align-items: flex-start;
       }
+      /* Keep tabs horizontal on mobile */
+      #tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: thin;
+      }
+      #tabs::-webkit-scrollbar {
+        height: 4px;
+      }
+      #tabs::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 2px;
+      }
+      .tab {
+        white-space: nowrap;
+        min-width: max-content;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -309,11 +330,6 @@
     </select>
     <input type="search" id="searchBox" placeholder="Search...">
     <input type="file" id="fileInput" style="display:none" accept=".txt" onchange="loadFromFile(event)"/>
-    <select id="rhymeLang">
-      <option value="english">English</option>
-      <option value="hindi">Hindi (Eng Script)</option>
-      <option value="urdu">Urdu (Eng Script)</option>
-    </select>
     <button onclick="promptSuggestRhymes()">🔎 Suggest Rhymes</button>
     <button onclick="showPrompt()">💡 Inspire Me</button>
     <button onclick="toggleSepia()">🟤 Sepia</button>
@@ -499,7 +515,6 @@
 
     // ---------- RHYME SUGGESTION ----------
     function promptSuggestRhymes() {
-      const lang = document.getElementById('rhymeLang').value;
       const line = prompt('Type a lyric line to suggest rhymes for:');
       if (!line) return;
       
@@ -507,13 +522,8 @@
       
       // Mock rhyme suggestions (replace with your API call)
       setTimeout(() => {
-        const mockRhymes = {
-          english: ["time, rhyme, climb", "love, dove, above", "night, light, sight"],
-          hindi: ["dil, mil, khil", "raat, baat, saath", "sapna, apna, mann"],
-          urdu: ["ishq, rishq, vishq", "dard, mard, yard", "mohabbat, hasrat, qayamat"]
-        };
-        const suggestions = mockRhymes[lang] || mockRhymes.english;
-        const randomSuggestion = suggestions[Math.floor(Math.random() * suggestions.length)];
+        const mockRhymes = ["time, rhyme, climb", "love, dove, above", "night, light, sight", "dil, mil, khil", "raat, baat, saath", "sapna, apna, mann"];
+        const randomSuggestion = mockRhymes[Math.floor(Math.random() * mockRhymes.length)];
         rhymes.textContent = "Rhymes: " + randomSuggestion;
       }, 1000);
     }
