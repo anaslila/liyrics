@@ -131,3 +131,9 @@ button {
   padding: 0.5em;
   border-radius: 4px;
 }
+body.sepia.dark .tab {
+  color: #d4c4a8;
+}
+body.sepia.dark .tab.active {
+  color: #40352b;
+}
