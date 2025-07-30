@@ -2,44 +2,300 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png">
   <title>LiLyrics</title>
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Monospace&display=swap" rel="stylesheet">
   <style>
-    @font-face {
-      font-family: 'Product Sans';
-      src: url('https://fonts.gstatic.com/s/productsans/v9/pxiDyp8kv8JHgFVrJJbecnFHGPc.woff2') format('woff2');
-    }
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
     @font-face {
       font-family: 'Monotype Corsiva';
-      src: local('Monotype Corsiva'), url('https://fonts.cdnfonts.com/s/10375/MonotypeCorsiva.woff') format('woff');
+      src: url('https://fonts.cdnfonts.com/s/17869/MonotypeCorsiva.woff') format('woff');
+    }
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #fff;
+      color: #222;
+    }
+    header {
+      text-align: center;
+      padding: 20px;
+      background: #f9f9f9;
+      border-bottom: 1px solid #ddd;
+    }
+    .logo-line {
+      font-family: 'Monotype Corsiva', cursive;
+      font-size: 32px;
+      font-weight: bold;
+      color: #4285f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-line img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    .tagline {
+      font-size: 14px;
+      color: #555;
+      margin-top: 4px;
+    }
+    #tabs {
+      display: flex;
+      flex-wrap: wrap;
+      background: #f7f7f7;
+      border-bottom: 1px solid #ccc;
+      padding: 0 10px;
+    }
+    .tab {
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      cursor: pointer;
+      border-right: 1px solid #ccc;
+    }
+    .tab.active {
+      background: #fff;
+      border-bottom: 2px solid #4285f4;
+      font-weight: bold;
+    }
+    .tab .tab-icon {
+      margin-right: 6px;
+      color: #4285f4;
+    }
+    .tab .close-btn {
+      margin-left: 8px;
+      color: red;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    #controls {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #f9f9f9;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+    }
+    button {
+      padding: 6px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: #fff;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #pad {
+      width: 100%;
+      height: 60vh;
+      padding: 20px;
+      font-family: monospace;
+      font-size: 16px;
+      line-height: 1.6;
+      border: none;
+      outline: none;
+      resize: none;
+      box-sizing: border-box;
+    }
+    #rhymes {
+      padding: 15px 20px;
+      font-size: 14px;
+      background: #f2f2f2;
+      border-top: 1px solid #ccc;
+      color: #333;
+    }
+    @media (max-width: 600px) {
+      #pad {
+        height: 50vh;
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="logo" />
-    <h1>LiLyrics</h1>
-    <p class="tagline">most powerful lyric pad...</p>
-    <button id="darkToggle">🌙</button>
-  </div>
+  <header>
+    <div class="logo-line">
+      <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon" />
+      LiLyrics
+    </div>
+    <div class="tagline">most powerful lyric pad...</div>
+  </header>
 
-  <div class="tabs">
-    <button onclick="newFile()">📝 New</button>
-    <button onclick="saveFile()">💾 Save</button>
-    <button onclick="openFile()">📂 Open</button>
-    <button onclick="deleteFile()">🗑 Delete</button>
+  <div id="tabs"></div>
+
+  <div id="controls">
+    <button onclick="newProject()">🆕 New</button>
+    <button onclick="saveToFile()">💾 Save</button>
+    <button onclick="document.getElementById('fileInput').click()">📂 Open</button>
     <button onclick="shareLyrics()">📤 Share</button>
+    <input type="file" id="fileInput" style="display: none" accept=".txt" onchange="loadFromFile(event)" />
   </div>
 
-  <div id="fileList"></div>
+  <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
+  <div id="rhymes"></div>
 
-  <textarea id="lyricsPad" placeholder="Start writing your lyrics..."></textarea>
-  <div id="rhymesBox"></div>
+  <script>
+    const pad = document.getElementById('pad');
+    const rhymes = document.getElementById('rhymes');
+    let projects = JSON.parse(localStorage.getItem('lyricProjects')) || {};
+    let current = Object.keys(projects)[0] || 'Untitled';
 
-  <script src="script.js"></script>
+    function saveProjects() {
+      localStorage.setItem('lyricProjects', JSON.stringify(projects));
+    }
+
+    function updateTabs() {
+      const tabs = document.getElementById('tabs');
+      tabs.innerHTML = '';
+      Object.keys(projects).forEach(name => {
+        const div = document.createElement('div');
+        div.className = 'tab' + (name === current ? ' active' : '');
+
+        const icon = document.createElement('span');
+        icon.className = 'tab-icon';
+        icon.textContent = '🎵';
+
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = name;
+        nameSpan.style.cursor = 'text';
+        nameSpan.onclick = (e) => {
+          e.stopPropagation();
+          const input = document.createElement('input');
+          input.value = name;
+          input.style.fontSize = '14px';
+          input.style.width = '100px';
+          input.onblur = () => renameProject(name, input.value);
+          input.onkeydown = (e) => {
+            if (e.key === 'Enter') input.blur();
+          };
+          nameSpan.replaceWith(input);
+          input.focus();
+        };
+
+        const close = document.createElement('span');
+        close.className = 'close-btn';
+        close.textContent = '×';
+        close.onclick = (e) => {
+          e.stopPropagation();
+          deleteProject(name);
+        };
+
+        div.onclick = () => {
+          projects[current] = pad.value;
+          current = name;
+          loadProject(name);
+          saveProjects();
+        };
+
+        div.appendChild(icon);
+        div.appendChild(nameSpan);
+        div.appendChild(close);
+        tabs.appendChild(div);
+      });
+    }
+
+    function renameProject(oldName, newName) {
+      if (!newName || newName === oldName || projects[newName]) {
+        updateTabs();
+        return;
+      }
+      projects[newName] = projects[oldName];
+      delete projects[oldName];
+      if (current === oldName) current = newName;
+      saveProjects();
+      loadProject(newName);
+    }
+
+    function deleteProject(name) {
+      if (!confirm(`Delete "${name}"?`)) return;
+      delete projects[name];
+      current = name === current ? Object.keys(projects)[0] || 'Untitled' : current;
+      if (!projects[current]) projects[current] = '';
+      loadProject(current);
+      saveProjects();
+      updateTabs();
+    }
+
+    function loadProject(name) {
+      pad.value = projects[name] || '';
+      updateTabs();
+    }
+
+    function newProject() {
+      const name = prompt('New project name:');
+      if (name && !projects[name]) {
+        projects[name] = '';
+        current = name;
+        loadProject(name);
+        saveProjects();
+      }
+    }
+
+    function saveToFile() {
+      const blob = new Blob([pad.value], { type: 'text/plain' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = current + '.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function loadFromFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const name = file.name.replace('.txt', '');
+        projects[name] = reader.result;
+        current = name;
+        loadProject(name);
+        saveProjects();
+      };
+      reader.readAsText(file);
+    }
+
+    function shareLyrics() {
+      const text = pad.value.trim();
+      if (!text) {
+        alert('Lyrics are empty.');
+        return;
+      }
+      navigator.clipboard.writeText(text)
+        .then(() => alert('Lyrics copied to clipboard. You can now paste and share anywhere!'))
+        .catch(() => alert('Failed to copy lyrics.'));
+    }
+
+    function suggestRhymes(text) {
+      const last = text.trim().split(/\s+/).pop().toLowerCase();
+      if (!last) {
+        rhymes.textContent = '';
+        return;
+      }
+      const db = {
+        english: ['day', 'way', 'play', 'stay', 'say'],
+        hindi: ['dil', 'kal', 'pal', 'mal', 'sal'],
+        urdu: ['ishq', 'mashq', 'rasq', 'naam', 'gham']
+      };
+      const matches = [...db.english, ...db.hindi, ...db.urdu].filter(
+        w => w.endsWith(last.slice(-2)) && w !== last
+      );
+      rhymes.textContent = matches.length ? 'Rhymes: ' + matches.join(', ') : '';
+    }
+
+    pad.oninput = (e) => {
+      projects[current] = e.target.value;
+      saveProjects();
+      suggestRhymes(e.target.value);
+    };
+
+    if (!projects[current]) projects[current] = '';
+    loadProject(current);
+    updateTabs();
+  </script>
 </body>
 </html>
