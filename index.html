@@ -110,10 +110,20 @@
     
     body.sepia .tab {
       border-right: 1px solid #d4c4a8;
+      color: #40352b;
     }
     
     body.sepia .tab.active {
       background: #f8f2e4;
+    }
+    
+    /* FIX: Sepia + Dark mode text visibility */
+    body.sepia.dark .tab {
+      color: #d4c4a8;
+    }
+    
+    body.sepia.dark .tab.active {
+      color: #40352b;
     }
     
     body.sepia #controls {
@@ -273,6 +283,70 @@
       min-height: 40px;
     }
     
+    /* SETTINGS MODAL */
+    #settingsModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+    }
+    
+    .settings-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      width: 500px;
+      max-width: 90vw;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    body.dark .settings-content {
+      background: #2d2d2d;
+      color: #f9f9f9;
+    }
+    
+    body.sepia .settings-content {
+      background: #f8f2e4;
+      color: #40352b;
+    }
+    
+    .shortcut-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    
+    .shortcut-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px;
+      background: #f5f5f5;
+      border-radius: 4px;
+    }
+    
+    body.dark .shortcut-item {
+      background: #3d3d3d;
+    }
+    
+    body.sepia .shortcut-item {
+      background: #f0e6d2;
+    }
+    
+    .shortcut-key {
+      font-weight: bold;
+      color: #4285f4;
+    }
+    
     @media (max-width: 600px) {
       #pad {
         height: 50vh;
@@ -298,6 +372,13 @@
       .tab {
         white-space: nowrap;
         min-width: max-content;
+      }
+      .shortcut-list {
+        grid-template-columns: 1fr;
+      }
+      .settings-content {
+        width: 95vw;
+        padding: 20px;
       }
     }
   </style>
@@ -334,10 +415,71 @@
     <button onclick="promptSuggestRhymes()">🔎 Suggest Rhymes</button>
     <button onclick="showPrompt()">💡 Inspire Me</button>
     <button onclick="toggleSepia()">🟤 Sepia</button>
+    <button onclick="showSettings()">⚙️ Settings</button>
   </div>
   
   <textarea id="pad" placeholder="Write your lyrics here..."></textarea>
   <div id="rhymes"></div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal">
+    <div class="settings-content">
+      <h2>⚙️ Settings & Shortcuts</h2>
+      <h3>🎹 Keyboard Shortcuts</h3>
+      <div class="shortcut-list">
+        <div class="shortcut-item">
+          <span>Save Current Project</span>
+          <span class="shortcut-key">Ctrl + S</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Copy Lyrics</span>
+          <span class="shortcut-key">Ctrl + C</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Paste Text</span>
+          <span class="shortcut-key">Ctrl + V</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Select All</span>
+          <span class="shortcut-key">Ctrl + A</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Undo</span>
+          <span class="shortcut-key">Ctrl + Z</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Redo</span>
+          <span class="shortcut-key">Ctrl + Y</span>
+        </div>
+        <div class="shortcut-item">
+          <span>New Project</span>
+          <span class="shortcut-key">Ctrl + N</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Open File</span>
+          <span class="shortcut-key">Ctrl + O</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Export PDF</span>
+          <span class="shortcut-key">Ctrl + P</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Find in Lyrics</span>
+          <span class="shortcut-key">Ctrl + F</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Toggle Dark Mode</span>
+          <span class="shortcut-key">Ctrl + D</span>
+        </div>
+        <div class="shortcut-item">
+          <span>Show Settings</span>
+          <span class="shortcut-key">Ctrl + ,</span>
+        </div>
+      </div>
+      <br>
+      <button onclick="hideSettings()" style="background: #4285f4; color: white; padding: 10px 20px;">Close Settings</button>
+    </div>
+  </div>
 
   <script>
     // ---------- DATA & STATE ----------
@@ -357,6 +499,57 @@
       if (undoStack.length > 200) undoStack.shift(); // limit stack
       redoStack = [];
     }
+
+    // ---------- KEYBOARD SHORTCUTS ----------
+    document.addEventListener('keydown', function(e) {
+      // Check if Ctrl (or Cmd on Mac) is pressed
+      if (e.ctrlKey || e.metaKey) {
+        switch(e.key.toLowerCase()) {
+          case 's':
+            e.preventDefault();
+            saveToFile();
+            break;
+          case 'n':
+            e.preventDefault();
+            newProject();
+            break;
+          case 'o':
+            e.preventDefault();
+            document.getElementById('fileInput').click();
+            break;
+          case 'p':
+            e.preventDefault();
+            exportPDF();
+            break;
+          case 'z':
+            e.preventDefault();
+            undo();
+            break;
+          case 'y':
+            e.preventDefault();
+            redo();
+            break;
+          case 'f':
+            e.preventDefault();
+            searchBox.focus();
+            break;
+          case 'd':
+            e.preventDefault();
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+            break;
+          case ',':
+            e.preventDefault();
+            showSettings();
+            break;
+        }
+      }
+      
+      // ESC to close settings
+      if (e.key === 'Escape') {
+        hideSettings();
+      }
+    });
 
     // ------------- TABS & PROJECTS -------------
     function saveProjects() { 
@@ -514,6 +707,22 @@
       // Save sepia mode preference
       localStorage.setItem('sepiaMode', document.body.classList.contains('sepia'));
     }
+
+    // ---------- SETTINGS MODAL ----------
+    function showSettings() {
+      document.getElementById('settingsModal').style.display = 'block';
+    }
+    
+    function hideSettings() {
+      document.getElementById('settingsModal').style.display = 'none';
+    }
+    
+    // Close settings when clicking outside modal
+    document.getElementById('settingsModal').onclick = function(e) {
+      if (e.target === this) {
+        hideSettings();
+      }
+    };
 
     // ---------- RHYME SUGGESTION ----------
     function promptSuggestRhymes() {
