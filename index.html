@@ -95,6 +95,15 @@
       color: #ccc;
     }
     
+    /* FIXED: Dark mode for stats section */
+    body.dark #stats-mini {
+      color: #ccc;
+    }
+    
+    body.dark #current-file-name {
+      color: #4285f4;
+    }
+    
     body.dark #darkToggle {
       color: #f9f9f9;
     }
@@ -170,6 +179,25 @@
       background: #f0e6d2;
       border-top: 1px solid #d4c4a8;
       color: #40352b;
+    }
+    
+    /* FIXED: Sepia mode for stats section */
+    body.sepia #stats-mini {
+      color: #40352b;
+    }
+    
+    body.sepia #current-file-name {
+      color: #8B4513;
+      font-weight: bold;
+    }
+    
+    /* FIXED: Sepia + Dark combination for stats */
+    body.sepia.dark #stats-mini {
+      color: #d4c4a8;
+    }
+    
+    body.sepia.dark #current-file-name {
+      color: #f4d03f;
     }
     
     body.sepia .dropdown-content {
@@ -403,10 +431,19 @@
       flex-wrap: wrap;
     }
     
+    /* ENHANCED STATS SECTION WITH PROPER THEME SUPPORT */
     #stats-mini {
       font-size: 12px;
       color: #666;
       text-align: right;
+      transition: color 0.3s;
+    }
+    
+    #current-file-name {
+      color: #4285f4;
+      font-weight: bold;
+      font-size: 13px;
+      margin-bottom: 3px;
     }
     
     /* FOCUS MODE TOGGLE BUTTON */
