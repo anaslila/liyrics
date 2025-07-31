@@ -84,8 +84,8 @@
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
     
-    /* Payment Modal */
-    .payment-modal {
+    /* Donation Modal */
+    .donate-modal {
       display: none;
       position: fixed;
       top: 0;
@@ -97,7 +97,7 @@
       backdrop-filter: blur(8px);
     }
     
-    .payment-content {
+    .donate-content {
       position: absolute;
       top: 50%;
       left: 50%;
@@ -112,9 +112,9 @@
       animation: fadeIn 0.3s ease;
     }
     
-    /* FREE PROMO BANNER */
-    .promo-banner {
-      background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    /* Lifetime Free Banner */
+    .lifetime-banner {
+      background: linear-gradient(135deg, #28a745, #20c997);
       color: white;
       text-align: center;
       padding: 16px;
@@ -124,7 +124,7 @@
       overflow: hidden;
     }
     
-    .promo-banner::before {
+    .lifetime-banner::before {
       content: '';
       position: absolute;
       top: 0;
@@ -135,7 +135,7 @@
       animation: shine 3s infinite;
     }
     
-    .promo-text {
+    .lifetime-text {
       position: relative;
       z-index: 1;
       font-size: 16px;
@@ -146,7 +146,7 @@
       flex-wrap: wrap;
     }
     
-    .promo-highlight {
+    .lifetime-highlight {
       background: rgba(255,255,255,0.2);
       padding: 4px 12px;
       border-radius: 20px;
@@ -154,7 +154,7 @@
       animation: pulse 2s infinite;
     }
     
-    /* SIMPLIFIED: Enhanced Header Layout (no user info) */
+    /* Enhanced Header Layout */
     header {
       text-align: center;
       padding: 24px;
@@ -185,19 +185,18 @@
       filter: hue-rotate(0deg) brightness(1) contrast(1);
     }
     
-    /* Version badge positioning to avoid collision */
     .version-pro {
       position: absolute;
       right: -70px;
       top: -8px;
-      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      background: linear-gradient(45deg, #28a745, #20c997);
       color: white;
       padding: 4px 10px;
       border-radius: 12px;
       font-size: 11px;
       font-weight: 600;
       font-family: 'Montserrat', sans-serif;
-      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+      box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
     }
     
     .tagline {
@@ -207,7 +206,27 @@
       font-weight: 400;
     }
     
-    /* Dark toggle positioning */
+    .donate-btn {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(255, 107, 53, 0.3);
+    }
+    
+    .donate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
+    }
+    
     #darkToggle {
       position: absolute;
       top: 15px;
@@ -327,7 +346,6 @@
       transform: scale(1.2);
     }
     
-    /* Chrome-style Add New Tab Button */
     #addNewTab {
       display: flex;
       align-items: center;
@@ -351,7 +369,6 @@
       box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
     }
     
-    /* Enhanced Controls */
     #controls {
       display: flex;
       gap: 12px;
@@ -432,7 +449,6 @@
       display: block;
     }
     
-    /* Default Arial font for textarea */
     #pad {
       width: 100%;
       height: 60vh;
@@ -548,7 +564,6 @@
       animation: fadeIn 0.3s ease;
     }
     
-    /* Enhanced Modals with Animation */
     .modal {
       display: none;
       position: fixed;
@@ -685,7 +700,7 @@
     body.focus-mode #tabs-container,
     body.focus-mode header,
     body.focus-mode #rhymes,
-    body.focus-mode .promo-banner {
+    body.focus-mode .lifetime-banner {
       display: none;
     }
     
@@ -698,10 +713,17 @@
       height: 100vh;
     }
     
-    /* Hide version badge on small screens to prevent collision */
     @media (max-width: 768px) {
       .version-pro {
         display: none;
+      }
+      
+      .donate-btn {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin: 8px auto;
+        display: block;
       }
       
       #controls {
@@ -728,62 +750,71 @@
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-  <!-- PROMO BANNER -->
-  <div id="promoBanner" class="promo-banner">
-    <div class="promo-text">
-      <i class="fas fa-gift"></i>
-      <span class="promo-highlight">FREE ACCESS</span>
-      <span>to ALL Premium Features until</span>
-      <span class="promo-highlight">December 31, 2025!</span>
-      <i class="fas fa-music"></i>
+  <!-- Lifetime Free Banner -->
+  <div id="lifetimeBanner" class="lifetime-banner">
+    <div class="lifetime-text">
+      <i class="fas fa-heart"></i>
+      <span class="lifetime-highlight">LIFETIME FREE</span>
+      <span>All Features • No Subscriptions • Optional Donations Welcome</span>
+      <i class="fas fa-infinity"></i>
     </div>
   </div>
 
-  <!-- PAYMENT MODAL -->
-  <div id="paymentModal" class="payment-modal">
-    <div class="payment-content">
+  <!-- Donation Modal -->
+  <div id="donateModal" class="donate-modal">
+    <div class="donate-content">
       <div style="color: var(--primary-color); font-size: 24px; font-weight: 700; margin-bottom: 16px;">
-        <i class="fas fa-crown"></i> Upgrade to Lifetime Access
+        <i class="fas fa-heart"></i> Support LiLyrics Development
       </div>
-      <div style="font-size: 48px; font-weight: 800; color: var(--secondary-color); margin: 20px 0;">₹199</div>
-      <p>One-time payment for lifetime access to all premium features!</p>
-      
-      <div style="width: 200px; height: 200px; margin: 20px auto; border: 2px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; justify-content: center; background: #f8f9fa;">
-        <i class="fas fa-qrcode" style="font-size: 48px; color: #ccc;"></i>
+      <div style="font-size: 18px; color: var(--text-secondary); margin: 20px 0;">
+        Your donations help us keep LiLyrics free forever!
       </div>
       
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0;">
-        <button onclick="payWithUPI()" style="padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; background: #00d4aa; color: white;">
-          <i class="fab fa-google-pay"></i> UPI Pay
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0;">
+        <button onclick="donateAmount(50)" style="padding: 16px; border: 2px solid var(--primary-color); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; background: white; color: var(--primary-color);">
+          ₹50
         </button>
-        <button onclick="payWithGPay()" style="padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 8px; background: #4285f4; color: white;">
-          <i class="fab fa-google-pay"></i> Google Pay
+        <button onclick="donateAmount(100)" style="padding: 16px; border: 2px solid var(--secondary-color); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; background: var(--secondary-color); color: white;">
+          ₹100 ⭐
+        </button>
+        <button onclick="donateAmount(199)" style="padding: 16px; border: 2px solid var(--warning-color); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.2s ease; background: var(--warning-color); color: white;">
+          ₹199 🎵
+        </button>
+      </div>
+      
+      <div style="margin: 20px 0;">
+        <input type="number" id="customAmount" placeholder="Custom Amount (₹)" style="width: 200px; padding: 12px; border: 2px solid var(--border-color); border-radius: 8px; text-align: center; font-size: 16px;">
+        <button onclick="donateCustomAmount()" style="padding: 12px 20px; background: var(--primary-color); color: white; border: none; border-radius: 8px; cursor: pointer; margin-left: 8px;">
+          <i class="fas fa-heart"></i> Donate
         </button>
       </div>
       
       <div style="margin: 20px 0; padding: 16px; background: #f0f8ff; border-radius: 8px; border-left: 4px solid var(--primary-color);">
         <strong>UPI ID:</strong> lilaanas6-3@okicici<br>
-        <strong>Amount:</strong> ₹199<br>
-        <strong>Note:</strong> LiLyrics Lifetime Access
+        <strong>Note:</strong> LiLyrics Support Donation<br>
+        <small style="color: var(--text-secondary);">Thank you for supporting free software! ❤️</small>
       </div>
       
-      <button onclick="hidePaymentModal()" style="background: #666; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; margin-top: 16px;">
+      <button onclick="hideDonateModal()" style="background: #666; color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; margin-top: 16px;">
         <i class="fas fa-times"></i> Close
       </button>
     </div>
   </div>
 
   <header>
+    <button class="donate-btn" onclick="showDonateModal()" title="Support LiLyrics Development">
+      <i class="fas fa-heart"></i> Donate
+    </button>
+    
     <div class="logo-line">
       <img src="https://cdn-icons-png.flaticon.com/512/14384/14384748.png" alt="Lyrics Icon"/>
       <span>LiLyrics</span>
-      <div class="version-pro">v2.3 Pro</div>
+      <div class="version-pro">FREE Forever</div>
     </div>
-    <div class="tagline">Professional Songwriting Studio - No Login Required!</div>
+    <div class="tagline">Professional Songwriting Studio - Always Free!</div>
     <button id="darkToggle" title="Toggle dark mode"><i class="fas fa-moon"></i></button>
   </header>
   
-  <!-- Chrome-style Tab Container -->
   <div id="tabs-container">
     <div id="tabs"></div>
     <div id="addNewTab" title="New Untitled Lyrics">
@@ -1003,16 +1034,16 @@
         </button>
       </div>
       
-      <!-- UPDATED: About Section with Simplified Info -->
+      <!-- About Section with Lifetime Free Info -->
       <div id="about-panel" class="settings-panel">
         <h3><i class="fas fa-info-circle"></i> About LiLyrics v2.3 Pro</h3>
         <div style="text-align: center; margin: 20px 0;">
-          <i class="fas fa-crown" style="font-size: 48px; color: gold; margin: 16px;"></i>
+          <i class="fas fa-heart" style="font-size: 48px; color: #28a745; margin: 16px;"></i>
           <h4>Professional Songwriting Studio</h4>
         </div>
         
         <!-- Developer Information -->
-        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0;">
+        <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0;">
           <h4 style="margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
             <i class="fas fa-user-tie"></i> Developer Information
           </h4>
@@ -1035,7 +1066,7 @@
             </div>
             <div>
               <strong>🎯 Version:</strong><br>
-              v2.3 Pro - Simplified
+              v2.3 Pro - Lifetime Free
             </div>
             <div>
               <strong>🔧 Framework:</strong><br>
@@ -1045,23 +1076,22 @@
         </div>
         
         <ul style="text-align: left; margin: 20px 0;">
-          <li><i class="fas fa-check"></i> <strong>No Login Required:</strong> Instant access, no complicated sign-ups</li>
+          <li><i class="fas fa-check"></i> <strong>Lifetime Free:</strong> No subscriptions, no payments required</li>
           <li><i class="fas fa-check"></i> <strong>Chrome-style Tab System:</strong> Professional tab management</li>
           <li><i class="fas fa-check"></i> <strong>AI Mega Rhymes:</strong> 30 Lakh+ words (10L each: Urdu/Hindi/English)</li>
           <li><i class="fas fa-check"></i> <strong>Local Storage:</strong> Your work saves automatically in browser</li>
+          <li><i class="fas fa-check"></i> <strong>Optional Donations:</strong> Support development if you love it</li>
           <li><i class="fas fa-check"></i> <strong>Fixed Font System:</strong> Default Arial with changeable options</li>
-          <li><i class="fas fa-check"></i> <strong>Animated Settings:</strong> Smooth modal animations</li>
           <li><i class="fas fa-check"></i> 1000+ Creative Inspiration Prompts</li>
           <li><i class="fas fa-check"></i> Professional Export Options</li>
           <li><i class="fas fa-check"></i> Voice Recording & Playback</li>
           <li><i class="fas fa-check"></i> Customizable Interface</li>
         </ul>
-        <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin: 20px 0;">
-          <i class="fas fa-gift"></i> <strong>Limited Time:</strong> FREE until December 31, 2025!<br>
-          After that, one-time payment of ₹199 for lifetime access.
+        <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 20px 0; color: #155724;">
+          <i class="fas fa-infinity"></i> <strong>Always Free:</strong> LiLyrics will remain free forever! Your donations help us improve and add new features.
         </div>
         <div style="background: #fff3e0; padding: 12px; border-radius: 6px; margin: 16px 0; font-size: 13px;">
-          <i class="fas fa-rocket"></i> <strong>v2.3 Pro Simplified:</strong> Removed login process for instant access. All features work locally without authentication. Developed by Anas Lila @ AL Softwares.
+          <i class="fas fa-heart"></i> <strong>v2.3 Pro Lifetime Free:</strong> Removed all subscription barriers. Optional donations support continued development. Developed by Anas Lila @ AL Softwares with ❤️
         </div>
       </div>
       
@@ -1088,7 +1118,7 @@
   </div>
 
   <script>
-    // ===== SIMPLIFIED CORE FUNCTIONALITY =====
+    // ===== LIFETIME FREE CORE FUNCTIONALITY =====
     
     let pad = null;
     const rhymes = document.getElementById('rhyme-suggestions');
@@ -1113,16 +1143,16 @@
     let undoStack = [];
     let redoStack = [];
 
-    // ===== SIMPLIFIED TAB SYSTEM =====
+    // ===== TAB SYSTEM =====
     
     function showEmptyState() {
       document.getElementById('mainContent').innerHTML = `
         <div class="empty-state">
           <i class="fas fa-music"></i>
           <h3>Welcome to LiLyrics v2.3 Pro!</h3>
-          <p>Click the <strong>+</strong> tab above to create a new "Untitled Lyrics" project instantly. No login required - start writing immediately!</p>
-          <div style="margin-top: 20px; padding: 16px; background: #e8f5e8; border-radius: 8px; max-width: 400px;">
-            <i class="fas fa-rocket"></i> <strong>Simplified Access:</strong> All features work instantly without any authentication!
+          <p>Click the <strong>+</strong> tab above to create a new "Untitled Lyrics" project instantly. <strong>Always free, no subscriptions!</strong></p>
+          <div style="margin-top: 20px; padding: 16px; background: #d4edda; border-radius: 8px; max-width: 400px; color: #155724;">
+            <i class="fas fa-heart"></i> <strong>Lifetime Free:</strong> All features work forever without any payments!
           </div>
         </div>
       `;
@@ -1133,7 +1163,7 @@
     function showTextEditor() {
       if (!pad) {
         document.getElementById('mainContent').innerHTML = `
-          <textarea id="pad" placeholder="Start writing your beautiful lyrics here in Arial font..."></textarea>
+          <textarea id="pad" placeholder="Write your lyrics..."></textarea>
         `;
         pad = document.getElementById('pad');
         
@@ -1301,7 +1331,7 @@
       updateStats();
     }
 
-    // ===== SIMPLIFIED STORAGE =====
+    // ===== STORAGE =====
     
     function saveProjects() {
       localStorage.setItem('lyricProjects', JSON.stringify(projects));
@@ -1351,33 +1381,29 @@
       applyFont(savedFont);
     }
 
-    // ===== PAYMENT SYSTEM =====
+    // ===== DONATION SYSTEM =====
     
-    function checkPremiumExpiry() {
-      const today = new Date();
-      const expiryDate = new Date('2025-12-31');
-      
-      if (today > expiryDate && !localStorage.getItem('paidUser')) {
-        setTimeout(() => showPaymentModal(), 3000);
-      }
+    function showDonateModal() {
+      document.getElementById('donateModal').style.display = 'block';
     }
     
-    function showPaymentModal() {
-      document.getElementById('paymentModal').style.display = 'block';
+    function hideDonateModal() {
+      document.getElementById('donateModal').style.display = 'none';
     }
     
-    function hidePaymentModal() {
-      document.getElementById('paymentModal').style.display = 'none';
-    }
-    
-    function payWithUPI() {
-      const upiLink = "upi://pay?pa=lilaanas6-3@okicici&pn=LiLyrics&tn=LiLyrics%20Lifetime%20Access&am=199.00&cu=INR";
+    function donateAmount(amount) {
+      const upiLink = `upi://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support%20Donation&am=${amount}.00&cu=INR`;
       window.open(upiLink, '_blank');
+      alert(`❤️ Thank you for your ${amount}₹ donation to support LiLyrics development!\n\nYour support helps keep LiLyrics free forever!`);
     }
     
-    function payWithGPay() {
-      const gPayLink = "tez://upi/pay?pa=lilaanas6-3@okicici&pn=LiLyrics&tn=LiLyrics%20Lifetime%20Access&am=199.00&cu=INR";
-      window.open(gPayLink, '_blank');
+    function donateCustomAmount() {
+      const amount = document.getElementById('customAmount').value;
+      if (!amount || amount <= 0) {
+        alert('Please enter a valid donation amount.');
+        return;
+      }
+      donateAmount(amount);
     }
 
     // ===== AI RHYME SYSTEM =====
@@ -1437,9 +1463,9 @@
         
         rhymes.innerHTML = `
           <div style="margin-bottom: 16px;">
-            <strong><i class="fas fa-brain"></i> AI Mega Rhymes for "${word}":</strong>
+            <strong><i class="fas fa-brain"></i> AI Mega Rhymes for "${word}" (Free Forever!):</strong>
             <div style="font-size: 11px; color: var(--text-secondary); margin-top: 4px;">
-              <i class="fas fa-database"></i> Searched 30,00,000+ words • Multi-language AI
+              <i class="fas fa-database"></i> Searched 30,00,000+ words • Multi-language AI • No Subscriptions
             </div>
           </div>
           <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
@@ -1520,7 +1546,7 @@
       
       document.getElementById('inspireContent').innerHTML = `
         <div style="text-align: center; color: var(--text-secondary); margin-bottom: 16px;">
-          <i class="fas fa-lightbulb"></i> Showing 5 of ${fullInspirePrompts.length}+ creative prompts
+          <i class="fas fa-lightbulb"></i> Showing 5 of ${fullInspirePrompts.length}+ creative prompts (Always Free!)
         </div>
         ${randomPrompts.map((prompt, index) => 
           `<div style="padding: 16px; margin: 12px 0; background: white; border-radius: 8px; box-shadow: var(--shadow); border-left: 4px solid var(--primary-color);">
@@ -1982,7 +2008,7 @@ Leave them moved`,
       updateStats();
     }
 
-    // Enhanced search
+    // Enhanced search functionality
     searchBox.oninput = () => {
       const query = searchBox.value.trim().toLowerCase();
       const content = pad ? pad.value : '';
@@ -2064,7 +2090,7 @@ Leave them moved`,
       if (e.key === 'Escape') {
         hideSettings();
         hideVoiceModal();
-        hidePaymentModal();
+        hideDonateModal();
         hideInspireModal();
         if (focusModeEnabled) toggleFocusMode();
       }
@@ -2079,8 +2105,8 @@ Leave them moved`,
       if (e.target === this) hideVoiceModal();
     };
 
-    document.getElementById('paymentModal').onclick = function(e) {
-      if (e.target === this) hidePaymentModal();
+    document.getElementById('donateModal').onclick = function(e) {
+      if (e.target === this) hideDonateModal();
     };
 
     document.getElementById('inspireModal').onclick = function(e) {
@@ -2111,23 +2137,24 @@ Leave them moved`,
       });
     });
 
-    // ===== SIMPLIFIED INITIALIZATION =====
+    // ===== INITIALIZATION =====
     
     function initializeApp() {
       // Initialize with welcome project if no projects exist
       if (Object.keys(projects).length === 0) {
-        projects['Welcome to LiLyrics'] = `Welcome to LiLyrics v2.3 Pro - Simplified Edition! 🎵
+        projects['Welcome to LiLyrics'] = `Welcome to LiLyrics v2.3 Pro - Lifetime Free Edition! 🎵
 
-✨ NO LOGIN REQUIRED - Start writing instantly!
+✨ COMPLETELY FREE FOREVER - No subscriptions, no hidden costs!
 
-🎯 SIMPLIFIED FEATURES:
+🎯 FEATURES:
 ✅ Chrome-style tab system with + button
-✅ Instant "Untitled Lyrics" creation
+✅ Instant "Untitled Lyrics" creation  
 ✅ Local storage (saves in your browser)
 ✅ AI Mega Rhymes (30 lakh+ words)
 ✅ 1000+ Creative prompts
 ✅ Professional export options
 ✅ Voice recording capability
+✅ Optional donation support
 
 🚀 HOW TO USE:
 • Click the + tab to add new projects instantly
@@ -2171,18 +2198,15 @@ No barriers, just pure expression...
       // Load button preferences
       loadButtonPreferences();
       
-      // Check premium expiry
-      checkPremiumExpiry();
-      
       // Show welcome message
       setTimeout(() => {
         if (current === 'Welcome to LiLyrics') {
-          alert('🎉 Welcome to LiLyrics v2.3 Pro - Simplified Edition!\n\n✨ NO LOGIN REQUIRED!\n✅ All features work instantly\n✅ Your work saves automatically in browser\n✅ Chrome-style tabs for better organization\n\nStart writing your amazing lyrics right away!');
+          alert('🎉 Welcome to LiLyrics v2.3 Pro - Lifetime Free Edition!\n\n✨ COMPLETELY FREE FOREVER!\n✅ All features work instantly\n✅ Your work saves automatically in browser\n✅ Chrome-style tabs for better organization\n❤️ Optional donations support development\n\nStart writing your amazing lyrics right away!');
         }
       }, 1000);
     }
 
-    // ===== START THE SIMPLIFIED APP =====
+    // ===== START THE APP =====
     
     // Initialize app immediately (no authentication needed)
     initializeApp();
