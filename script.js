@@ -1193,3 +1193,115 @@ Let the words flow like music...
   </script>
 </body>
 </html>
+// Add close button to lifetime banner
+document.addEventListener('DOMContentLoaded', function() {
+  const banner = document.getElementById('lifetimeBanner');
+  if (banner && !banner.querySelector('.close-btn')) {
+    const closeBtn = document.createElement('div');
+    closeBtn.className = 'close-btn';
+    closeBtn.innerHTML = '×';
+    closeBtn.title = 'Close banner';
+    closeBtn.onclick = () => {
+      banner.style.display = 'none';
+      localStorage.setItem('bannerClosed', 'true');
+    };
+    banner.appendChild(closeBtn);
+    
+    // Check if banner was previously closed
+    if (localStorage.getItem('bannerClosed') === 'true') {
+      banner.style.display = 'none';
+    }
+  }
+});
+
+// Enhanced tab management with new tab button positioning
+function updateTabs() {
+  const tabs = document.getElementById('tabs');
+  const addBtn = document.getElementById('addNewTab');
+  const dashboardBtn = document.getElementById('dashboardNewTab');
+  
+  tabs.innerHTML = '';
+  
+  if (Object.keys(projects).length === 0) {
+    // No tabs: show dashboard button
+    if (dashboardBtn) {
+      dashboardBtn.style.display = 'block';
+      dashboardBtn.onclick = addNewUntitledProject;
+    }
+    if (addBtn) addBtn.style.display = 'none';
+  } else {
+    // Show tabs with new tab button at the end
+    if (dashboardBtn) dashboardBtn.style.display = 'none';
+    
+    Object.keys(projects).forEach(name => {
+      const tab = document.createElement('div');
+      tab.className = 'tab' + (name === current ? ' active' : '');
+      
+      tab.innerHTML = `
+        <i class="fas fa-music tab-icon"></i>
+        <div class="tab-name" title="${name}">${name}</div>
+        <div class="close-btn" onclick="closeTab('${name}')">×</div>
+      `;
+      
+      tab.onclick = () => switchTab(name);
+      tabs.appendChild(tab);
+    });
+    
+    // Add new tab button after last tab
+    if (addBtn) {
+      addBtn.style.display = 'flex';
+      tabs.appendChild(addBtn);
+      addBtn.onclick = addNewUntitledProject;
+    }
+  }
+}
+
+// Keyboard shortcuts for bold and italic
+document.addEventListener('keydown', function(e) {
+  if (e.ctrlKey || e.metaKey) {
+    if (e.key.toLowerCase() === 'b') {
+      e.preventDefault();
+      if (document.activeElement === pad) {
+        document.execCommand('bold');
+      }
+    }
+    if (e.key.toLowerCase() === 'i') {
+      e.preventDefault();
+      if (document.activeElement === pad) {
+        document.execCommand('italic');
+      }
+    }
+  }
+});
+
+// Add shortcuts to settings panel
+function updateShortcutsPanel() {
+  const shortcutsPanel = document.getElementById('shortcuts-panel');
+  if (shortcutsPanel) {
+    const newShortcuts = `
+      <div style="margin-top: 20px; padding: 16px; background: #f0f8ff; border-radius: 8px;">
+        <h4><i class="fas fa-keyboard"></i> Text Formatting Shortcuts</h4>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div style="padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
+            <span>Bold Text</span>
+            <strong style="float: right;">Ctrl + B</strong>
+          </div>
+          <div style="padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
+            <span>Italic Text</span>
+            <strong style="float: right;">Ctrl + I</strong>
+          </div>
+        </div>
+      </div>
+    `;
+    
+    if (!shortcutsPanel.querySelector('.text-formatting-shortcuts')) {
+      const div = document.createElement('div');
+      div.className = 'text-formatting-shortcuts';
+      div.innerHTML = newShortcuts;
+      shortcutsPanel.appendChild(div);
+    }
+  }
+}
+
+// Initialize on page load
+document.addEventListener('DOMContentLoaded', updateShortcutsPanel);
