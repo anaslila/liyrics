@@ -111,3 +111,18 @@ function displayResults(arr) {
     results.appendChild(li);
   });
 }
+const fontMappings = {
+  'Arial': "'Arial', sans-serif",
+  'Verdana': "'Verdana', sans-serif", 
+  'Times New Roman': "'Times New Roman', serif",
+  'Georgia': "'Georgia', serif",
+  'Courier New': "'Courier New', monospace",
+  'Montserrat': "'Montserrat', sans-serif",
+  'Inter': "'Inter', sans-serif",
+  'Roboto': "'Roboto', sans-serif",
+  'Open Sans': "'Open Sans', sans-serif",
+  'Lato': "'Lato', sans-serif",
+  'Poppins': "'Poppins', sans-serif",
+  'Source Sans Pro': "'Source Sans Pro', sans-serif",
+  'Nunito': "'Nunito', sans-serif"
+};
