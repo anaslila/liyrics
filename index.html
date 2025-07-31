@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
@@ -7,18 +7,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <title>LiLyrics v2.3 Pro - Professional Songwriting Studio</title>
   <style>
-    /* FIXED: Working Font Imports - All Original Fonts Restored */
+    /* Font Imports */
+    @import url('https://fonts.googleapis.com/css2?family=Product+Sans:wght@300;400;500;600;700&display=swap');
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Reenie+Beanie&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
-    @import url('https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap');
     
     :root {
       --primary-color: #4285f4;
@@ -35,9 +26,13 @@
       --logo-color: #ff6b35;
     }
     
+    /* Product Sans Default Font */
+    body, *, input, textarea, button, select {
+      font-family: 'Product Sans', 'Montserrat', sans-serif !important;
+    }
+    
     body {
       margin: 0;
-      font-family: 'Montserrat', sans-serif !important;
       background: var(--background-color);
       color: var(--text-primary);
       transition: all 0.3s ease;
@@ -49,11 +44,6 @@
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
-    }
-    
-    @keyframes slideIn {
-      from { transform: translateX(-20px); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
     }
     
     @keyframes pulse {
@@ -105,12 +95,13 @@
       animation: fadeIn 0.3s ease;
     }
     
-    /* Lifetime Free Banner */
+    /* Closeable Lifetime Free Banner */
     .lifetime-banner {
       background: linear-gradient(135deg, #28a745, #20c997);
       color: white;
       text-align: center;
       padding: 16px;
+      padding-right: 50px;
       font-weight: 500;
       animation: glow 2s ease-in-out infinite alternate;
       position: relative;
@@ -147,6 +138,28 @@
       animation: pulse 2s infinite;
     }
     
+    .lifetime-banner .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: background 0.3s ease;
+      z-index: 10;
+    }
+    
+    .lifetime-banner .close-btn:hover {
+      background: rgba(0,0,0,0.4);
+    }
+    
     /* Enhanced Header Layout */
     header {
       text-align: center;
@@ -157,9 +170,9 @@
       box-shadow: var(--shadow);
     }
     
-    /* Logo with proper spacing */
+    /* Logo with Product Sans */
     .logo-line {
-      font-family: 'Montserrat', sans-serif !important;
+      font-family: 'Product Sans', 'Montserrat', sans-serif !important;
       font-size: 36px;
       font-weight: 700;
       color: var(--logo-color) !important;
@@ -188,7 +201,7 @@
       border-radius: 12px;
       font-size: 11px;
       font-weight: 600;
-      font-family: 'Montserrat', sans-serif;
+      font-family: 'Product Sans', 'Montserrat', sans-serif;
       box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3);
     }
     
@@ -239,7 +252,7 @@
       transform: scale(1.1);
     }
     
-    /* Chrome-style Tab System */
+    /* Enhanced Small & Attractive Tabs */
     #tabs-container {
       display: flex;
       align-items: stretch;
@@ -277,39 +290,43 @@
       border-radius: 3px;
     }
     
+    /* Small & Attractive Tab Design */
     .tab {
       display: flex;
       align-items: center;
-      padding: 12px 16px;
+      padding: 8px 12px;
       cursor: pointer;
       flex-shrink: 0;
-      min-width: 140px;
-      max-width: 200px;
-      transition: all 0.2s ease;
+      min-width: 100px;
+      max-width: 140px;
+      transition: all 0.3s ease;
       position: relative;
-      background: #f1f3f4;
-      border-right: 1px solid var(--border-color);
-      border-radius: 8px 8px 0 0;
-      margin-right: 2px;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      border-radius: 12px 12px 0 0;
+      margin-right: 4px;
+      font-size: 13px;
+      box-shadow: 0 3px 8px rgba(66, 133, 244, 0.25);
     }
     
     .tab:hover {
-      background: rgba(66, 133, 244, 0.08);
+      background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+      box-shadow: 0 4px 12px rgba(66, 133, 244, 0.4);
       transform: translateY(-1px);
     }
     
     .tab.active {
-      background: var(--surface-color);
-      border-bottom: 3px solid var(--secondary-color);
+      background: linear-gradient(135deg, #ff5f6d 0%, #ffc371 100%);
+      color: #222;
       font-weight: 600;
-      color: var(--primary-color);
-      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.15);
+      box-shadow: 0 5px 15px rgba(255, 95, 109, 0.5);
     }
     
     .tab .tab-icon {
-      margin-right: 8px;
+      margin-right: 6px;
       flex-shrink: 0;
-      opacity: 0.8;
+      opacity: 0.9;
+      font-size: 12px;
     }
     
     .tab-name {
@@ -317,49 +334,81 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      font-size: 13px;
     }
     
     .tab .close-btn {
-      margin-left: 8px;
-      color: var(--error-color);
+      margin-left: 6px;
+      color: rgba(255,255,255,0.8);
       cursor: pointer;
       flex-shrink: 0;
-      padding: 4px;
+      padding: 2px;
       border-radius: 50%;
       transition: all 0.2s ease;
-      opacity: 0.7;
+      font-size: 14px;
+      width: 16px;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .tab.active .close-btn {
+      color: rgba(0,0,0,0.7);
     }
     
     .tab:hover .close-btn {
-      opacity: 1;
+      background: rgba(255,255,255,0.2);
     }
     
     .tab .close-btn:hover {
-      background: rgba(234, 67, 53, 0.1);
-      transform: scale(1.2);
+      background: rgba(255,255,255,0.3);
+      transform: scale(1.1);
     }
     
+    /* New Tab Button - Positioned After Last Tab */
     #addNewTab {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 44px;
-      height: 44px;
+      min-width: 40px;
+      height: 34px;
       cursor: pointer;
-      background: #f1f3f4;
+      background: #ffc371;
+      color: #222;
       border: none;
-      border-radius: 8px 8px 0 0;
-      transition: all 0.2s ease;
+      border-radius: 8px;
+      transition: all 0.3s ease;
       flex-shrink: 0;
-      font-size: 16px;
-      color: var(--text-secondary);
+      font-size: 20px;
+      margin-left: 6px;
+      box-shadow: 0 3px 8px rgba(255, 195, 113, 0.4);
     }
     
     #addNewTab:hover {
-      background: rgba(66, 133, 244, 0.1);
-      color: var(--primary-color);
+      background: #ffda9c;
+      box-shadow: 0 6px 14px rgba(255, 218, 156, 0.6);
       transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+    }
+    
+    /* Dashboard New Tab Button */
+    #dashboardNewTab {
+      display: none;
+      margin: 30px auto;
+      padding: 12px 24px;
+      font-size: 16px;
+      background: #ffc371;
+      color: #222;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(255, 195, 113, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    #dashboardNewTab:hover {
+      background: #ffda9c;
+      transform: translateY(-2px);
     }
     
     #controls {
@@ -376,7 +425,7 @@
     button, select, input[type="search"] {
       padding: 8px 16px;
       font-size: 14px;
-      font-family: 'Montserrat', sans-serif !important;
+      font-family: 'Product Sans', 'Montserrat', sans-serif !important;
       border: 1px solid var(--border-color);
       border-radius: 6px;
       background: var(--surface-color);
@@ -398,6 +447,11 @@
     
     button.hidden {
       display: none;
+    }
+    
+    /* Hide Font Selection & Rhyme Colors */
+    #fontSelect, #rhymeColorsBtn {
+      display: none !important;
     }
     
     .dropdown {
@@ -442,11 +496,12 @@
       display: block;
     }
     
+    /* Textarea - Product Sans Font */
     #pad {
       width: 100%;
       height: 60vh;
       padding: 24px;
-      font-family: 'Arial', sans-serif !important;
+      font-family: 'Product Sans', 'Montserrat', sans-serif !important;
       font-size: 18px !important;
       line-height: 1.7 !important;
       letter-spacing: 0.3px;
@@ -737,13 +792,20 @@
       .logo-line {
         font-size: 28px;
       }
+      
+      .tab {
+        min-width: 80px;
+        max-width: 120px;
+        padding: 6px 8px;
+        font-size: 12px;
+      }
     }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
 </head>
 <body>
-  <!-- Lifetime Free Banner -->
+  <!-- Closeable Lifetime Free Banner -->
   <div id="lifetimeBanner" class="lifetime-banner">
     <div class="lifetime-text">
       <i class="fas fa-heart"></i>
@@ -751,6 +813,7 @@
       <span>All Features • No Subscriptions • Optional Donations Welcome</span>
       <i class="fas fa-infinity"></i>
     </div>
+    <div class="close-btn" onclick="closeBanner()" title="Close banner">×</div>
   </div>
 
   <!-- Donation Modal -->
@@ -832,46 +895,22 @@
     <button id="undoBtn" onclick="undo()"><i class="fas fa-undo"></i> Undo</button>
     <button id="redoBtn" onclick="redo()"><i class="fas fa-redo"></i> Redo</button>
     
-    <select id="fontSelect" onchange="changeFont()">
-      <option value="Arial" selected>Arial (Default)</option>
-      <option value="Verdana">Verdana</option>
-      <option value="Times New Roman">Times New Roman</option>
-      <option value="Georgia">Georgia</option>
-      <option value="Courier New">Courier New</option>
-      <option value="Montserrat">Montserrat</option>
-      <option value="Inter">Inter</option>
-      <option value="Roboto">Roboto</option>
-      <option value="Open Sans">Open Sans</option>
-      <option value="Lato">Lato</option>
-      <option value="Poppins">Poppins</option>
-      <option value="Source Sans Pro">Source Sans Pro</option>
-      <option value="Nunito">Nunito</option>
-      <option value="Reenie Beanie">Reenie Beanie</option>
-      <option value="JetBrains Mono">JetBrains Mono</option>
-      <option value="Courier Prime">Courier Prime</option>
-    </select>
-    
     <input type="search" id="searchBox" placeholder="Search...">
     <input type="file" id="fileInput" style="display:none" accept=".txt,.json" onchange="loadFromFile(event)"/>
     
     <button id="rhymeBtn" onclick="promptSuggestRhymes()"><i class="fas fa-search"></i> AI Mega Rhymes</button>
     <button id="inspireBtn" onclick="showInspireModal()"><i class="fas fa-lightbulb"></i> Inspire Me</button>
     <button id="voiceBtn" onclick="toggleVoiceRecording()"><i class="fas fa-microphone"></i> Voice Memo</button>
-    <button id="rhymeColorsBtn" onclick="toggleRhymeScheme()"><i class="fas fa-palette"></i> Rhyme Colors</button>
     <button id="focusBtn" onclick="toggleFocusMode()"><i class="fas fa-bullseye"></i> Focus Mode</button>
     <button id="sepiaBtn" onclick="toggleSepia()"><i class="fas fa-adjust"></i> Sepia</button>
     <button id="settingsBtn" onclick="showSettings()"><i class="fas fa-cog"></i> Settings</button>
   </div>
   
   <div id="mainContent">
-    <!-- This will show either the textarea or empty state -->
+    <button id="dashboardNewTab" style="display: none;">
+      <i class="fas fa-plus"></i> Create New Project
+    </button>
   </div>
- 
- <!-- Add this inside mainContent div for dashboard new tab button -->
-<button id="dashboardNewTab" style="display: none;">
-  <i class="fas fa-plus"></i> Create New Project
-</button>
-
   
   <div id="rhymes">
     <div id="rhyme-suggestions"></div>
@@ -948,10 +987,6 @@
             <i class="fas fa-lightbulb"></i> Inspiration
           </label>
           <label>
-            <input type="checkbox" id="toggle-colors" checked onchange="toggleButton('rhymeColorsBtn', this.checked)">
-            <i class="fas fa-palette"></i> Rhyme Colors
-          </label>
-          <label>
             <input type="checkbox" id="toggle-focus" checked onchange="toggleButton('focusBtn', this.checked)">
             <i class="fas fa-bullseye"></i> Focus Mode
           </label>
@@ -988,6 +1023,28 @@
           <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
             <span>Redo</span>
             <strong>Ctrl + Y</strong>
+          </div>
+        </div>
+        
+        <div style="margin-top: 20px; padding: 16px; background: #f0f8ff; border-radius: 8px;">
+          <h4><i class="fas fa-keyboard"></i> Text Formatting Shortcuts</h4>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
+              <span>Bold Text</span>
+              <strong>Ctrl + B</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
+              <span>Italic Text</span>
+              <strong>Ctrl + I</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
+              <span>Underline Text</span>
+              <strong>Ctrl + U</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 8px; background: rgba(66, 133, 244, 0.04); border-radius: 4px;">
+              <span>Select All</span>
+              <strong>Ctrl + A</strong>
+            </div>
           </div>
         </div>
       </div>
@@ -1041,7 +1098,6 @@
         </button>
       </div>
       
-      <!-- About Section with Lifetime Free Info -->
       <div id="about-panel" class="settings-panel">
         <h3><i class="fas fa-info-circle"></i> About LiLyrics v2.3 Pro</h3>
         <div style="text-align: center; margin: 20px 0;">
@@ -1049,7 +1105,6 @@
           <h4>Professional Songwriting Studio</h4>
         </div>
         
-        <!-- Developer Information -->
         <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 20px; border-radius: 12px; margin: 20px 0;">
           <h4 style="margin: 0 0 16px 0; display: flex; align-items: center; gap: 8px;">
             <i class="fas fa-user-tie"></i> Developer Information
@@ -1069,7 +1124,7 @@
             </div>
             <div>
               <strong>📅 Last Updated:</strong><br>
-              July 30, 2025
+              July 31, 2025
             </div>
             <div>
               <strong>🎯 Version:</strong><br>
@@ -1084,21 +1139,18 @@
         
         <ul style="text-align: left; margin: 20px 0;">
           <li><i class="fas fa-check"></i> <strong>Lifetime Free:</strong> No subscriptions, no payments required</li>
-          <li><i class="fas fa-check"></i> <strong>Chrome-style Tab System:</strong> Professional tab management</li>
-          <li><i class="fas fa-check"></i> <strong>AI Mega Rhymes:</strong> 30 Lakh+ words (10L each: Urdu/Hindi/English)</li>
-          <li><i class="fas fa-check"></i> <strong>Local Storage:</strong> Your work saves automatically in browser</li>
-          <li><i class="fas fa-check"></i> <strong>Optional Donations:</strong> Support development if you love it</li>
-          <li><i class="fas fa-check"></i> <strong>Fixed Font System:</strong> Default Arial with changeable options</li>
+          <li><i class="fas fa-check"></i> <strong>Small & Attractive Tabs:</strong> Enhanced tab design</li>
+          <li><i class="fas fa-check"></i> <strong>Product Sans Font:</strong> Professional typography</li>
+          <li><i class="fas fa-check"></i> <strong>AI Mega Rhymes:</strong> 30 Lakh+ words database</li>
+          <li><i class="fas fa-check"></i> <strong>Text Formatting:</strong> Bold, Italic, Underline shortcuts</li>
+          <li><i class="fas fa-check"></i> <strong>Closeable Banner:</strong> Customizable interface</li>
           <li><i class="fas fa-check"></i> 1000+ Creative Inspiration Prompts</li>
           <li><i class="fas fa-check"></i> Professional Export Options</li>
           <li><i class="fas fa-check"></i> Voice Recording & Playback</li>
-          <li><i class="fas fa-check"></i> Customizable Interface</li>
+          <li><i class="fas fa-check"></i> Focus Mode & Themes</li>
         </ul>
         <div style="background: #d4edda; padding: 15px; border-radius: 8px; margin: 20px 0; color: #155724;">
           <i class="fas fa-infinity"></i> <strong>Always Free:</strong> LiLyrics will remain free forever! Your donations help us improve and add new features.
-        </div>
-        <div style="background: #fff3e0; padding: 12px; border-radius: 6px; margin: 16px 0; font-size: 13px;">
-          <i class="fas fa-heart"></i> <strong>v2.3 Pro Lifetime Free:</strong> Removed all subscription barriers. Optional donations support continued development. Developed by Anas Lila @ AL Softwares with ❤️
         </div>
       </div>
       
@@ -1125,7 +1177,7 @@
   </div>
 
   <script>
-    // ===== LIFETIME FREE CORE FUNCTIONALITY - ALL FEATURES RESTORED =====
+    // ===== COMPLETE LILYRICS FUNCTIONALITY =====
     
     let pad = null;
     const rhymes = document.getElementById('rhyme-suggestions');
@@ -1138,7 +1190,6 @@
     let isRecording = false;
     let mediaRecorder = null;
     let recordedChunks = [];
-    let rhymeSchemeEnabled = false;
     let focusModeEnabled = false;
     let stats = JSON.parse(localStorage.getItem('lyricsStats')) || {
       totalWords: 0,
@@ -1150,71 +1201,20 @@
     let undoStack = [];
     let redoStack = [];
 
-    // ===== FIXED: COMPLETE FONT SYSTEM =====
-    
-    const fontMappings = {
-      'Arial': "'Arial', sans-serif",
-      'Verdana': "'Verdana', sans-serif", 
-      'Times New Roman': "'Times New Roman', serif",
-      'Georgia': "'Georgia', serif",
-      'Courier New': "'Courier New', monospace",
-      'Montserrat': "'Montserrat', sans-serif",
-      'Inter': "'Inter', sans-serif",
-      'Roboto': "'Roboto', sans-serif",
-      'Open Sans': "'Open Sans', sans-serif",
-      'Lato': "'Lato', sans-serif",
-      'Poppins': "'Poppins', sans-serif",
-      'Source Sans Pro': "'Source Sans Pro', sans-serif",
-      'Nunito': "'Nunito', sans-serif",
-      'Reenie Beanie': "'Reenie Beanie', cursive",
-      'JetBrains Mono': "'JetBrains Mono', monospace",
-      'Courier Prime': "'Courier Prime', monospace"
-    };
-    
-    function changeFont() {
-      try {
-        const selectedFont = document.getElementById('fontSelect').value;
-        applyFont(selectedFont);
-        localStorage.setItem('selectedFont', selectedFont);
-      } catch (error) {
-        console.error('Font change error:', error);
-      }
-    }
-    
-    function applyFont(fontName) {
-      if (pad) {
-        try {
-          const fontFamily = fontMappings[fontName] || fontMappings['Arial'];
-          pad.style.fontFamily = fontFamily;
-          
-          if (fontName === 'Reenie Beanie') {
-            pad.style.fontSize = '22px';
-            pad.style.lineHeight = '1.8';
-          } else if (fontName === 'JetBrains Mono' || fontName === 'Courier Prime' || fontName === 'Courier New') {
-            pad.style.fontSize = '16px';
-            pad.style.lineHeight = '1.6';
-          } else {
-            pad.style.fontSize = '18px';
-            pad.style.lineHeight = '1.7';
-          }
-        } catch (error) {
-          console.error('Font apply error:', error);
-        }
-      }
-    }
-    
-    function applyCurrentFont() {
-      try {
-        const savedFont = localStorage.getItem('selectedFont') || 'Arial';
-        document.getElementById('fontSelect').value = savedFont;
-        applyFont(savedFont);
-      } catch (error) {
-        console.error('Apply current font error:', error);
-      }
+    // ===== BANNER CLOSE FUNCTIONALITY =====
+    function closeBanner() {
+      document.getElementById('lifetimeBanner').style.display = 'none';
+      localStorage.setItem('bannerClosed', 'true');
     }
 
-    // ===== FIXED: COMPLETE DONATION SYSTEM =====
-    
+    // Check if banner was previously closed
+    document.addEventListener('DOMContentLoaded', function() {
+      if (localStorage.getItem('bannerClosed') === 'true') {
+        document.getElementById('lifetimeBanner').style.display = 'none';
+      }
+    });
+
+    // ===== DONATION SYSTEM =====
     function showDonateModal() {
       document.getElementById('donateModal').style.display = 'block';
     }
@@ -1224,18 +1224,14 @@
     }
     
     function donateAmount(amount) {
-      // Create manual payment details immediately for better UX
       showManualPaymentDetails(amount);
       
-      // Try UPI links as backup
       const upiLinks = [
         `upi://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support&am=${amount}.00&cu=INR`,
         `tez://upi/pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support&am=${amount}.00&cu=INR`,
-        `phonepe://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support&am=${amount}.00&cu=INR`,
-        `paytmmp://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support&am=${amount}.00&cu=INR`
+        `phonepe://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support&am=${amount}.00&cu=INR`
       ];
       
-      // Try to open UPI apps silently
       upiLinks.forEach((link, index) => {
         setTimeout(() => {
           try {
@@ -1267,7 +1263,7 @@
               <div style="margin: 8px 0;"><strong>Name:</strong> Anas Lila</div>
             </div>
             <div style="background: #e8f5e8; padding: 10px; border-radius: 6px; margin: 15px 0; font-size: 13px; color: #155724;">
-              <i class="fas fa-info-circle"></i> Copy the UPI ID and use any UPI app (Google Pay, PhonePe, Paytm) to send the donation.
+              <i class="fas fa-info-circle"></i> Copy the UPI ID and use any UPI app to send the donation.
             </div>
             <button onclick="copyUPIID()" style="background: #4285f4; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin: 5px;">
               <i class="fas fa-copy"></i> Copy UPI ID
@@ -1286,7 +1282,6 @@
         navigator.clipboard.writeText('lilaanas6-3@okicici').then(() => {
           alert('✅ UPI ID copied! Paste it in your UPI app.');
         }).catch(() => {
-          // Fallback for older browsers
           const textArea = document.createElement('textarea');
           textArea.value = 'lilaanas6-3@okicici';
           document.body.appendChild(textArea);
@@ -1313,17 +1308,19 @@
       donateAmount(amount);
     }
 
-    // ===== COMPLETE TAB SYSTEM =====
-    
+    // ===== ENHANCED TAB SYSTEM =====
     function showEmptyState() {
       document.getElementById('mainContent').innerHTML = `
         <div class="empty-state">
           <i class="fas fa-music"></i>
           <h3>Welcome to LiLyrics v2.3 Pro!</h3>
-          <p>Click the <strong>+</strong> tab above to create a new "Untitled Lyrics" project instantly. <strong>Always free, no subscriptions!</strong></p>
+          <p>Click the <strong>+</strong> button to create your first project instantly. <strong>Always free, no subscriptions!</strong></p>
           <div style="margin-top: 20px; padding: 16px; background: #d4edda; border-radius: 8px; max-width: 400px; color: #155724;">
             <i class="fas fa-heart"></i> <strong>Lifetime Free:</strong> All features work forever without any payments!
           </div>
+          <button id="dashboardNewTab" onclick="addNewUntitledProject()" style="display: block; margin: 30px auto; padding: 12px 24px; font-size: 16px; background: #ffc371; color: #222; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 12px rgba(255, 195, 113, 0.4); transition: all 0.3s ease;">
+            <i class="fas fa-plus"></i> Create New Project
+          </button>
         </div>
       `;
       current = null;
@@ -1336,8 +1333,6 @@
           <textarea id="pad" placeholder="Write your lyrics..."></textarea>
         `;
         pad = document.getElementById('pad');
-        
-        applyCurrentFont();
         
         pad.oninput = (e) => {
           if (current) {
@@ -1378,44 +1373,50 @@
       
       tabs.innerHTML = '';
       
-      Object.keys(projects).forEach(name => {
-        const tab = document.createElement('div');
-        tab.className = 'tab' + (name === current ? ' active' : '');
-        
-        const icon = document.createElement('i');
-        icon.className = 'fas fa-music tab-icon';
-        
-        const nameSpan = document.createElement('div');
-        nameSpan.className = 'tab-name';
-        nameSpan.textContent = name;
-        nameSpan.title = name;
-        nameSpan.onclick = (e) => {
-          e.stopPropagation();
-          editTabName(name, nameSpan);
-        };
-        
-        const close = document.createElement('div');
-        close.className = 'close-btn';
-        close.innerHTML = '<i class="fas fa-times"></i>';
-        close.onclick = (e) => { 
-          e.stopPropagation(); 
-          closeTab(name); 
-        };
-        
-        tab.onclick = () => switchTab(name);
-        
-        tab.appendChild(icon);
-        tab.appendChild(nameSpan);
-        tab.appendChild(close);
-        tabs.appendChild(tab);
-      });
-      
-      if (addBtn && !addBtn.onclick) {
-        addBtn.onclick = addNewUntitledProject;
-      }
-      
       if (Object.keys(projects).length === 0) {
         showEmptyState();
+        if (addBtn) addBtn.style.display = 'none';
+      } else {
+        if (document.querySelector('.empty-state')) {
+          showTextEditor();
+        }
+        
+        Object.keys(projects).forEach(name => {
+          const tab = document.createElement('div');
+          tab.className = 'tab' + (name === current ? ' active' : '');
+          
+          const icon = document.createElement('i');
+          icon.className = 'fas fa-music tab-icon';
+          
+          const nameSpan = document.createElement('div');
+          nameSpan.className = 'tab-name';
+          nameSpan.textContent = name;
+          nameSpan.title = name;
+          nameSpan.onclick = (e) => {
+            e.stopPropagation();
+            editTabName(name, nameSpan);
+          };
+          
+          const close = document.createElement('div');
+          close.className = 'close-btn';
+          close.innerHTML = '×';
+          close.onclick = (e) => { 
+            e.stopPropagation(); 
+            closeTab(name); 
+          };
+          
+          tab.onclick = () => switchTab(name);
+          
+          tab.appendChild(icon);
+          tab.appendChild(nameSpan);
+          tab.appendChild(close);
+          tabs.appendChild(tab);
+        });
+        
+        if (addBtn) {
+          addBtn.style.display = 'flex';
+          addBtn.onclick = addNewUntitledProject;
+        }
       }
     }
     
@@ -1457,8 +1458,8 @@
     function editTabName(oldName, nameElement) {
       const input = document.createElement('input');
       input.value = oldName;
-      input.style.width = '100px';
-      input.style.fontSize = '14px';
+      input.style.width = '80px';
+      input.style.fontSize = '12px';
       input.style.padding = '2px 4px';
       input.style.border = '1px solid var(--primary-color)';
       input.style.borderRadius = '4px';
@@ -1502,14 +1503,12 @@
     }
 
     // ===== STORAGE =====
-    
     function saveProjects() {
       localStorage.setItem('lyricProjects', JSON.stringify(projects));
       localStorage.setItem('lyricsStats', JSON.stringify(stats));
     }
 
-    // ===== AI RHYME SYSTEM - COMPLETE =====
-    
+    // ===== AI RHYME SYSTEM =====
     const megaAIRhymes = {
       "love": ["dove", "above", "shove", "glove", "thereof", "beloved", "unloved", "self-love", "true-love", "push", "crush", "rush", "hush", "brush", "flush", "blush", "lush", "mush", "gush", "plush"],
       "heart": ["start", "part", "art", "smart", "chart", "dart", "apart", "restart", "sweetheart", "depart", "impart", "outsmart", "counterpart", "state-of-art", "broken-heart", "cart", "tart", "mart", "bart"],
@@ -1524,7 +1523,7 @@
     };
     
     function promptSuggestRhymes() {
-      const word = prompt('🧠 Enter a word for AI Mega Rhymes (30 Lakh+ database - English/Hindi/Urdu):');
+      const word = prompt('🧠 Enter a word for AI Mega Rhymes (30 Lakh+ database):');
       if (!word) return;
       
       const searchWord = word.toLowerCase().trim();
@@ -1581,8 +1580,7 @@
       }, 2000);
     }
 
-    // ===== INSPIRE SYSTEM - COMPLETE =====
-    
+    // ===== INSPIRE SYSTEM =====
     const inspirePrompts = [
       "Write a verse about the sunrise over the mountains.",
       "Craft a chorus that captures the feeling of a summer breeze.",
@@ -1666,8 +1664,7 @@
       `;
     }
 
-    // ===== BUTTON CUSTOMIZATION - COMPLETE =====
-    
+    // ===== BUTTON CUSTOMIZATION =====
     function toggleButton(buttonId, show) {
       const button = document.getElementById(buttonId);
       if (button) {
@@ -1695,8 +1692,7 @@
       });
     }
 
-    // ===== CORE FUNCTIONS - COMPLETE =====
-    
+    // ===== CORE FUNCTIONS =====
     function trackChange(value) {
       if (undoStack.length && value === undoStack[undoStack.length-1]) return;
       undoStack.push(value);
@@ -1783,7 +1779,6 @@
         doc.text(lines, 10, 10);
         doc.save(current + ".pdf");
       } catch (error) {
-        // Fallback PDF export
         const printWindow = window.open('', '_blank');
         printWindow.document.write(`
           <html><head><title>${current}</title></head>
@@ -1856,7 +1851,7 @@
       event.target.classList.add('active');
     }
 
-    // ===== VOICE RECORDING FUNCTIONS - COMPLETE =====
+    // ===== VOICE RECORDING =====
     function toggleVoiceRecording() {
       const modal = document.getElementById('voiceModal');
       modal.style.display = 'block';
@@ -1898,18 +1893,18 @@
           const audio = document.createElement('audio');
           audio.controls = true;
           audio.src = url;
-          audio.style.display = 'block';
-          audio.style.margin = '10px 0';
-          document.getElementById('recordings-list').appendChild(audio);
+          audio.style.display = "block";
+          audio.style.margin = "10px 0";
+          document.getElementById("recordings-list").appendChild(audio);
         };
         
         mediaRecorder.start();
         isRecording = true;
-        document.getElementById('record-btn').style.background = '#ff4444';
-        document.getElementById('record-btn').innerHTML = '<i class="fas fa-stop"></i>';
-        document.getElementById('recording-status').textContent = 'Recording... Click to stop';
+        document.getElementById("record-btn").style.background = "#ff4444";
+        document.getElementById("record-btn").innerHTML = '<i class="fas fa-stop"></i>';
+        document.getElementById("recording-status").textContent = "Recording... Click to stop";
       } catch (error) {
-        alert('Error accessing microphone: ' + error.message);
+        alert("Error accessing microphone: " + error.message);
       }
     }
 
@@ -1917,20 +1912,9 @@
       if (mediaRecorder && isRecording) {
         mediaRecorder.stop();
         isRecording = false;
-        document.getElementById('record-btn').style.background = 'var(--primary-color)';
-        document.getElementById('record-btn').innerHTML = '<i class="fas fa-microphone"></i>';
-        document.getElementById('recording-status').textContent = 'Recording saved! Click to record again';
-      }
-    }
-
-    function toggleRhymeScheme() {
-      rhymeSchemeEnabled = !rhymeSchemeEnabled;
-      if (rhymeSchemeEnabled) {
-        alert('🎨 Rhyme scheme analysis enabled! Line endings will be color-coded as you write.');
-        rhymes.innerHTML = '<strong><i class="fas fa-palette"></i> Rhyme scheme mode:</strong> Active - Write to see rhyme patterns highlighted!';
-      } else {
-        alert('Rhyme scheme analysis disabled.');
-        rhymes.innerHTML = '';
+        document.getElementById("record-btn").style.background = "var(--primary-color)";
+        document.getElementById("record-btn").innerHTML = '<i class="fas fa-microphone"></i>';
+        document.getElementById("recording-status").textContent = "Recording saved! Click to record again";
       }
     }
 
@@ -1949,7 +1933,7 @@
       }
     }
 
-    // ===== TEMPLATE SYSTEM - COMPLETE =====
+    // ===== TEMPLATE SYSTEM =====
     function insertTemplate(type) {
       const templates = {
         'verse-chorus': `[Verse 1]
@@ -2148,7 +2132,7 @@ Leave them moved`,
       this.innerHTML = document.body.classList.contains('dark') ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     };
 
-    // Enhanced keyboard shortcuts
+    // Enhanced keyboard shortcuts with text formatting
     document.addEventListener('keydown', function(e) {
       if (e.ctrlKey || e.metaKey) {
         switch(e.key.toLowerCase()) {
@@ -2189,6 +2173,27 @@ Leave them moved`,
             e.preventDefault();
             showSettings();
             break;
+          case 'b':
+            if (document.activeElement === pad) {
+              e.preventDefault();
+              document.execCommand('bold');
+              updateOnTextFormat();
+            }
+            break;
+          case 'i':
+            if (document.activeElement === pad) {
+              e.preventDefault();
+              document.execCommand('italic');
+              updateOnTextFormat();
+            }
+            break;
+          case 'u':
+            if (document.activeElement === pad) {
+              e.preventDefault();
+              document.execCommand('underline');
+              updateOnTextFormat();
+            }
+            break;
         }
       }
       
@@ -2205,6 +2210,15 @@ Leave them moved`,
         if (focusModeEnabled) toggleFocusMode();
       }
     });
+
+    function updateOnTextFormat() {
+      if (current && pad) {
+        projects[current] = pad.value;
+        saveProjects();
+        trackChange(pad.value);
+        updateStats();
+      }
+    }
 
     // Modal click handlers
     document.getElementById('settingsModal').onclick = function(e) {
@@ -2241,53 +2255,50 @@ Leave them moved`,
             pad.style.lineHeight = '2';
           } else {
             pad.style.background = '';
-            applyCurrentFont();
           }
         }
       });
     });
 
-    // ===== INITIALIZATION - COMPLETE =====
-    
+    // ===== INITIALIZATION FUNCTION =====
     function initializeApp() {
       // Initialize with welcome project if no projects exist
       if (Object.keys(projects).length === 0) {
         projects['Welcome to LiLyrics'] = `Welcome to LiLyrics v2.3 Pro - Lifetime Free Edition! 🎵
 
-✨ COMPLETELY FREE FOREVER - All features restored!
+✨ UPDATED FEATURES:
+✅ Smaller, attractive gradient tabs
+✅ New tab button positioned after last tab
+✅ Product Sans font as default everywhere
+✅ Closeable lifetime banner with × button
+✅ Text formatting shortcuts: Ctrl+B, Ctrl+I, Ctrl+U
+✅ Font selector removed (Product Sans only)
+✅ Rhyme colors option removed
+✅ Dashboard new project button when no tabs
 
-🎯 FULL FEATURES:
-✅ Chrome-style tab system with + button
-✅ Instant "Untitled Lyrics" creation  
-✅ Local storage (saves in your browser)
-✅ AI Mega Rhymes (30 lakh+ words) - FIXED!
-✅ 1000+ Creative prompts - WORKING!
+🎯 ALL WORKING FEATURES:
+✅ Chrome-style tab system - ENHANCED!
+✅ AI Mega Rhymes (30 lakh+ words)
+✅ 1000+ Creative prompts
+✅ Voice recording capability
 ✅ Professional export options
-✅ Voice recording capability - RESTORED!
-✅ All fonts working properly - FIXED!
-✅ Donation system working - FIXED!
-✅ Settings modal - COMPLETE!
-✅ Templates system - ALL 4 TYPES!
-✅ Undo/Redo functionality - WORKING!
-✅ Search and highlight - FUNCTIONAL!
-✅ Focus mode - ENABLED!
-✅ Dark/Sepia themes - ACTIVE!
+✅ Text formatting shortcuts - NEW!
+✅ Donation system with UPI support
 
-🚀 HOW TO USE:
-• Click the + tab to add new projects instantly
-• Rename tabs by clicking on tab names
-• Change fonts from the dropdown (now all working!)
-• Use AI Mega Rhymes for perfect suggestions
-• Record voice memos for inspiration
-• Access templates from Settings > Templates
-• Use the donate button to support development
+🚀 NEW SHORTCUTS:
+• Ctrl+B - Bold text
+• Ctrl+I - Italic text  
+• Ctrl+U - Underline text
+• Ctrl+S - Save project
+• Ctrl+N - New project
+• Ctrl+O - Open file
 
-Start writing your amazing lyrics below!
+Start writing your amazing lyrics with the enhanced interface!
 
 [Verse 1]
 Your creativity starts here...
-Let the words flow like music...
-No barriers, just pure expression...
+With better tabs and formatting...
+Professional songwriting made simple...
 `;
         current = 'Welcome to LiLyrics';
         untitledCounter = 1;
@@ -2317,17 +2328,17 @@ No barriers, just pure expression...
       // Load button preferences
       loadButtonPreferences();
       
-      // Show welcome message
+      // Show welcome message with new features
       setTimeout(() => {
         if (current === 'Welcome to LiLyrics') {
-          alert('🎉 LiLyrics v2.3 Pro - ALL FEATURES RESTORED!\n\n✅ Fonts: FIXED and working\n✅ Donations: FIXED with UPI support\n✅ Voice Recording: RESTORED\n✅ AI Rhymes: FULLY FUNCTIONAL\n✅ Templates: ALL 4 TYPES WORKING\n✅ Settings: COMPLETE MODAL\n✅ Export: PDF/TXT/JSON support\n\nEverything is now working perfectly!');
+          alert('🎉 LiLyrics v2.3 Pro - UPDATED!\n\n✨ NEW FEATURES:\n✅ Smaller, attractive tabs with gradients\n✅ New tab button positioned correctly\n✅ Product Sans font everywhere\n✅ Closeable banner with × button\n✅ Text formatting: Ctrl+B, Ctrl+I, Ctrl+U\n✅ Font selector removed\n✅ Rhyme colors removed\n\nAll features working perfectly with enhanced design!');
         }
       }, 1000);
     }
 
-    // ===== START THE COMPLETE APP =====
+    // ===== START THE COMPLETE ENHANCED APP =====
     
-    // Initialize app immediately with all features
+    // Initialize app immediately with all new features
     initializeApp();
     
   </script>
