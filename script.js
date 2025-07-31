@@ -126,3 +126,85 @@ const fontMappings = {
   'Source Sans Pro': "'Source Sans Pro', sans-serif",
   'Nunito': "'Nunito', sans-serif"
 };
+
+function donateAmount(amount) {
+  // Multiple UPI app support for better compatibility
+  const upiApps = [
+    {
+      name: 'Google Pay',
+      link: `tez://upi/pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support%20Donation&am=${amount}.00&cu=INR`
+    },
+    {
+      name: 'PhonePe',
+      link: `phonepe://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support%20Donation&am=${amount}.00&cu=INR`
+    },
+    {
+      name: 'Paytm',
+      link: `paytmmp://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support%20Donation&am=${amount}.00&cu=INR`
+    },
+    {
+      name: 'Generic UPI',
+      link: `upi://pay?pa=lilaanas6-3@okicici&pn=Anas%20Lila&tn=LiLyrics%20Support%20Donation&am=${amount}.00&cu=INR`
+    }
+  ];
+  
+  // Try each UPI app
+  let appOpened = false;
+  
+  upiApps.forEach((app, index) => {
+    setTimeout(() => {
+      if (!appOpened) {
+        try {
+          window.open(app.link, '_blank');
+          appOpened = true;
+        } catch (error) {
+          console.log(`Failed to open ${app.name}:`, error);
+        }
+      }
+    }, index * 100);
+  });
+  
+  // Fallback: Show manual payment details
+  setTimeout(() => {
+    if (!appOpened) {
+      showManualPaymentDetails(amount);
+    }
+  }, 1000);
+  
+  alert(`❤️ Opening UPI apps for ₹${amount} donation to support LiLyrics!\n\nIf apps don't open automatically, please use:\nUPI ID: lilaanas6-3@okicici\nAmount: ₹${amount}\nNote: LiLyrics Support`);
+}
+
+function showManualPaymentDetails(amount) {
+  const detailsHTML = `
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+      <div style="background: white; padding: 30px; border-radius: 15px; max-width: 400px; text-align: center;">
+        <h3 style="color: #4285f4; margin-bottom: 20px;">💝 Manual Payment Details</h3>
+        <div style="background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <strong>UPI ID:</strong> lilaanas6-3@okicici<br>
+          <strong>Amount:</strong> ₹${amount}<br>
+          <strong>Note:</strong> LiLyrics Support Donation<br>
+          <strong>Name:</strong> Anas Lila
+        </div>
+        <p style="font-size: 14px; color: #666;">Copy the UPI ID and use any UPI app to send the donation. Thank you for supporting LiLyrics! ❤️</p>
+        <button onclick="this.parentElement.parentElement.remove()" style="background: #4285f4; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; margin-top: 10px;">
+          Close
+        </button>
+      </div>
+    </div>
+  `;
+  document.body.insertAdjacentHTML('beforeend', detailsHTML);
+}
+
+function donateCustomAmount() {
+  const amount = document.getElementById('customAmount').value;
+  if (!amount || amount <= 0) {
+    alert('Please enter a valid donation amount (minimum ₹10).');
+    return;
+  }
+  if (amount < 10) {
+    alert('Minimum donation amount is ₹10.');
+    return;
+  }
+  donateAmount(amount);
+}
+
